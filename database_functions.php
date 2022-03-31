@@ -1,6 +1,6 @@
 ﻿<?php
 
-function addEvent($name, $time_start, $time_end, $building, $room, $date_of_event, $cost, $food)
+function addToEvent_By_ID($name, $time_start, $time_end, $building, $room, $date_of_event, $cost, $food)
 {
     //db handler
     //the db handler is in connect-db
@@ -34,17 +34,16 @@ function addEvent($name, $time_start, $time_end, $building, $room, $date_of_even
     $statement->closeCursor();
 }
 
-function updateZombie($name, $Danger, $Speed)
+function addToEvent_Restrictions($event_id, $restrictions)
 {
     global $db;
 
-    $query = "UPDATE zombies SET Danger=:Danger, Speed=:Speed WHERE name=:name";
+    $query = "INSERT INTO Event_restrictions VALUES (:event_id, :restrictions)";
 
     $statement = $db->prepare($query);
 
-    $statement->bindValue(':name', $name);
-    $statement->bindValue(':Danger', $Danger);
-    $statement->bindValue(':Speed', $Speed);
+    $statement->bindValue(':event_id', $event_id);
+    $statement->bindValue(':restrictions', $restrictions);
 
     $statement->execute();
 
