@@ -76,7 +76,7 @@ function getAllEvents()
 
     global $db;
 
-    $query = "SELECT DISTINCT * FROM Event_by_id,Host WHERE Event_by_id.event_id = Host.event_id ORDER BY Event_by_id.date_of_event";
+    $query = "SELECT DISTINCT * FROM Event_by_id,Host WHERE Event_by_id.event_id = Host.event_id ORDER BY Event_by_id.date_of_event, Event_by_id.name, Host.org_name";
 
     // 1. prepare
 
@@ -86,6 +86,78 @@ function getAllEvents()
     // SQL injection attacks
 
     $statement = $db->prepare($query);
+    $statement->execute();
+    $results = $statement->fetchAll();
+
+    $statement->closeCursor();
+    return $results;
+}
+
+function getEventDetail($event_id)
+{
+
+    global $db;
+
+    $query = "select * from event_by_id where event_id=:event_id";
+
+    // 1. prepare
+
+    // 2. bindValue & execute
+
+    // Prepare and bindValue helps protect against
+    // SQL injection attacks
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(':event_id', $event_id);
+    $statement->execute();
+    $results = $statement->fetchAll();
+
+    $statement->closeCursor();
+    return $results;
+}
+
+function getEventAudience($event_id)
+{
+
+    global $db;
+
+    $query = "SELECT * FROM Event_by_id,Event_audience WHERE Event_by_id.event_id = Event_audience.event_id AND Event_by_id.event_id=:event_id";
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(':event_id', $event_id);
+    $statement->execute();
+    $results = $statement->fetchAll();
+
+    $statement->closeCursor();
+    return $results;
+}
+
+function getEventCategories($event_id)
+{
+
+    global $db;
+
+    $query = "SELECT DISTINCT * FROM Event_by_id,Event_categories WHERE Event_by_id.event_id = Event_categories.event_id AND Event_by_id=:event_id";
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(':event_id', $event_id);
+    $statement->execute();
+    $results = $statement->fetchAll();
+
+    $statement->closeCursor();
+    return $results;
+}
+
+
+function getEventRestrictions($event_id)
+{
+
+    global $db;
+
+    $query = "SELECT DISTINCT * FROM Event_by_id,Event_restrictions WHERE Event_by_id.event_id = Event_restrictions.event_id AND Event_by_id=:event_id";
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(':event_id', $event_id);
     $statement->execute();
     $results = $statement->fetchAll();
 

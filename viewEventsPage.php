@@ -5,12 +5,17 @@
  require('database_functions.php');
 
  $list_of_events = getAllEvents();
- $zombie_to_update = null;
+ $event_details = null;
+ $event_audience = null;
+ $event_categories = null;
+ $event_restrictions = null;
 
  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-      if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "Add") {
-        addZombie($_POST['name'], $_POST['Danger'], $_POST['Speed']);
-        $list_of_zombies = getAllZombies();
+      if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "ShowDetails") {
+        $event_details = getEventDetail($_POST['event_to_display']);
+        $event_audience = getEventAudience($_POST['event_to_display']);
+        $event_categories = getEventCategories($_POST['event_to_display']);
+        $event_restrictions = getEventRestrictions($_POST['event_to_display']);
       }
        else if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "Update") {
 
@@ -106,6 +111,36 @@
 </form>  
 /> -->
 
+  <!-- <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Category</th>
+        <th scope="col">Information</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">Name</th>
+        <td><?php if ($event_details!=null) echo $event_details['name']?></td>
+      </tr>
+  </tbody>
+</table> -->
+<table class="w3-table w3-bordered w3-card-4" style="width:90%">
+<thead>
+<tr style="background-color:#b0b0b0">
+<th width="25%">Name</th>
+<th width="20%">Date of Event</th>
+<th width="25%">Host Organization</th>
+<?php foreach ($event_details as $event_d): ?>
+<tr>
+    <td><?php echo $event_d['name']; ?></td>
+    <td><?php echo $event_d['date_of_event']; ?></td>
+    <td><?php echo $event_d['org_name']; ?></td>
+</tr>
+ <?php endforeach; ?>
+ </table>
+
+
 <!--<h2> List of Zombies </h2>/> -->
 <table class="w3-table w3-bordered w3-card-4" style="width:90%">
 <thead>
@@ -126,7 +161,10 @@
     <td><?php echo $event['name']; ?></td>
     <td><?php echo $event['date_of_event']; ?></td>
     <td><?php echo $event['org_name']; ?></td>
-    <td><a href="updateEventPage.php">Click to see event details!</a></td>
+    <td><form action="viewEventsPage.php" method="post">
+        <input type="submit" value="ShowDetails" name="btnAction" class="btn btn-primary" />
+        <input type="hidden" name="event_to_display" value="<?php echo $event['event_id'] ?>" />      
+      </form></td>
     <!--
     <td>
      <form action="simpleform.php" method="post">
