@@ -72,12 +72,12 @@ function deleteZombie($name, $Danger, $Speed)
 
 
 
-function getAllZombies()
+function getAllEvents()
 {
 
     global $db;
 
-    $query = "SELECT * FROM zombies";
+    $query = "SELECT DISTINCT * FROM Event_by_id,Host WHERE Event_by_id.event_id = Host.event_id ORDER BY Event_by_id.date_of_event";
 
     // 1. prepare
 
