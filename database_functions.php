@@ -1,6 +1,6 @@
 ﻿<?php
 
-function addEvent($name, $time_start, $time_end, $building, $room, $date_of_event, $cost, $food)
+function addToEvent_By_ID($name, $time_start, $time_end, $building, $room, $date_of_event, $cost, $food)
 {
     //db handler
     //the db handler is in connect-db
