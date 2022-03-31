@@ -10,6 +10,11 @@
         $latest_event_id = getLatestEventId();
         addToEvent_By_ID($_POST['name'], $_POST['time_start'], $_POST['time_end'], $_POST['building'], $_POST['room'], $_POST['date_of_event'], $_POST['cost'], $_POST['food']);
         addToHost($_POST['org_name'], $latest_event_id);
+        addToEvent_audience($latest_event_id,$_POST['audience']);
+        addToEvent_categories($latest_event_id,$_POST['categories']);
+        addToEvent_restrictions($latest_event_id,$POST['restrictions'])
+
+        <!--add the event description and audience info and categories with the database functions-->
       }
  }
  ?>
@@ -75,8 +80,23 @@ echo $latest_event_id;
   <div class="row mb-3 mx-3">
     Event Date:
         <input type="date" class="form-control" name="date_of_event"  />        
-    </div>  
- 
+    </div> 
+
+  <div class="row mb-3 mx-3">
+    Event Categories:
+    <input type="text" class="form-control" name="categories" />      
+  </div>
+
+  <div class="row mb-3 mx-3">
+    Event Audience:
+    <input type="text" class="form-control" name="audience"  />      
+  </div> 
+
+  <div class="row mb-3 mx-3">
+    Event Details:
+    <input type="text" class="form-control" name="details" required />      
+  </div>
+
     <div class="row mb-3 mx-3">
     Start Time:
         <input type="time" class="form-control" name="time_start"  />        
