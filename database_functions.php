@@ -1,5 +1,23 @@
 ﻿<?php
 
+function getLatestEventId()
+{
+    global $db;
+
+    $query = "SELECT MAX(event_ID) FROM Event_by_id";
+
+    $statement = $db->prepare($query);
+    
+    $statement->execute();
+    
+    $results = $statement->fetch();
+
+    $statement->closeCursor();
+    
+    return $results;
+
+}
+
 function addToEvent_By_ID($name, $time_start, $time_end, $building, $room, $date_of_event, $cost, $food)
 {
     //db handler
