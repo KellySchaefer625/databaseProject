@@ -62,7 +62,7 @@
 <div class="container">
 ame, time_start, time_end, building, room, date_of_event, cost, food)
 <h1>Add Event</h1>
-<form name="mainForm" action="simpleform.php" method="post">   
+<form name="mainForm" action="viewEventsPage.php" method="post">   
   <div class="row mb-3 mx-3">
     Event Name:
     <input type="text" class="form-control" name="name" required />      
