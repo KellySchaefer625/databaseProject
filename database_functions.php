@@ -1,5 +1,23 @@
 ﻿<?php
 
+function getLatestEventId()
+{
+    global $db;
+
+    $query = "SELECT MAX(event_ID) FROM Event_by_id";
+
+    $statement = $db->prepare($query);
+    
+    $statement->execute();
+    
+    $results = $statement->fetch();
+
+    $statement->closeCursor();
+    
+    return $results;
+
+}
+
 function addToEvent_By_ID($name, $time_start, $time_end, $building, $room, $date_of_event, $cost, $food)
 {
     //db handler
@@ -34,7 +52,7 @@ function addToEvent_By_ID($name, $time_start, $time_end, $building, $room, $date
     $statement->closeCursor();
 }
 
-function addToEvent_Restrictions($event_id, $restrictions)
+function addToEvent_restrictions($event_id, $restrictions)
 {
     global $db;
 
@@ -50,6 +68,58 @@ function addToEvent_Restrictions($event_id, $restrictions)
     $statement->closeCursor();
 
 }
+
+function addToEvent_categories($event_id, $categories)
+{
+    global $db;
+
+    $query = "INSERT INTO Event_categories VALUES (:event_id, :categories)";
+
+    $statement = $db->prepare($query);
+
+    $statement->bindValue(':event_id', $event_id);
+    $statement->bindValue(':categories', $categories);
+
+    $statement->execute();
+
+    $statement->closeCursor();
+
+}
+
+function addToEvent_audience($event_id, $audience)
+{
+    global $db;
+
+    $query = "INSERT INTO Event_audience VALUES (:event_id, :audience)";
+
+    $statement = $db->prepare($query);
+
+    $statement->bindValue(':event_id', $event_id);
+    $statement->bindValue(':audience', $audience);
+
+    $statement->execute();
+
+    $statement->closeCursor();
+    
+}
+
+function addToHost($org_name, $event_id)
+{
+    global $db;
+
+    $query = "INSERT INTO Host VALUES (:org_name, :event_id)";
+
+    $statement = $db->prepare($query);
+
+    $statement->bindValue(':event_id', $event_id);
+    $statement->bindValue(':org_name', $org_name);
+
+    $statement->execute();
+
+    $statement->closeCursor();
+    
+}
+
 
 function deleteZombie($name, $Danger, $Speed)
 {
