@@ -7,9 +7,9 @@
 
  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "Add") {
-        latest_event_id = getLatestEventID();
+        $latest_event_id = getLatestEventId();
         addToEvent_By_ID($_POST['name'], $_POST['time_start'], $_POST['time_end'], $_POST['building'], $_POST['room'], $_POST['date_of_event'], $_POST['cost'], $_POST['food']);
-        addToHost()
+        addToHost($_POST['org_name'], $latest_event_id);
       }
  }
  ?>
@@ -70,7 +70,7 @@ ame, time_start, time_end, building, room, date_of_event, cost, food)
  
   <div class="row mb-3 mx-3">
     Event Host:
-        <input type="number" class="form-control" name="host" required />        
+        <input type="number" class="form-control" name="org_name" required />        
     </div>  
  
   <div class="row mb-3 mx-3">
