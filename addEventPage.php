@@ -99,7 +99,7 @@ echo $latest_event_id;
  
  <div class="row mb-3 mx-3">
     Cost:
-        <input type="text" class="form-control" name="cost" required />        
+        <input type="int" class="form-control" name="cost" required />        
     </div>  
  
  <div class="row mb-3 mx-3">
