@@ -3,7 +3,7 @@
  
 
  require('database_functions.php');
- latest_event_id = null;
+ $latest_event_id = null;
 
  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "Add") {
