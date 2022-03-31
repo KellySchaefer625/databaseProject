@@ -160,6 +160,7 @@ function getAllEvents()
     $results = $statement->fetchAll();
 
     $statement->closeCursor();
+    
     return $results;
 }
 
@@ -168,7 +169,7 @@ function getEventDetail($event_id)
 
     global $db;
 
-    $query = "select * from event_by_id where event_id=:event_id";
+    $query = "SELECT * FROM Event_by_id,Host WHERE Event_by_id.event_id = Host.event_id AND Event_by_id.Event_id=:event_id";
 
     // 1. prepare
 
@@ -181,7 +182,7 @@ function getEventDetail($event_id)
     $statement->bindValue(':event_id', $event_id);
     $statement->execute();
     $results = $statement->fetchAll();
-
+    //print($event_id);
     $statement->closeCursor();
     return $results;
 }
@@ -207,7 +208,7 @@ function getEventCategories($event_id)
 
     global $db;
 
-    $query = "SELECT DISTINCT * FROM Event_by_id,Event_categories WHERE Event_by_id.event_id = Event_categories.event_id AND Event_by_id=:event_id";
+    $query = "SELECT * FROM Event_by_id,Event_categories WHERE Event_by_id.event_id = Event_categories.event_id AND Event_by_id.event_id=:event_id";
 
     $statement = $db->prepare($query);
     $statement->bindValue(':event_id', $event_id);
@@ -224,7 +225,7 @@ function getEventRestrictions($event_id)
 
     global $db;
 
-    $query = "SELECT DISTINCT * FROM Event_by_id,Event_restrictions WHERE Event_by_id.event_id = Event_restrictions.event_id AND Event_by_id=:event_id";
+    $query = "SELECT * FROM Event_by_id,Event_restrictions WHERE Event_by_id.event_id = Event_restrictions.event_id AND Event_by_id.event_id=:event_id";
 
     $statement = $db->prepare($query);
     $statement->bindValue(':event_id', $event_id);
