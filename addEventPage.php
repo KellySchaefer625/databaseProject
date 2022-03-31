@@ -75,17 +75,17 @@ ame, time_start, time_end, building, room, date_of_event, cost, food)
  
   <div class="row mb-3 mx-3">
     Event Date:
-        <input type="text" class="form-control" name="date_of_event" required />        
+        <input type="text" class="form-control" name="date_of_event"  />        
     </div>  
  
     <div class="row mb-3 mx-3">
     Start Time:
-        <input type="text" class="form-control" name="time_start" required />        
+        <input type="text" class="form-control" name="time_start"  />        
     </div>  
  
    <div class="row mb-3 mx-3">
     End Time:
-        <input type="text" class="form-control" name="time_end" required />        
+        <input type="text" class="form-control" name="time_end"  />        
     </div>  
  
   <div class="row mb-3 mx-3">
