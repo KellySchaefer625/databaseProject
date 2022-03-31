@@ -70,42 +70,42 @@ ame, time_start, time_end, building, room, date_of_event, cost, food)
  
   <div class="row mb-3 mx-3">
     Event Host:
-        <input type="number" class="form-control" name="org_name" required />        
+        <input type="text" class="form-control" name="org_name" required />        
     </div>  
  
   <div class="row mb-3 mx-3">
     Event Date:
-        <input type="number" class="form-control" name="date_of_event" required />        
+        <input type="text" class="form-control" name="date_of_event" required />        
     </div>  
  
     <div class="row mb-3 mx-3">
     Start Time:
-        <input type="number" class="form-control" name="time_start" required />        
+        <input type="text" class="form-control" name="time_start" required />        
     </div>  
  
    <div class="row mb-3 mx-3">
     End Time:
-        <input type="number" class="form-control" name="time_end" required />        
+        <input type="text" class="form-control" name="time_end" required />        
     </div>  
  
   <div class="row mb-3 mx-3">
     Building:
-        <input type="number" class="form-control" name="building" required />        
+        <input type="text" class="form-control" name="building" required />        
     </div>  
  
   <div class="row mb-3 mx-3">
     Room:
-        <input type="number" class="form-control" name="room" required />        
+        <input type="text" class="form-control" name="room" required />        
     </div>  
  
  <div class="row mb-3 mx-3">
     Cost:
-        <input type="number" class="form-control" name="cost" required />        
+        <input type="text" class="form-control" name="cost" required />        
     </div>  
  
  <div class="row mb-3 mx-3">
     Food?
-        <input type="number" class="form-control" name="food" required />        
+        <input type="text" class="form-control" name="food" required />        
     </div>  
 
     <input type="submit" value="Add" name="btnAction" class="btn btn-dark"
