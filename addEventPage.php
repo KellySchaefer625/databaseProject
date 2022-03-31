@@ -8,7 +8,6 @@
  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "Add") {
         $latest_event_id = getLatestEventId();
-        echo $latest_event_id;
         addToEvent_By_ID($_POST['name'], $_POST['time_start'], $_POST['time_end'], $_POST['building'], $_POST['room'], $_POST['date_of_event'], $_POST['cost'], $_POST['food']);
         addToHost($_POST['org_name'], $latest_event_id);
       }
@@ -19,7 +18,6 @@
  
 
 <!DOCTYPE html>
-
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
@@ -61,7 +59,7 @@
 <body>
 
 <div class="container">
-ame, time_start, time_end, building, room, date_of_event, cost, food)
+echo $latest_event_id;
 <h1>Add Event</h1>
 <form name="mainForm" action="addEventPage.php" method="post">   
   <div class="row mb-3 mx-3">
