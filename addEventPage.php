@@ -2,29 +2,12 @@
  require('connect-db.php');
  
 
- require('zombie_db.php');
-
- $list_of_zombies = getAllZombies();
- $zombie_to_update = null;
-
+ require('database_functions.php');
+ latest_event_id = getLatestEvent_ID();
  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "Add") {
-        addZombie($_POST['name'], $_POST['Danger'], $_POST['Speed']);
-        $list_of_zombies = getAllZombies();
-      }
-       else if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "Update") {
-
-        $zombie_to_update = getZombie_byName($_POST['zombie_to_update']);
-      }
-
-      else if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "Confirm Update" && $zombie_to_update != null) {
-        updateZombie($_POST['name'], $_POST['Danger'], $_POST['Speed']); 
-        $list_of_zombies = getAllZombies();
-      }
-
-      else if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "Delete") {
-        $zombie_to_delete = getZombie_byName($_POST['zombie_to_delete']);
-        deleteZombie($zombie_to_delete['name'], $zombie_to_delete['Danger'], $zombie_to_delete['Speed']);
+        addToEvent_By_ID($_POST['name'], $_POST['time_start'], $_POST['time_end'], $_POST['building'], $_POST['room'], $_POST['date_of_event'], $_POST['cost'], $_POST['food']);
+        addToHost()
       }
  }
  ?>
