@@ -3,9 +3,11 @@
  
 
  require('database_functions.php');
- latest_event_id = getLatestEvent_ID();
+ latest_event_id = null;
+
  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "Add") {
+        latest_event_id = getLatestEventID();
         addToEvent_By_ID($_POST['name'], $_POST['time_start'], $_POST['time_end'], $_POST['building'], $_POST['room'], $_POST['date_of_event'], $_POST['cost'], $_POST['food']);
         addToHost()
       }
@@ -58,71 +60,58 @@
 <body>
 
 <div class="container">
-
-<h1>Zombie Book</h1>
+ame, time_start, time_end, building, room, date_of_event, cost, food)
+<h1>Add Event</h1>
 <form name="mainForm" action="simpleform.php" method="post">   
   <div class="row mb-3 mx-3">
-    Your name:
-    <input type="text" class="form-control" name="name" required
-    value = "<?php if ($zombie_to_update!=null) echo $zombie_to_update['name']?>" />      
+    Event Name:
+    <input type="text" class="form-control" name="name" required />      
   </div>  
-    <div class="row mb-3 mx-3">
-        Danger:
-        <input type="number" class="form-control" name="Danger" required 
-        value = "<?php if ($zombie_to_update!=null) echo $zombie_to_update['Danger'] ?>"/>        
+ 
+  <div class="row mb-3 mx-3">
+    Event Host:
+        <input type="number" class="form-control" name="host" required />        
     </div>  
-
+ 
+  <div class="row mb-3 mx-3">
+    Event Date:
+        <input type="number" class="form-control" name="date_of_event" required />        
+    </div>  
+ 
     <div class="row mb-3 mx-3">
-        Speed:
-        <input type="text" class="form-control" name="Speed" required 
-        value = "<?php if ($zombie_to_update!=null) echo $zombie_to_update['Speed'] ?>"/>        
-    </div> 
+    Start Time:
+        <input type="number" class="form-control" name="time_start" required />        
+    </div>  
+ 
+   <div class="row mb-3 mx-3">
+    End Time:
+        <input type="number" class="form-control" name="time_end" required />        
+    </div>  
+ 
+  <div class="row mb-3 mx-3">
+    Building:
+        <input type="number" class="form-control" name="building" required />        
+    </div>  
+ 
+  <div class="row mb-3 mx-3">
+    Room:
+        <input type="number" class="form-control" name="room" required />        
+    </div>  
+ 
+ <div class="row mb-3 mx-3">
+    Cost:
+        <input type="number" class="form-control" name="cost" required />        
+    </div>  
+ 
+ <div class="row mb-3 mx-3">
+    Food?
+        <input type="number" class="form-control" name="food" required />        
+    </div>  
 
     <input type="submit" value="Add" name="btnAction" class="btn btn-dark"
 
-        title = "insert a zombie" />
-
-    <input type="submit" value="Confirm Update" name="btnAction" class="btn btn-dark"
-
-        title = "Confirm Changes" />
-</form>  
-
-<h2> List of Zombies </h2>
-<table class="w3-table w3-bordered w3-card-4" style="width:90%">
-<thead>
-<tr style="background-color:#b0b0b0">
-<th width="25%">Name</th>
-<th width="20%">Danger</th>
-<th width="25%">Speed</th>
-<th width="12%">Update ?</th>
-<th width="12%">Delete ?</th>
-</tr>
-</thead>
-
-<?php foreach ($list_of_zombies as $zombie): ?>
-<tr>
-    <td><?php echo $zombie['name']; ?></td>
-    <td><?php echo $zombie['Danger']; ?></td>
-    <td><?php echo $zombie['Speed']; ?></td>
-    <td>
-    <form action="simpleform.php" method="post">
-        <input type="submit" value="Update" name="btnAction"
-            class="btn btn-primary" />
-        <input type="hidden" name="zombie_to_update"
-            value="<?php echo $zombie['name'] ?>" />
-    </form>
-    </td>
-    <td>
-     <form action="simpleform.php" method="post">
-        <input type="submit" value="Delete" name="btnAction" class="btn btn-primary" />
-        <input type="hidden" name="zombie_to_delete" value="<?php echo $zombie['name'] ?>" />      
-      </form>
-    </td>
-</tr>
- <?php endforeach; ?>
-
-  </table>
-  
+        title = "Add Event" />
+</form>    
 </div> 
 </body>
 </html>
