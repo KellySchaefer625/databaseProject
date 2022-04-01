@@ -26,9 +26,7 @@ function addToEvent_By_ID($name, $time_start, $time_end, $building, $room, $date
     global $db;
 
     //sql
-    $query = "INSERT INTO Event_by_id 
-         (name, time_start, time_end, building, room, date_of_event, cost, food) 
-            VALUES (:name, :time_start, :time_end, :building, :room, :date_of_event, :cost, :food)";
+    $query = "INSERT INTO Event_by_id (name, time_start, time_end, building, room, date_of_event, cost, food) VALUES (:name, :time_start, :time_end, :building, :room, :date_of_event, :cost, :food)";
 
     //execute
     $statement = $db->prepare($query);
