@@ -22,6 +22,7 @@
  $organization_name = '';
 
  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+   try{
       if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "ShowDetails") {
         $event_details = getEventDetail($_POST['event_to_display']);
         $event_audience = getEventAudience($_POST['event_to_display']);
@@ -42,6 +43,10 @@
         $zombie_to_delete = getZombie_byName($_POST['zombie_to_delete']);
         deleteZombie($zombie_to_delete['name'], $zombie_to_delete['Danger'], $zombie_to_delete['Speed']);
       }
+    }
+    catch(Exception $except){
+      throw new Exception('Error posting to server during view Events');
+    }
  }
  ?>
 

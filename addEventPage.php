@@ -6,6 +6,7 @@
  $latest_event_id = null;
 
  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+   try{
       if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "Add") {
         $latest_event_id = getLatestEventId();
         addToEvent_By_ID($_POST['name'], $_POST['time_start'], $_POST['time_end'], $_POST['building'], $_POST['room'], $_POST['date_of_event'], $_POST['cost'], $_POST['food']);
@@ -15,6 +16,11 @@
         addToEvent_restrictions($latest_event_id,$_POST['restrictions']);
 
       }
+      }
+    }
+    catch(Exception $except){
+      throw new Exception("Error adding event page");
+    }
  }
  ?>
 
@@ -65,7 +71,7 @@
 <div class="container">
 echo $latest_event_id;
 <h1>Add Event</h1>
-<form name="mainForm" action="addEventPage.php" method="post">   
+<form name="mainForm" action="viewEventsPage.php" method="post">   
   <div class="row mb-3 mx-3">
     Event Name:
     <input type="text" class="form-control" name="name" required />      
