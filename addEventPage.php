@@ -13,9 +13,8 @@
         addToHost($_POST['org_name'], $latest_event_id);
         addToEvent_audience($latest_event_id,$_POST['audience']);
         addToEvent_categories($latest_event_id,$_POST['categories']);
-        addToEvent_restrictions($latest_event_id,$POST['restrictions'])
+        addToEvent_restrictions($latest_event_id,$POST['restrictions']);
 
-        <!--add the event description and audience info and categories with the database functions-->
       }
     }
     catch(Exception $except){
