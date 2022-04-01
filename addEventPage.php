@@ -16,8 +16,8 @@
         addToEvent_restrictions($latest_event_id,$_POST['restrictions']);
 
       }
-      }
-    }
+     }
+
     catch(Exception $except){
       throw new Exception("Error adding event page");
     }
