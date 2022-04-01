@@ -8,6 +8,7 @@
  $zombie_to_update = null;
 
  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+   try{
       if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "Add") {
         addZombie($_POST['name'], $_POST['Danger'], $_POST['Speed']);
         $list_of_zombies = getAllZombies();
@@ -26,6 +27,10 @@
         $zombie_to_delete = getZombie_byName($_POST['zombie_to_delete']);
         deleteZombie($zombie_to_delete['name'], $zombie_to_delete['Danger'], $zombie_to_delete['Speed']);
       }
+    }
+    catch(Exception $except){
+      throw new Exception("Error posting to server during event update");
+    }
  }
  ?>
 

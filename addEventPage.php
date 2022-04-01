@@ -6,6 +6,7 @@
  $latest_event_id = null;
 
  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+   try{
       if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "Add") {
         $latest_event_id = getLatestEventId();
         addToEvent_By_ID($_POST['name'], $_POST['time_start'], $_POST['time_end'], $_POST['building'], $_POST['room'], $_POST['date_of_event'], $_POST['cost'], $_POST['food']);
@@ -16,6 +17,10 @@
 
         <!--add the event description and audience info and categories with the database functions-->
       }
+    }
+    catch(Exception $except){
+      throw new Exception("Error adding event page");
+    }
  }
  ?>
 
