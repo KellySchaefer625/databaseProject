@@ -2,34 +2,28 @@
  require('connect-db.php');
  
 
- require('zombie_db.php');
-
- $list_of_zombies = getAllZombies();
- $zombie_to_update = null;
+ require('database_functions.php');
+ $latest_event_id = null;
+ $event_details = getEventDetail($_POST['event_to_update']);
+ $event_audience = getEventAudience($_POST['event_to_update']);
+ $event_categories = getEventCategories($_POST['event_to_update']);
+ $event_restrictions = getEventRestrictions($_POST['event_to_update']);
 
  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
    try{
-      if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "Add") {
-        addZombie($_POST['name'], $_POST['Danger'], $_POST['Speed']);
-        $list_of_zombies = getAllZombies();
-      }
-       else if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "Update") {
+      if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "Update") {
+        $latest_event_id = getLatestEventId();
+        updateEvent_By_ID($_POST['name'], $_POST['time_start'], $_POST['time_end'], $_POST['building'], $_POST['room'], $_POST['date_of_event'], $_POST['cost'], $_POST['food']);
+        updateHost($_POST['org_name'], $latest_event_id);
+        updateEvent_audience($latest_event_id,$_POST['audience']);
+        updateEvent_categories($latest_event_id,$_POST['categories']);
+        updateEvent_restrictions($latest_event_id,$_POST['restrictions']);
 
-        $zombie_to_update = getZombie_byName($_POST['zombie_to_update']);
       }
+     }
 
-      else if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "Confirm Update" && $zombie_to_update != null) {
-        updateZombie($_POST['name'], $_POST['Danger'], $_POST['Speed']); 
-        $list_of_zombies = getAllZombies();
-      }
-
-      else if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "Delete") {
-        $zombie_to_delete = getZombie_byName($_POST['zombie_to_delete']);
-        deleteZombie($zombie_to_delete['name'], $zombie_to_delete['Danger'], $zombie_to_delete['Speed']);
-      }
-    }
     catch(Exception $except){
-      throw new Exception("Error posting to server during event update");
+      throw new Exception("Error updating event page");
     }
  }
  ?>
@@ -38,7 +32,6 @@
  
 
 <!DOCTYPE html>
-
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
@@ -80,71 +73,73 @@
 <body>
 
 <div class="container">
-
-<h1>Zombie Book</h1>
-<form name="mainForm" action="simpleform.php" method="post">   
+<h1>Update Event</h1>
+<form name="mainForm" action="viewEventsPage.php" method="post">   
   <div class="row mb-3 mx-3">
-    Your name:
-    <input type="text" class="form-control" name="name" required
-    value = "<?php if ($zombie_to_update!=null) echo $zombie_to_update['name']?>" />      
+    Event Name:
+    <input type="text" class="form-control" name="name" value=<?php echo $event_details[0]['name'] ?> required />      
+    <?php print_r($event_details) ?>
   </div>  
+ 
+  <div class="row mb-3 mx-3">
+    Event Host:
+        <input type="text" class="form-control" name="org_name" value=<?php echo $event_details[0]['org_name'] ?>required />        
+    </div>  
+ 
+  <div class="row mb-3 mx-3">
+    Event Date:
+        <input type="date" class="form-control" name="date_of_event" value=<?php echo $event_details[0]['date_of_event'] ?> />        
+    </div> 
+
+  <div class="row mb-3 mx-3">
+    Event Categories:
+    <input type="text" class="form-control" name="categories" value=<?php echo $event_categories[0]['category_name'] ?> />      
+  </div>
+
+  <div class="row mb-3 mx-3">
+    Event Audience:
+    <input type="text" class="form-control" name="audience" value=<?php echo $event_audience[0]['audience_type'] ?>   />      
+  </div> 
+
+  <!-- <div class="row mb-3 mx-3">
+    Event Details:
+    <input type="text" class="form-control" name="details" required />      
+  </div> -->
+
     <div class="row mb-3 mx-3">
-        Danger:
-        <input type="number" class="form-control" name="Danger" required 
-        value = "<?php if ($zombie_to_update!=null) echo $zombie_to_update['Danger'] ?>"/>        
+    Start Time:
+        <input type="time" class="form-control" name="time_start" value=<?php echo $event_details[0]['time_start'] ?>  />        
+    </div>  
+ 
+   <div class="row mb-3 mx-3">
+    End Time:
+        <input type="time" class="form-control" name="time_end" value=<?php echo $event_details[0]['time_end'] ?>  />        
+    </div>  
+ 
+  <div class="row mb-3 mx-3">
+    Building:
+        <input type="text" class="form-control" name="building" required value=<?php echo $event_details[0]['building'] ?>/>        
+    </div>  
+ 
+  <div class="row mb-3 mx-3">
+    Room:
+        <input type="text" class="form-control" name="room" required value=<?php echo $event_details[0]['room'] ?>/>        
+    </div>  
+ 
+ <div class="row mb-3 mx-3">
+    Cost:
+        <input type="number" class="form-control" name="cost" value=<?php echo $event_details[0]['cost'] ?> required />        
     </div>  
 
     <div class="row mb-3 mx-3">
-        Speed:
-        <input type="text" class="form-control" name="Speed" required 
-        value = "<?php if ($zombie_to_update!=null) echo $zombie_to_update['Speed'] ?>"/>        
-    </div> 
+    Food:
+        <input type="text" class="form-control" name="food" required value=<?php echo $event_details[0]['food'] ?>/>        
+    </div>  
 
-    <input type="submit" value="Add" name="btnAction" class="btn btn-dark"
+    <input type="submit" value="Update" name="Update" class="btn btn-dark"
 
-        title = "insert a zombie" />
-
-    <input type="submit" value="Confirm Update" name="btnAction" class="btn btn-dark"
-
-        title = "Confirm Changes" />
-</form>  
-
-<h2> List of Zombies </h2>
-<table class="w3-table w3-bordered w3-card-4" style="width:90%">
-<thead>
-<tr style="background-color:#b0b0b0">
-<th width="25%">Name</th>
-<th width="20%">Danger</th>
-<th width="25%">Speed</th>
-<th width="12%">Update ?</th>
-<th width="12%">Delete ?</th>
-</tr>
-</thead>
-
-<?php foreach ($list_of_zombies as $zombie): ?>
-<tr>
-    <td><?php echo $zombie['name']; ?></td>
-    <td><?php echo $zombie['Danger']; ?></td>
-    <td><?php echo $zombie['Speed']; ?></td>
-    <td>
-    <form action="simpleform.php" method="post">
-        <input type="submit" value="Update" name="btnAction"
-            class="btn btn-primary" />
-        <input type="hidden" name="zombie_to_update"
-            value="<?php echo $zombie['name'] ?>" />
-    </form>
-    </td>
-    <td>
-     <form action="simpleform.php" method="post">
-        <input type="submit" value="Delete" name="btnAction" class="btn btn-primary" />
-        <input type="hidden" name="zombie_to_delete" value="<?php echo $zombie['name'] ?>" />      
-      </form>
-    </td>
-</tr>
- <?php endforeach; ?>
-
-  </table>
-  
+        title = "Update Event" />
+</form>    
 </div> 
 </body>
 </html>
