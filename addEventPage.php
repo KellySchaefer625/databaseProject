@@ -12,9 +12,8 @@
         addToHost($_POST['org_name'], $latest_event_id);
         addToEvent_audience($latest_event_id,$_POST['audience']);
         addToEvent_categories($latest_event_id,$_POST['categories']);
-        addToEvent_restrictions($latest_event_id,$POST['restrictions'])
+        addToEvent_restrictions($latest_event_id,$_POST['restrictions']);
 
-        <!--add the event description and audience info and categories with the database functions-->
       }
  }
  ?>
@@ -66,7 +65,7 @@
 <div class="container">
 echo $latest_event_id;
 <h1>Add Event</h1>
-<form name="mainForm" action="viewEventsPage.php" method="post">   
+<form name="mainForm" action="addEventPage.php" method="post">   
   <div class="row mb-3 mx-3">
     Event Name:
     <input type="text" class="form-control" name="name" required />      

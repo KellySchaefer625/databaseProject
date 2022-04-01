@@ -42,7 +42,7 @@ function addToEvent_By_ID($name, $time_start, $time_end, $building, $room, $date
 
 
     $statement->execute();
-
+    echo "this ran";
 
     //$statement = $db->query($query);
 
