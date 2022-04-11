@@ -59,11 +59,70 @@ function addToEvent_By_ID($name, $time_start, $time_end, $building, $room, $date
     }
 }
 
+function updateEvent_By_ID($event_id, $name, $time_start, $time_end, $building, $room, $date_of_event, $cost, $food)
+{
+    //db handler
+    //the db handler is in connect-db
+    // keyword global allows us to access db in connect-db
+    try{
+    global $db;
+
+    //sql
+    $query = "UPDATE Event_by_id SET name=$name, time_start=$time_start, time_end=$time_end, building=$building, room=$room, date_of_event=$date_of_event, cost=$cost, food=$food  WHERE event_id=$event_id";
+    // $query = "INSERT INTO Event_by_id (name, time_start, time_end, building, room, date_of_event, cost, food) VALUES (:name, :time_start, :time_end, :building, :room, :date_of_event, :cost, :food)";
+
+    //execute
+    $statement = $db->prepare($query);
+
+    $statement->bindValue(':name', $name);
+    $statement->bindValue(':time_start', $time_start);
+    $statement->bindValue(':time_end', $time_end);
+    $statement->bindValue(':building', $building);
+    $statement->bindValue(':room', $room);
+    $statement->bindValue(':date_of_event', $date_of_event);
+    $statement->bindValue(':cost', $cost);
+    $statement->bindValue(':food', $food);
+
+
+    $statement->execute();
+    echo "this ran";
+
+    //$statement = $db->query($query);
+
+    //release
+    $statement->closeCursor();}
+    catch(Exception $execpt){
+        throw new Exception('Error adding to event by ID');
+    }
+}
+
 function addToEvent_restrictions($event_id, $restrictions)
 { try{
     global $db;
 
     $query = "INSERT INTO Event_restrictions VALUES (:event_id, :restrictions)";
+
+    $statement = $db->prepare($query);
+
+    $statement->bindValue(':event_id', $event_id);
+    $statement->bindValue(':restrictions', $restrictions);
+
+    $statement->execute();
+
+    $statement->closeCursor();
+    }
+    catch(Exception $execpt){
+        throw new Exception('Error restrictions to event');
+    }
+
+}
+
+function updateEvent_restrictions($event_id, $restrictions)
+{ try{
+    global $db;
+
+    $query = "UPDATE Event_restrictions SET restrictions=$restrictions WHERE event_id=$event_id";
+    // $query = "INSERT INTO Event_restrictions VALUES (:event_id, :restrictions)";
 
     $statement = $db->prepare($query);
 
@@ -100,6 +159,27 @@ function addToEvent_categories($event_id, $categories)
     }
 }
 
+function updateEvent_categories($event_id, $categories)
+{   try{
+    global $db;
+
+    $query = "UPDATE Event_categories SET categories=$categories WHERE event_id=$event_id";
+    // $query = "INSERT INTO Event_categories VALUES (:event_id, :categories)";
+
+    $statement = $db->prepare($query);
+
+    $statement->bindValue(':event_id', $event_id);
+    $statement->bindValue(':categories', $categories);
+
+    $statement->execute();
+
+    $statement->closeCursor();
+    }
+    catch(Exception $execpt){
+        throw new Exception('Error adding categories to events');
+    }
+}
+
 function addToEvent_audience($event_id, $audience)
 {   try{
     global $db;
@@ -120,10 +200,52 @@ function addToEvent_audience($event_id, $audience)
     }
 }
 
+function updateEvent_audience($event_id, $audience)
+{   try{
+    global $db;
+
+    $query = "UPDATE Event_audience SET audience=$audience WHERE event_id=$event_id";
+    // $query = "INSERT INTO Event_audience VALUES (:event_id, :audience)";
+
+    $statement = $db->prepare($query);
+
+    $statement->bindValue(':event_id', $event_id);
+    $statement->bindValue(':audience', $audience);
+
+    $statement->execute();
+
+    $statement->closeCursor();
+    }
+    catch(Exception $execpt){
+        throw new Exception('Error adding audience to event');
+    }
+}
+
 function addToHost($org_name, $event_id)
 {   try{
     global $db;
 
+    $query = "INSERT INTO Host VALUES (:org_name, :event_id)";
+
+    $statement = $db->prepare($query);
+
+    $statement->bindValue(':event_id', $event_id);
+    $statement->bindValue(':org_name', $org_name);
+
+    $statement->execute();
+
+    $statement->closeCursor();
+    }
+    catch(Exception $execpt){
+        throw new Exception('Error adding to host');
+    }
+}
+
+function updateHost($org_name, $event_id)
+{   try{
+    global $db;
+
+    $query = "UPDATE Host SET org_name=$org_name WHERE event_id=$event_id";
     $query = "INSERT INTO Host VALUES (:org_name, :event_id)";
 
     $statement = $db->prepare($query);

@@ -259,6 +259,7 @@
 <th width="20%">Date of Event</th>
 <th width="25%">Host Organization</th>
 <th width="12%">Event Details</th>
+<th width="12%">Update Event</th>
 <!--
 
 <th width="12%">Delete ?</th>
@@ -275,6 +276,11 @@
         <input type="submit" value="ShowDetails" name="btnAction" class="btn btn-primary" />
         <input type="hidden" name="event_to_display" value="<?php echo $event['event_id'] ?>" />      
       </form></td>
+    <td><form action="updateEventPage.php" method="post">
+    <!-- <label for="event_to_update">Update Event</label> -->
+      <input type="submit" name="UpdateEvent" value="UpdateEvent" class="btn btn-primary" />
+      <input type="hidden" name="event_to_update" value="<?php echo $event['event_id'] ?>" />      
+    </form></td>
     <!--
     <td>
      <form action="simpleform.php" method="post">
