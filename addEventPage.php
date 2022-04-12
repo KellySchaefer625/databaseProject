@@ -69,7 +69,6 @@
 <body>
 
 <div class="container">
-echo $latest_event_id;
 <h1>Add Event</h1>
 <form name="mainForm" action="addEventPage.php" method="post">   
   <div class="row mb-3 mx-3">

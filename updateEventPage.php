@@ -3,7 +3,7 @@
  
 
  require('database_functions.php');
- $latest_event_id = null;
+ $latest_event_id = 0;
  $event_details = getEventDetail($_POST['event_to_update']);
  $event_audience = getEventAudience($_POST['event_to_update']);
  $event_categories = getEventCategories($_POST['event_to_update']);
@@ -56,7 +56,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
     <!-- you may also use W3's formats -->
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"> -->
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
     <!--
     Use a link tag to link an external resource.
@@ -78,7 +78,6 @@
   <div class="row mb-3 mx-3">
     Event Name:
     <input type="text" class="form-control" name="name" value=<?php echo $event_details[0]['name'] ?> required />      
-    <?php print_r($event_details) ?>
   </div>  
  
   <div class="row mb-3 mx-3">
@@ -136,7 +135,7 @@
         <input type="text" class="form-control" name="food" required value=<?php echo $event_details[0]['food'] ?>/>        
     </div>  
 
-    <input type="submit" value="Update" name="Update" class="btn btn-dark"
+    <input type="submit" value="Update" name="btnAction" class="btn btn-dark"
 
         title = "Update Event" />
 </form>    
