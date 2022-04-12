@@ -3,7 +3,7 @@
  
 
  require('database_functions.php');
- $latest_event_id = null;
+ $latest_event_id = 0;
 
  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
    try{
