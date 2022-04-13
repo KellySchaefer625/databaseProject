@@ -102,9 +102,8 @@ function addToEvent_restrictions($event_id, $restrictions)
     $query = "INSERT INTO Event_restrictions VALUES (:event_id, :restrictions)";
 
     $statement = $db->prepare($query);
-    foreach($event_id as $id_number) {
-        $statement->bindValue(':event_id', $id_number);
-    }
+    $statement->bindValue(':event_id', $event_id);
+    
    
     $statement->bindValue(':restrictions', $restrictions);
 
