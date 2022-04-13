@@ -8,7 +8,12 @@
  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
    try{
       if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "Add") {
-        $latest_event_id = getLatestEventId();
+        $temp_event_id = getLatestEventId();
+        foreach ($temp_event_id as $id_num) {
+         $latest_event_id = $id_num;      
+         echo $latest_event_id;
+         echo '\n';
+        }
         echo $latest_event_id;
         addToEvent_By_ID($_POST['name'], $_POST['time_start'], $_POST['time_end'], $_POST['building'], $_POST['room'], $_POST['date_of_event'], $_POST['cost'], $_POST['food']);
         addToHost($_POST['org_name'], $latest_event_id);
