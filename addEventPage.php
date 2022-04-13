@@ -92,6 +92,10 @@
     <button class="btn btn-outline-secondary" type="button">+</button>
   </div>
  
+ <div class="row mb-3 mx-3"> 
+  <button class="btn btn-outline-secondary" type="button">+</button>
+ </div>
+ 
   <div class="row mb-3 mx-3">
     Event Audience:
     <input type="text" class="form-control" name="audience"  />      
