@@ -89,9 +89,9 @@
   <div class="input-group mb-3">
     Event Categories:
     <input type="text" class="form-control" name="categories" />
-    <div class="input-group-append">
-     <button class="btn btn-outline-secondary" type="button">+</button>
-    </div>
+     <div class="input-group-append">
+      <button class="btn btn-outline-secondary" type="button">+</button>
+     </div>
   </div>
  
      <input type="submit" value="Category" name="btnAction" class="btn btn-dark"
