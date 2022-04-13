@@ -86,13 +86,12 @@
         <input type="date" class="form-control" name="date_of_event"  />        
     </div> 
 
-  <div class="row mb-3 mx-3">
+  <div class="input-group mb-3">
     Event Categories:
+    <input type="text" class="form-control" name="categories" />
     <div class="input-group-append">
      <button class="btn btn-outline-secondary" type="button">Button</button>
-     <button class="btn btn-outline-secondary" type="button">Button</button>
     </div>
-    <input type="text" class="form-control" name="categories" />
   </div>
  
      <input type="submit" value="Category" name="btnAction" class="btn btn-dark"
