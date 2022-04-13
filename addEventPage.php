@@ -16,6 +16,10 @@
         addToEvent_restrictions($latest_event_id,$_POST['restrictions']);
 
       }
+    if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "Category") {
+     echo "got here";
+    }
+    
      }
 
     catch(Exception $except){
@@ -45,7 +49,7 @@
     <meta name="author" content="Kelly Schaefer">
     <meta name="description" content="This is a subpage to add events to the UVA calendar page">
 
-    <title>Add Events Page</title>
+    <title>Add Event Page</title>
 
     <!-- 3. link bootstrap -->
     <!-- if you choose to use CDN for CSS bootstrap -->
@@ -90,6 +94,10 @@
     Event Categories:
     <input type="text" class="form-control" name="categories" />      
   </div>
+ 
+     <input type="submit" value="Category" name="btnAction" class="btn btn-dark"
+
+        title = "Add Event" />
 
   <div class="row mb-3 mx-3">
     Event Audience:
