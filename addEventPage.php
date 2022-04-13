@@ -87,7 +87,7 @@
     </div> 
 
   <div class="input-group mb-3">
-    Event Categories:
+    Event Categories: \n
        <input type="text" class="form-control" name="categories" />
          <div class="input-group-append">
          <button class="btn btn-outline-secondary" type="button">+</button>
