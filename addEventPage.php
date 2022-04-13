@@ -16,10 +16,6 @@
         addToEvent_restrictions($latest_event_id,$_POST['restrictions']);
 
       }
-    if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "Category") {
-     echo "got here";
-    }
-    
      }
 
     catch(Exception $except){
@@ -92,7 +88,11 @@
 
   <div class="row mb-3 mx-3">
     Event Categories:
-    <input type="text" class="form-control" name="categories" />      
+    <div class="input-group-append">
+     <button class="btn btn-outline-secondary" type="button">Button</button>
+     <button class="btn btn-outline-secondary" type="button">Button</button>
+    </div>
+    <input type="text" class="form-control" name="categories" />
   </div>
  
      <input type="submit" value="Category" name="btnAction" class="btn btn-dark"
