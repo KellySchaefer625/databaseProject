@@ -90,7 +90,9 @@
     Event Categories:
     <input type="text" class="form-control" name="categories" />
     <div class="input-group-append">
-     <button class="btn btn-outline-secondary" type="button">Button</button>
+     <button class="btn btn-outline-secondary" type="button">
+     <i class="bi bi-plus"></i>
+     </button>
     </div>
   </div>
  
