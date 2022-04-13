@@ -79,7 +79,11 @@
   <div class="row mb-3 mx-3">
     Event Host:
         <input type="text" class="form-control" name="org_name" required />        
-    </div>  
+  </div> 
+ 
+  <div class="row mb-3 mx-3"> 
+   <button class="btn btn-outline-secondary" value="HostAdd" type="button">+</button>
+  </div>
  
   <div class="row mb-3 mx-3">
     Event Date:
@@ -89,17 +93,20 @@
   <div class="row mb-3 mx-3">
     Event Categories: 
        <input type="text" class="form-control" name="categories" />
-    <button class="btn btn-outline-secondary" type="button">+</button>
   </div>
  
  <div class="row mb-3 mx-3"> 
-  <button class="btn btn-outline-secondary" type="button">+</button>
+  <button class="btn btn-outline-secondary" value="CategoryAdd" type="button">+</button>
  </div>
  
   <div class="row mb-3 mx-3">
     Event Audience:
     <input type="text" class="form-control" name="audience"  />      
-  </div> 
+  </div>
+ 
+ <div class="row mb-3 mx-3"> 
+  <button class="btn btn-outline-secondary" value="AudienceAdd" type="button">+</button>
+ </div>
 
   <div class="row mb-3 mx-3">
     Event Details:
