@@ -48,7 +48,6 @@ function addToEvent_By_ID($name, $time_start, $time_end, $building, $room, $date
 
 
     $statement->execute();
-    echo "this ran";
 
     //$statement = $db->query($query);
 
@@ -103,7 +102,10 @@ function addToEvent_restrictions($event_id, $restrictions)
     $query = "INSERT INTO Event_restrictions VALUES (:event_id, :restrictions)";
 
     $statement = $db->prepare($query);
-    echo $event_id; 
+    foreach($event_id as $id_number) {
+        echo $id_number;
+    }
+   
     $statement->bindValue(':event_id', $event_id);
     $statement->bindValue(':restrictions', $restrictions);
 
