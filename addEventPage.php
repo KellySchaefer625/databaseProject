@@ -43,9 +43,9 @@
     -->
 
     <meta name="author" content="Kelly Schaefer">
-    <meta name="description" content="This is a template from class that I am using to understand how to make a webpage">
+    <meta name="description" content="This is a subpage to add events to the UVA calendar page">
 
-    <title>Bootstrap example</title>
+    <title>Add Events Page</title>
 
     <!-- 3. link bootstrap -->
     <!-- if you choose to use CDN for CSS bootstrap -->
