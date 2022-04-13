@@ -103,6 +103,7 @@ function addToEvent_restrictions($event_id, $restrictions)
 
     $statement = $db->prepare($query);
     foreach($event_id as $id_number) {
+        $id_number = $id_number+1;
         $statement->bindValue(':event_id', $id_number);
     }
    
