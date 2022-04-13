@@ -87,11 +87,11 @@
     </div> 
 
   <div class="row mb-3 mx-3">
-    Event Categories:  
+    Event Categories: 
+    <div class="input-group-append">
+      <button class="btn btn-outline-secondary" type="button">+</button>
+    </div>
        <input type="text" class="form-control" name="categories" />
-       <div class="input-group-append">
-        <button class="btn btn-outline-secondary" type="button">+</button>
-       </div>
   </div>
  
   <div class="row mb-3 mx-3">
