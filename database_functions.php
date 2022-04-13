@@ -103,11 +103,9 @@ function addToEvent_restrictions($event_id, $restrictions)
 
     $statement = $db->prepare($query);
     foreach($event_id as $id_number) {
-        echo $id_number;
-        echo "this is a loop";
+        $statement->bindValue(':event_id', $id_number);
     }
    
-    $statement->bindValue(':event_id', $event_id);
     $statement->bindValue(':restrictions', $restrictions);
 
     $statement->execute();
