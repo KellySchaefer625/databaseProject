@@ -86,7 +86,7 @@
         <input type="date" class="form-control" name="date_of_event"  />        
     </div> 
 
-  <div class="input-group mb-3">
+  <div class="row mb-3 mx-3">
     Event Categories: 
        <div class = "row">   
        <input type="text" class="form-control" name="categories" />
