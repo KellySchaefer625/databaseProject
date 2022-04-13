@@ -26,7 +26,7 @@ function getLatestEventId()
 function addToEvent_By_ID($name, $time_start, $time_end, $building, $room, $date_of_event, $cost, $food)
 {
     //db handler
-    //the db handler is in connect-db
+    // the db handler is in connect-db
     // keyword global allows us to access db in connect-db
     try{
     global $db;
