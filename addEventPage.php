@@ -151,12 +151,12 @@
         <input type="text" class="form-control" name="restrictions" required />
  </div>
  
- <div class=".d-none">
- <div class="row mb-3 mx-3">
-    Restrictions
-        <input type="text" class="form-control" name="restrictions2" />
- </div>
- </div>
+
+  <div class="collapse" id="collapseExample">
+  <div class="card card-body">
+   <input type="text" class="form-control" name="restrictions2" required />
+  </div>
+</div>
  
    <div class="row mb-3 mx-3"> 
    <button class="btn btn-outline-secondary" value="HostAdd" type="button">+</button>
