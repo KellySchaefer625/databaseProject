@@ -271,7 +271,7 @@
     <td><?php echo $event['name']; ?></td>
     <td><?php echo $event['date_of_event']; ?></td>
     <td><?php echo $event['org_name']; ?></td>
-    <td><form action="viewEventDetailPage.php" method="post">
+    <td><form action="viewEventsPage.php" method="post">
         <input type="submit" value="ShowDetails" name="btnAction" class="btn btn-primary" />
         <input type="hidden" name="event_to_display" value="<?php echo $event['event_id'] ?>" />      
       </form></td>
