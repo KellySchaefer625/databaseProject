@@ -13,7 +13,6 @@
          $latest_event_id = $id_num;      
         }
         $latest_event_id = $latest_event_id+1;
-        echo $latest_event_id;
         addToEvent_By_ID($_POST['name'], $_POST['time_start'], $_POST['time_end'], $_POST['building'], $_POST['room'], $_POST['date_of_event'], $_POST['cost'], $_POST['food']);
         addToHost($_POST['org_name'], $latest_event_id);
         addToEvent_audience($latest_event_id,$_POST['audience']);
@@ -144,17 +143,32 @@
  
  <div class="row mb-3 mx-3">
     Food?
-        <input type="text" class="form-control" name="food" required />        
+        <input type="text" class="form-control" name="food" required />         
     </div>  
  
  <div class="row mb-3 mx-3">
     Restrictions
-        <input type="text" class="form-control" name="restrictions" required />        
+        <input type="text" class="form-control" name="restrictions" required />
  </div>
  
-   <div class="row mb-3 mx-3"> 
-   <button class="btn btn-outline-secondary" value="HostAdd" type="button">+</button>
+  <div class="row mb-3 mx-3"> 
+   <button class="btn btn-outline-secondary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" value="HostAdd" type="button">+</button>
   </div>
+ 
+ <p>
+  <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+    Link with href
+  </a>
+  <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+    Button with data-target
+  </button>
+</p>
+<div class="collapse" id="collapseExample">
+  <div class="card card-body">
+    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+  </div>
+</div>
+
 
     <input type="submit" value="Add" name="btnAction" class="btn btn-dark"
 
