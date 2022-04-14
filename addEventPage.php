@@ -11,16 +11,14 @@
         $temp_event_id = getLatestEventId();
         foreach ($temp_event_id as $id_num) {
          $latest_event_id = $id_num;      
-         echo $latest_event_id;
-         echo '\n';
         }
+        $latest_event_id = $latest_event_id+1;
         echo $latest_event_id;
         addToEvent_By_ID($_POST['name'], $_POST['time_start'], $_POST['time_end'], $_POST['building'], $_POST['room'], $_POST['date_of_event'], $_POST['cost'], $_POST['food']);
         addToHost($_POST['org_name'], $latest_event_id);
         addToEvent_audience($latest_event_id,$_POST['audience']);
         addToEvent_categories($latest_event_id,$_POST['categories']);
         addToEvent_restrictions($latest_event_id,$_POST['restrictions']);
-
       }
      }
 
