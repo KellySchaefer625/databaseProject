@@ -143,7 +143,7 @@
  
  <div class="row mb-3 mx-3">
     Food?
-        <input type="text" class="form-control" name="food" required />        
+        <input type="text" class="form-control" name="food" required />         
     </div>  
  
  <div class="row mb-3 mx-3">
@@ -159,7 +159,7 @@
 </div>
  
    <div class="row mb-3 mx-3"> 
-   <button class="btn btn-outline-secondary" value="HostAdd" type="button">+</button>
+   <button class="btn btn-outline-secondary" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample" value="HostAdd" type="button">+</button>
   </div>
 
     <input type="submit" value="Add" name="btnAction" class="btn btn-dark"
