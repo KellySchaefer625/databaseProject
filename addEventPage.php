@@ -159,7 +159,7 @@
 </div>
  
    <div class="row mb-3 mx-3"> 
-   <button class="btn btn-outline-secondary" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample" value="HostAdd" type="button">+</button>
+   <button class="btn btn-outline-secondary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" value="HostAdd" type="button">+</button>
   </div>
 
     <input type="submit" value="Add" name="btnAction" class="btn btn-dark"
