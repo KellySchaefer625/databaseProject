@@ -91,16 +91,16 @@
   </div> 
  
   <div class="row mb-3 mx-3">
-   <div class="collapse">
     <button class="btn btn-outline-secondary" data-toggle="collapse" data-target="#org_name2" value="HostAdd" type="button">+</button>
-   </div
   </div>
    
  
   
   <div class="row mb-3 mx-3">
+   <div class="collapse" id="org_name2">
         <input type="text" class="form-control" name="org_name2"/>        
-  </div> 
+    </div
+   </div> 
  
   <div class="row mb-3 mx-3">
     Event Date:
