@@ -13,7 +13,6 @@
          $latest_event_id = $id_num;      
         }
         $latest_event_id = $latest_event_id+1;
-        echo $latest_event_id;
         addToEvent_By_ID($_POST['name'], $_POST['time_start'], $_POST['time_end'], $_POST['building'], $_POST['room'], $_POST['date_of_event'], $_POST['cost'], $_POST['food']);
         addToHost($_POST['org_name'], $latest_event_id);
         addToEvent_audience($latest_event_id,$_POST['audience']);
@@ -149,7 +148,8 @@
  
  <div class="row mb-3 mx-3">
     Restrictions
-        <input type="text" class="form-control" name="restrictions" required />        
+        <input type="text" class="form-control" name="restrictions" required />
+        <input type="text" class="form-control" class="d.none" name="restrictions2" />
  </div>
  
    <div class="row mb-3 mx-3"> 
