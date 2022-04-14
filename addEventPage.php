@@ -149,7 +149,13 @@
  <div class="row mb-3 mx-3">
     Restrictions
         <input type="text" class="form-control" name="restrictions" required />
-        <input type="text" class="form-control" class="d.none" name="restrictions2" />
+ </div>
+ 
+ <div class=".d-none">
+ <div class="row mb-3 mx-3">
+    Restrictions
+        <input type="text" class="form-control" name="restrictions2" />
+ </div>
  </div>
  
    <div class="row mb-3 mx-3"> 
