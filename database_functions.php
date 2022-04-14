@@ -263,12 +263,66 @@ function updateHost($org_name, $event_id)
 }
 
 
-function getAllEvents()
+function getAllEventsByDate()
 {
     try{
     global $db;
 
     $query = "SELECT DISTINCT * FROM Event_by_id,Host WHERE Event_by_id.event_id = Host.event_id ORDER BY Event_by_id.date_of_event, Event_by_id.name, Host.org_name";
+
+    // 1. prepare
+
+    // 2. bindValue & execute
+
+    // Prepare and bindValue helps protect against
+    // SQL injection attacks
+
+    $statement = $db->prepare($query);
+    $statement->execute();
+    $results = $statement->fetchAll();
+
+    $statement->closeCursor();
+    
+    return $results;
+    }
+    catch(Exception $execpt){
+        throw new Exception('Error getting all events');
+    }
+}
+
+function getAllEventsByName()
+{
+    try{
+    global $db;
+
+    $query = "SELECT DISTINCT * FROM Event_by_id,Host WHERE Event_by_id.event_id = Host.event_id ORDER BY Event_by_id.name, Event_by_id.date_of_event, Host.org_name";
+
+    // 1. prepare
+
+    // 2. bindValue & execute
+
+    // Prepare and bindValue helps protect against
+    // SQL injection attacks
+
+    $statement = $db->prepare($query);
+    $statement->execute();
+    $results = $statement->fetchAll();
+
+    $statement->closeCursor();
+    
+    return $results;
+    }
+    catch(Exception $execpt){
+        throw new Exception('Error getting all events');
+    }
+}
+
+function getAllEventsByOrg()
+{
+    try{
+    global $db;
+
+    $query = "SELECT DISTINCT * FROM Event_by_id,Host WHERE Event_by_id.event_id = Host.event_id ORDER BY Host.org_name, Event_by_id.name, Event_by_id.date_of_event";
 
     // 1. prepare
 

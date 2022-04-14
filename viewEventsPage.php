@@ -4,7 +4,7 @@
 
  require('database_functions.php');
 
- $list_of_events = getAllEvents();
+ $list_of_events = getAllEventsByDate();
  $event_details = null;
  $event_audience = null;
  $event_categories = null;
@@ -26,11 +26,21 @@
       if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "Exit Event Detail") {
         $event_details = null;
       }
-      else if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "ShowDetails") {
-        $event_details = getEventDetail($_POST['event_to_display']);
-        $event_audience = getEventAudience($_POST['event_to_display']);
-        $event_categories = getEventCategories($_POST['event_to_display']);
-        $event_restrictions = getEventRestrictions($_POST['event_to_display']);
+      // else if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "ShowDetails") {
+      //   $event_details = getEventDetail($_POST['event_to_display']);
+      //   $event_audience = getEventAudience($_POST['event_to_display']);
+      //   $event_categories = getEventCategories($_POST['event_to_display']);
+      //   $event_restrictions = getEventRestrictions($_POST['event_to_display']);
+      // }
+      else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "Sort By Event Name") {
+        $list_of_events = getAllEventsByName();
+
+      }
+      else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "Sort By Organization Name") {
+        $list_of_events = getAllEventsByOrg();
+      }
+      else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "Sort By Date") {
+        $list_of_events = getAllEventsByDate();
       }
        else if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "Update") {
 
@@ -82,7 +92,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
     <!-- you may also use W3's formats -->
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"> -->
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
     <!--
     Use a link tag to link an external resource.
@@ -95,12 +105,50 @@
     <!-- <link rel="stylesheet" href="path-to-your-file/bootstrap.min.css" /> -->
     <!-- include your CSS -->
     <!-- <link rel="stylesheet" href="custom.css" />  -->
+    <style>
+    h1 {text-align: center;}
+    </style>
 </head>
 <body>
 
-<div class="container">
 
-<h1>UVA Calendar</h1>
+
+<div class="container">
+  <!-- <header>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/University_of_Virginia_Rotunda_logo.svg/1200px-University_of_Virginia_Rotunda_logo.svg.png" class="logo floatLeft" alt="UVA Logo" width="300" height="300">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/University_of_Virginia_Rotunda_logo.svg/1200px-University_of_Virginia_Rotunda_logo.svg.png" class="logo floatRight" alt="UVA Logo" width="300" height="300">
+    <h1>UVA Calendar</h1>
+  </header> -->
+  <!-- <div class="header">
+    <div class="content-right">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/University_of_Virginia_Rotunda_logo.svg/1200px-University_of_Virginia_Rotunda_logo.svg.png" style="vertical-align: middle" width="300" height="300">
+    </div>
+
+    <div class="content-left">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/University_of_Virginia_Rotunda_logo.svg/1200px-University_of_Virginia_Rotunda_logo.svg.png" style="vertical-align: middle" width="300" height="300">
+    </div>
+    <div class="content">
+      <h1>UVA Calendar</h1>
+    </div>
+  </div> -->
+  <!-- Source: https://stackoverflow.com/questions/19697585/text-between-two-image/19697666 , https://www.computerhope.com/issues/ch001968.html-->
+  <div class="header">
+      <table style="margin-left:auto;margin-right:auto;">
+        <tr>
+          <td> 
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/University_of_Virginia_Rotunda_logo.svg/1200px-University_of_Virginia_Rotunda_logo.svg.png" style="vertical-align: middle" width="100" height="100"/>
+          </td>
+          <td>
+            <h1>UVA Calendar</h1>
+          </td>
+          <td>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/University_of_Virginia_Rotunda_logo.svg/1200px-University_of_Virginia_Rotunda_logo.svg.png" style="vertical-align: middle" width="100" height="100"/>
+          </td>
+        </tr>
+      </table>
+  </div>
+  
+
 <!--
 <form name="mainForm" action="simpleform.php" method="post">   
   <div class="row mb-3 mx-3">
@@ -143,7 +191,22 @@
       <td><?php echo $audience_str; ?></td>
   </tr>
   </table> -->
-
+  <form action="viewEventsPage.php" method="post">
+  <div class="row">
+    <div class="col-auto">
+        <input type="submit" value="Sort By Event Name" name="btnAction" class="btn btn-light" />
+        <!-- <input type="hidden" name="event_to_display" value="<?php echo $event['event_id'] ?>" />  -->
+    </div>
+    <div class="col-auto">
+        <input type="submit" value="Sort By Organization Name" name="btnAction" class="btn btn-light" />
+        <!-- <input type="hidden" name="event_to_display" value="<?php echo $event['event_id'] ?>" />  -->
+    </div>
+    <div class="col-auto">
+        <input type="submit" value="Sort By Date" name="btnAction" class="btn btn-light" />
+        <!-- <input type="hidden" name="event_to_display" value="<?php echo $event['event_id'] ?>" />  -->
+    </div>
+  </div>
+</form>
 
 <!--<h2> List of Zombies </h2>/> -->
 <table class="w3-table w3-bordered w3-card-4" style="width:90%">
