@@ -40,7 +40,6 @@
     <!--
     Bootstrap is designed to be responsive to mobile.
     Mobile-first styles are part of the core framework.
-
     width=device-width sets the width of the page to follow the screen-width
     initial-scale=1 sets the initial zoom level when the page is first loaded
     -->
@@ -52,8 +51,13 @@
 
     <!-- 3. link bootstrap -->
     <!-- if you choose to use CDN for CSS bootstrap -->
+ 
+     <! -- 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-
+    -->
+ 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+ 
     <!-- you may also use W3's formats -->
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"> -->
 
@@ -150,24 +154,7 @@
     Restrictions
         <input type="text" class="form-control" name="restrictions" required />
  </div>
- 
-  <div class="row mb-3 mx-3"> 
-   <button class="btn btn-outline-secondary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" value="HostAdd" type="button">+</button>
-  </div>
- 
- <p>
-  <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-    Link with href
-  </a>
-  <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-    Button with data-target
-  </button>
-</p>
-<div class="collapse" id="collapseExample">
-  <div class="card card-body">
-    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
-  </div>
-</div>
+
 
 
     <input type="submit" value="Add" name="btnAction" class="btn btn-dark"
