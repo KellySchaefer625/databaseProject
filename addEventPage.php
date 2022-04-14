@@ -155,7 +155,7 @@
    <button class="btn btn-outline-secondary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" value="HostAdd" type="button">+</button>
   </div>
  
-  <div class="collapse" id="collapseExample">
+  <div id="collapseExample">
    <input type="text" class="form-control" name="restrictions2" required />
   </div>
 
