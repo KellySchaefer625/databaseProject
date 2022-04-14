@@ -3,18 +3,21 @@
  
 
  require('database_functions.php');
- $latest_event_id = 0;
+ $latest_event_id = null;
 
  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
    try{
       if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "Add") {
-        $latest_event_id = getLatestEventId();
+        $temp_event_id = getLatestEventId();
+        foreach ($temp_event_id as $id_num) {
+         $latest_event_id = $id_num;      
+        }
+        $latest_event_id = $latest_event_id+1;
         addToEvent_By_ID($_POST['name'], $_POST['time_start'], $_POST['time_end'], $_POST['building'], $_POST['room'], $_POST['date_of_event'], $_POST['cost'], $_POST['food']);
         addToHost($_POST['org_name'], $latest_event_id);
         addToEvent_audience($latest_event_id,$_POST['audience']);
         addToEvent_categories($latest_event_id,$_POST['categories']);
         addToEvent_restrictions($latest_event_id,$_POST['restrictions']);
-
       }
      }
 
@@ -43,9 +46,9 @@
     -->
 
     <meta name="author" content="Kelly Schaefer">
-    <meta name="description" content="This is a template from class that I am using to understand how to make a webpage">
+    <meta name="description" content="This is a subpage to add events to the UVA calendar page">
 
-    <title>Bootstrap example</title>
+    <title>Add Event Page</title>
 
     <!-- 3. link bootstrap -->
     <!-- if you choose to use CDN for CSS bootstrap -->
@@ -79,7 +82,11 @@
   <div class="row mb-3 mx-3">
     Event Host:
         <input type="text" class="form-control" name="org_name" required />        
-    </div>  
+  </div> 
+ 
+  <div class="row mb-3 mx-3"> 
+   <button class="btn btn-outline-secondary" value="HostAdd" type="button">+</button>
+  </div>
  
   <div class="row mb-3 mx-3">
     Event Date:
@@ -87,14 +94,22 @@
     </div> 
 
   <div class="row mb-3 mx-3">
-    Event Categories:
-    <input type="text" class="form-control" name="categories" />      
+    Event Categories: 
+       <input type="text" class="form-control" name="categories" />
   </div>
-
+ 
+ <div class="row mb-3 mx-3"> 
+  <button class="btn btn-outline-secondary" value="CategoryAdd" type="button">+</button>
+ </div>
+ 
   <div class="row mb-3 mx-3">
     Event Audience:
     <input type="text" class="form-control" name="audience"  />      
-  </div> 
+  </div>
+ 
+ <div class="row mb-3 mx-3"> 
+  <button class="btn btn-outline-secondary" value="AudienceAdd" type="button">+</button>
+ </div>
 
   <div class="row mb-3 mx-3">
     Event Details:
@@ -128,8 +143,32 @@
  
  <div class="row mb-3 mx-3">
     Food?
-        <input type="text" class="form-control" name="food" required />        
+        <input type="text" class="form-control" name="food" required />         
     </div>  
+ 
+ <div class="row mb-3 mx-3">
+    Restrictions
+        <input type="text" class="form-control" name="restrictions" required />
+ </div>
+ 
+  <div class="row mb-3 mx-3"> 
+   <button class="btn btn-outline-secondary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" value="HostAdd" type="button">+</button>
+  </div>
+ 
+ <p>
+  <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+    Link with href
+  </a>
+  <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+    Button with data-target
+  </button>
+</p>
+<div class="collapse" id="collapseExample">
+  <div class="card card-body">
+    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+  </div>
+</div>
+
 
     <input type="submit" value="Add" name="btnAction" class="btn btn-dark"
 

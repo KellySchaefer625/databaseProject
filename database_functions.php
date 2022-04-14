@@ -48,7 +48,6 @@ function addToEvent_By_ID($name, $time_start, $time_end, $building, $room, $date
 
 
     $statement->execute();
-    echo "this ran";
 
     //$statement = $db->query($query);
 
@@ -103,8 +102,9 @@ function addToEvent_restrictions($event_id, $restrictions)
     $query = "INSERT INTO Event_restrictions VALUES (:event_id, :restrictions)";
 
     $statement = $db->prepare($query);
-
     $statement->bindValue(':event_id', $event_id);
+    
+   
     $statement->bindValue(':restrictions', $restrictions);
 
     $statement->execute();
@@ -261,29 +261,6 @@ function updateHost($org_name, $event_id)
         throw new Exception('Error adding to host');
     }
 }
-
-
-function deleteZombie($name, $Danger, $Speed)
-{   try{
-    global $db;
-
-    $query = "DELETE FROM zombies WHERE name=:name AND Danger=:Danger AND Speed=:Speed";
-
-    $statement = $db->prepare($query);
-
-    $statement->bindValue(':name', $name);
-    $statement->bindValue(':Danger', $Danger);
-    $statement->bindValue(':Speed', $Speed);
-
-    $statement->execute();
-
-    $statement->closeCursor();
-    }
-    catch(Exception $execpt){
-        throw new Exception('Error deleting zombie');
-    }
-}
-
 
 
 function getAllEvents()
