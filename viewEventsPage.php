@@ -23,7 +23,10 @@
 
  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
    try{
-      if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "ShowDetails") {
+      if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "Exit Event Detail") {
+        $event_details = null;
+      }
+      else if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "ShowDetails") {
         $event_details = getEventDetail($_POST['event_to_display']);
         $event_audience = getEventAudience($_POST['event_to_display']);
         $event_categories = getEventCategories($_POST['event_to_display']);
@@ -131,115 +134,7 @@
 </form>  
 /> -->
 
-<?php if ($event_audience!=null):?>
-  <?php foreach ($event_audience as $event_a): ?>
-    <?php $audience_str.=$event_a['audience_type']; ?>
-    <?php $audience_str.=', '; ?>
-  <?php endforeach; ?>
-  <?php endif; ?>
 
-  <?php if ($event_categories!=null):?>
-  <?php foreach ($event_categories as $event_c): ?>
-    <?php $category_str.=$event_c['category_name']; ?>
-    <?php $category_str.=', '; ?>
-  <?php endforeach; ?>
-  <?php endif; ?>
-
-  <?php if ($event_restrictions!=null):?>
-  <?php foreach ($event_restrictions as $event_r): ?>
-    <?php $restrictions_str.=$event_r['restrictions']; ?>
-    <?php $restrictions_str.=', '; ?>
-  <?php endforeach; ?>
-  <?php endif; ?>
-
-  <?php if ($event_details!=null):?>
-  <?php foreach ($event_details as $event_d): ?>
-    <?php $name=$event_d['name']; ?>
-    <?php $date=$event_d['date_of_event']; ?>
-    <?php $start_time=$event_d['time_start']; ?>
-    <?php $end_time=$event_d['time_end']; ?>
-    <?php $cost=$event_d['cost']; ?>
-    <?php $building=$event_d['building']; ?>
-    <?php $room=$event_d['room']; ?>
-    <?php $organization_name=$event_d['org_name']; ?>
-  <?php endforeach; ?>
-  <?php endif; ?>
-
- <?php if ($event_details!=null):?>
-  <table class="table">
-    <thead>
-      <tr>
-        <th scope="col">Category</th>
-        <th scope="col">Information</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <th scope="row">Name</th>
-        <td><?php echo $name?></td>
-      </tr>
-  </tbody>
-  <tbody>
-      <tr>
-        <th scope="row">Host Organization</th>
-        <td><?php echo $organization_name?></td>
-      </tr>
-  </tbody>
-  <tbody>
-      <tr>
-        <th scope="row">Date</th>
-        <td><?php echo $date?></td>
-      </tr>
-  </tbody>
-  <tbody>
-      <tr>
-        <th scope="row">Start Time</th>
-        <td><?php echo $start_time?></td>
-      </tr>
-  </tbody>
-  <tbody>
-      <tr>
-        <th scope="row">End Time</th>
-        <td><?php echo $end_time?></td>
-      </tr>
-  </tbody>
-  <tbody>
-      <tr>
-        <th scope="row">Building</th>
-        <td><?php echo $building?></td>
-      </tr>
-  </tbody>
-  <tbody>
-      <tr>
-        <th scope="row">Room</th>
-        <td><?php echo $room?></td>
-      </tr>
-  </tbody>
-  <tbody>
-      <tr>
-        <th scope="row">Cost</th>
-        <td><?php echo $cost?></td>
-      </tr>
-  </tbody>
-  <tbody>
-      <tr>
-        <th scope="row">Categories</th>
-        <td><?php echo $category_str?></td>
-      </tr>
-  </tbody>
-  <tbody>
-      <tr>
-        <th scope="row">Restricitons</th>
-        <td><?php echo $restrictions_str?></td>
-      </tr>
-  </tbody>
-  <tbody>
-      <tr>
-        <th scope="row">Audience Type</th>
-        <td><?php echo $audience_str?></td>
-      </tr>
-  </tbody>
-  </table>
   <!-- <table class="w3-table w3-bordered w3-card-4" style="width:90%">
   <thead>
   <tr style="background-color:#b0b0b0">
@@ -252,7 +147,7 @@
       <td><?php echo $audience_str; ?></td>
   </tr>
   </table> -->
-<?php endif; ?>
+
 
 <!--<h2> List of Zombies </h2>/> -->
 <table class="w3-table w3-bordered w3-card-4" style="width:90%">
