@@ -44,7 +44,7 @@
       }
        else if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "Update") {
 
-        $zombie_to_update = getZombie_byName($_POST['zombie_to_update']);
+        // $zombie_to_update = getZombie_byName($_POST['zombie_to_update']);
       }
 
       else if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "Confirm Update" && $zombie_to_update != null) {
@@ -53,8 +53,12 @@
       }
 
       else if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "Delete") {
-        $zombie_to_delete = getZombie_byName($_POST['zombie_to_delete']);
-        deleteZombie($zombie_to_delete['name'], $zombie_to_delete['Danger'], $zombie_to_delete['Speed']);
+        echo $_POST['event_to_delete'];
+        deleteEvent_By_ID($_POST['event_to_delete']);
+        deleteHost($_POST['event_to_delete']);
+        deleteEvent_audience($_POST['event_to_delete']);
+        deleteEvent_categories($_POST['event_to_delete']);
+        deleteEvent_restrictions($_POST['event_to_delete']);
       }
     }
     catch(Exception $except){
@@ -230,26 +234,19 @@
     <td><?php echo $event['name']; ?></td>
     <td><?php echo $event['date_of_event']; ?></td>
     <td><?php echo $event['org_name']; ?></td>
-    <td><form action="viewEventDetail.php" method="post">
-        <input type="submit" value="ShowDetails" name="btnAction" class="btn btn-primary" />
+    <td><form action="viewEventsPage.php" method="post">
+        <input type="submit" name="btnAction" value="ShowDetails" class="btn btn-primary" />
         <input type="hidden" name="event_to_display" value="<?php echo $event['event_id'] ?>" />      
       </form></td>
-    <td><form action="updateEventPage.php" method="post">
-      <input type="submit" name="UpdateEvent" value="UpdateEvent" class="btn btn-primary" />
+    <!-- <td><form action="updateEventPage.php" method="post">
+      <input type="submit" name="btnAction" value="UpdateEvent" class="btn btn-primary" />
       <input type="hidden" name="event_to_update" value="<?php echo $event['event_id'] ?>" />      
-    </form></td>
+    </form></td> -->
+    <td><button class="btn btn-primary"><a href="updateEventPage.php?event_to_update=<?=$event['event_id']?>">UpdateEvent</a></button></td>
     <td><form action="viewEventsPage.php" method="post">
-      <input type="submit" name="DeleteEvent" value="DeleteEvent" class="btn btn-primary" />
+      <input type="submit" name="btnAction" value="DeleteEvent" class="btn btn-primary" />
       <input type="hidden" name="event_to_delete" value="<?php echo $event['event_id'] ?>" />      
     </form></td>
-    <!--
-    <td>
-     <form action="simpleform.php" method="post">
-        <input type="submit" value="Delete" name="btnAction" class="btn btn-primary" />
-        <input type="hidden" name="zombie_to_delete" value="<?php echo $zombie['name'] ?>" />      
-      </form>
-    </td>
-    /> -->
 </tr>
  <?php endforeach; ?>
 
