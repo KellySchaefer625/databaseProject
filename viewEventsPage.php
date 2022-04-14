@@ -154,6 +154,7 @@
 <th width="25%">Host Organization</th>
 <th width="12%">Event Details</th>
 <th width="12%">Update Event</th>
+<th width="12%">Delete Event</th>
 <!--
 
 <th width="12%">Delete ?</th>
@@ -171,9 +172,12 @@
         <input type="hidden" name="event_to_display" value="<?php echo $event['event_id'] ?>" />      
       </form></td>
     <td><form action="updateEventPage.php" method="post">
-    <!-- <label for="event_to_update">Update Event</label> -->
       <input type="submit" name="UpdateEvent" value="UpdateEvent" class="btn btn-primary" />
       <input type="hidden" name="event_to_update" value="<?php echo $event['event_id'] ?>" />      
+    </form></td>
+    <td><form action="viewEventsPage.php" method="post">
+      <input type="submit" name="DeleteEvent" value="DeleteEvent" class="btn btn-primary" />
+      <input type="hidden" name="event_to_delete" value="<?php echo $event['event_id'] ?>" />      
     </form></td>
     <!--
     <td>
