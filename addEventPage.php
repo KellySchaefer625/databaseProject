@@ -151,15 +151,12 @@
         <input type="text" class="form-control" name="restrictions" required />
  </div>
  
-
-  <div class="collapse" id="collapseExample">
-  <div class="card card-body">
-   <input type="text" class="form-control" name="restrictions2" required />
-  </div>
-</div>
- 
-   <div class="row mb-3 mx-3"> 
+  <div class="row mb-3 mx-3"> 
    <button class="btn btn-outline-secondary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" value="HostAdd" type="button">+</button>
+  </div>
+ 
+  <div class="collapse" id="collapseExample">
+   <input type="text" class="form-control" name="restrictions2" required />
   </div>
 
     <input type="submit" value="Add" name="btnAction" class="btn btn-dark"
