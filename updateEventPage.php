@@ -3,21 +3,19 @@
  
 
  require('database_functions.php');
- $latest_event_id = 0;
- $event_details = getEventDetail($_POST['event_to_update']);
- $event_audience = getEventAudience($_POST['event_to_update']);
- $event_categories = getEventCategories($_POST['event_to_update']);
- $event_restrictions = getEventRestrictions($_POST['event_to_update']);
+ $event_details = getEventDetail($_GET['event_to_update']);
+ $event_audience = getEventAudience($_GET['event_to_update']);
+ $event_categories = getEventCategories($_GET['event_to_update']);
+ $event_restrictions = getEventRestrictions($_GET['event_to_update']);
 
  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
    try{
       if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "Update") {
-        $latest_event_id = getLatestEventId();
-        updateEvent_By_ID($_POST['name'], $_POST['time_start'], $_POST['time_end'], $_POST['building'], $_POST['room'], $_POST['date_of_event'], $_POST['cost'], $_POST['food']);
-        updateHost($_POST['org_name'], $latest_event_id);
-        updateEvent_audience($latest_event_id,$_POST['audience']);
-        updateEvent_categories($latest_event_id,$_POST['categories']);
-        updateEvent_restrictions($latest_event_id,$_POST['restrictions']);
+        updateEvent_By_ID($_GET['event_to_update'], $_POST['name'], $_POST['time_start'], $_POST['time_end'], $_POST['building'], $_POST['room'], $_POST['date_of_event'], $_POST['cost'], $_POST['food']);
+        updateHost($_POST['org_name'], $_GET['event_to_update']);
+        updateEvent_audience($_GET['event_to_update'],$_POST['audience']);
+        updateEvent_categories($_GET['event_to_update'],$_POST['categories']);
+        // updateEvent_restrictions($_GET['event_to_update'],$_POST['restrictions']);
 
       }
      }
@@ -73,31 +71,32 @@
 <body>
 
 <div class="container">
+<td><button class="btn btn-primary"><a href="viewEventsPage.php">Go Back</a></button></td>
 <h1>Update Event</h1>
-<form name="mainForm" action="viewEventsPage.php" method="post">   
+<form name="mainForm" action="updateEventPage.php?event_to_update=<?=$_GET['event_to_update']?>" method="POST">   
   <div class="row mb-3 mx-3">
     Event Name:
-    <input type="text" class="form-control" name="name" value=<?php echo $event_details[0]['name'] ?> required />      
+    <input type="text" class="form-control" name="name" value="<?php echo $event_details[0]['name'] ?>" required />      
   </div>  
  
   <div class="row mb-3 mx-3">
     Event Host:
-        <input type="text" class="form-control" name="org_name" value=<?php echo $event_details[0]['org_name'] ?>required />        
+        <input type="text" class="form-control" name="org_name" value="<?php echo $event_details[0]['org_name'] ?>" required />        
     </div>  
  
   <div class="row mb-3 mx-3">
     Event Date:
-        <input type="date" class="form-control" name="date_of_event" value=<?php echo $event_details[0]['date_of_event'] ?> />        
+        <input type="date" class="form-control" name="date_of_event" value="<?php echo $event_details[0]['date_of_event'] ?>" />        
     </div> 
 
   <div class="row mb-3 mx-3">
     Event Categories:
-    <input type="text" class="form-control" name="categories" value=<?php echo $event_categories[0]['category_name'] ?> />      
+    <input type="text" class="form-control" name="categories" value="<?php echo $event_categories[0]['category_name'] ?>" />      
   </div>
 
   <div class="row mb-3 mx-3">
     Event Audience:
-    <input type="text" class="form-control" name="audience" value=<?php echo $event_audience[0]['audience_type'] ?>   />      
+    <input type="text" class="form-control" name="audience" value="<?php echo $event_audience[0]['audience_type'] ?>"   />      
   </div> 
 
   <!-- <div class="row mb-3 mx-3">
@@ -107,34 +106,34 @@
 
     <div class="row mb-3 mx-3">
     Start Time:
-        <input type="time" class="form-control" name="time_start" value=<?php echo $event_details[0]['time_start'] ?>  />        
+        <input type="time" class="form-control" name="time_start" value="<?php echo $event_details[0]['time_start'] ?>"  />        
     </div>  
  
    <div class="row mb-3 mx-3">
     End Time:
-        <input type="time" class="form-control" name="time_end" value=<?php echo $event_details[0]['time_end'] ?>  />        
+        <input type="time" class="form-control" name="time_end" value="<?php echo $event_details[0]['time_end'] ?>"  />        
     </div>  
  
   <div class="row mb-3 mx-3">
     Building:
-        <input type="text" class="form-control" name="building" required value=<?php echo $event_details[0]['building'] ?>/>        
+        <input type="text" class="form-control" name="building" required value="<?php echo $event_details[0]['building'] ?>"/>        
     </div>  
  
   <div class="row mb-3 mx-3">
     Room:
-        <input type="text" class="form-control" name="room" required value=<?php echo $event_details[0]['room'] ?>/>        
+        <input type="text" class="form-control" name="room" required value="<?php echo $event_details[0]['room'] ?>"/>        
     </div>  
  
  <div class="row mb-3 mx-3">
     Cost:
-        <input type="number" class="form-control" name="cost" value=<?php echo $event_details[0]['cost'] ?> required />        
+        <input type="number" class="form-control" name="cost" value="<?php echo $event_details[0]['cost'] ?>" required />        
     </div>  
 
     <div class="row mb-3 mx-3">
     Food:
-        <input type="text" class="form-control" name="food" required value=<?php echo $event_details[0]['food'] ?>/>        
+        <input type="text" class="form-control" name="food" required value="<?php echo $event_details[0]['food'] ?>"/>        
     </div>  
-
+    <!-- <input type="hidden" name="event_to_update" value="<?=$_GET['event_to_update']?>"> -->
     <input type="submit" value="Update" name="btnAction" class="btn btn-dark"
 
         title = "Update Event" />
