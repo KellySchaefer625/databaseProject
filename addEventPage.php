@@ -57,6 +57,7 @@
     -->
  
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
  
     <!-- you may also use W3's formats -->
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"> -->
