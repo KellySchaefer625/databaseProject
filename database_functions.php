@@ -439,7 +439,7 @@ function getUserCredentials($userName,$userpassword)
                 $statement->closeCursor();    
                 return -1;//"invalid user or pass"
             }
-            
+
             }
         }
         else{
@@ -450,11 +450,10 @@ function getUserCredentials($userName,$userpassword)
 
     
     //$results = $statement->fetch();
-
-    }
+    
     catch(Exception $execpt){
         throw new Exception('Error getting userName and passWord');
     }
-
+}
 }
 ?>
