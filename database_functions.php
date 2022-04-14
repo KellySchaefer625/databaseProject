@@ -455,5 +455,5 @@ function getUserCredentials($userName,$userpassword)
         throw new Exception('Error getting userName and passWord');
     }
 }
-}
+
 ?>
