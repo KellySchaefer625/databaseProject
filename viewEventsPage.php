@@ -42,8 +42,7 @@
         $list_of_zombies = getAllZombies();
       }
 
-      else if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "Delete") {
-        echo $_POST['event_to_delete'];
+      else if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "DeleteEvent") {
         deleteEvent_By_ID($_POST['event_to_delete']);
         deleteHost($_POST['event_to_delete']);
         deleteEvent_audience($_POST['event_to_delete']);
@@ -175,10 +174,6 @@
         <input type="submit" name="btnAction" value="ShowDetails" class="btn btn-primary" />
         <input type="hidden" name="event_to_display" value="<?php echo $event['event_id'] ?>" />      
       </form></td>
-    <!-- <td><form action="updateEventPage.php" method="post">
-      <input type="submit" name="btnAction" value="UpdateEvent" class="btn btn-primary" />
-      <input type="hidden" name="event_to_update" value="<?php echo $event['event_id'] ?>" />      
-    </form></td> -->
     <td><button class="btn btn-primary"><a href="updateEventPage.php?event_to_update=<?=$event['event_id']?>">UpdateEvent</a></button></td>
     <td><form action="viewEventsPage.php" method="post">
       <input type="submit" name="btnAction" value="DeleteEvent" class="btn btn-primary" />
