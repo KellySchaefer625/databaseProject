@@ -356,12 +356,66 @@ function deleteHost($event_id)
 }
 
 
-function getAllEvents()
+function getAllEventsByDate()
 {
     try{
     global $db;
 
     $query = "SELECT DISTINCT * FROM Event_by_id,Host WHERE Event_by_id.event_id = Host.event_id ORDER BY Event_by_id.date_of_event, Event_by_id.name, Host.org_name";
+
+    // 1. prepare
+
+    // 2. bindValue & execute
+
+    // Prepare and bindValue helps protect against
+    // SQL injection attacks
+
+    $statement = $db->prepare($query);
+    $statement->execute();
+    $results = $statement->fetchAll();
+
+    $statement->closeCursor();
+    
+    return $results;
+    }
+    catch(Exception $execpt){
+        throw new Exception('Error getting all events');
+    }
+}
+
+function getAllEventsByName()
+{
+    try{
+    global $db;
+
+    $query = "SELECT DISTINCT * FROM Event_by_id,Host WHERE Event_by_id.event_id = Host.event_id ORDER BY Event_by_id.name, Event_by_id.date_of_event, Host.org_name";
+
+    // 1. prepare
+
+    // 2. bindValue & execute
+
+    // Prepare and bindValue helps protect against
+    // SQL injection attacks
+
+    $statement = $db->prepare($query);
+    $statement->execute();
+    $results = $statement->fetchAll();
+
+    $statement->closeCursor();
+    
+    return $results;
+    }
+    catch(Exception $execpt){
+        throw new Exception('Error getting all events');
+    }
+}
+
+function getAllEventsByOrg()
+{
+    try{
+    global $db;
+
+    $query = "SELECT DISTINCT * FROM Event_by_id,Host WHERE Event_by_id.event_id = Host.event_id ORDER BY Host.org_name, Event_by_id.name, Event_by_id.date_of_event";
 
     // 1. prepare
 
@@ -468,6 +522,51 @@ function getEventRestrictions($event_id)
     }
     catch(Exception $execpt){
         throw new Exception('Error getting restrictions');
+    }
+}
+//TODO: make get username and get password function
+function getUserCredentials($userName,$userpassword)
+{ //not finished
+    //HASH THE PASSWORDS FIJI DONT FORGET, YA STUPID!
+    try{
+    global $db;
+    //Prep SQL query
+    $query = " SELECT comp_id, userpassword FROM User_by_id WHERE comp_id = ?";
+
+    $statement = $db->prepare($query); //Prep statement and bind Values
+    $statement->bindValue(':comp_id',$userName);
+    $statement->bindValue(':password',$userpassword);
+
+    $paramUsername = trim($_POST["comp_id"]);
+    if($statement->execute()){
+        if($statement->rowCount()==1){
+            $userData = $statement->fetch();
+            $userName = $userData["comp_id"];
+            //uncomment after hashing passwords
+            $hashPass = $userData["password"];
+            if(password_verify($userpassword,$hashPass)){
+                //if correct, return all data, but send password hashed
+                $statement->closeCursor();    
+                return $userData;
+            }
+            else{
+                $statement->closeCursor();    
+                return -1;//"invalid user or pass"
+            }
+
+            }
+        }
+        else{
+            $statement->closeCursor();    
+            return -3;//"server error"
+        }
+    }
+
+    
+    //$results = $statement->fetch();
+    
+    catch(Exception $execpt){
+        throw new Exception('Error getting userName and passWord');
     }
 }
 
