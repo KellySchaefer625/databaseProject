@@ -554,21 +554,26 @@ function getUserCredentials($userName,$userpassword)
     try{
     global $db;
     //Prep SQL query
-    $query = " SELECT comp_id, userpassword FROM User_by_id WHERE comp_id = ?";
-
+    $query = "SELECT comp_id FROM User_by_id";
     $statement = $db->prepare($query); //Prep statement and bind Values
+    print_r($statement->errorInfo());
     $statement->bindValue(':comp_id',$userName);
-    $statement->bindValue(':password',$userpassword);
+    $statement->bindValue(':pword',$userpassword);
 
-    $paramUsername = trim($_POST["comp_id"]);
+    $paramUsername = $userName;
+    echo $query;
     if($statement->execute()){
+        echo "hi sda";
+
         if($statement->rowCount()==1){
             $userData = $statement->fetch();
             $userName = $userData["comp_id"];
             //uncomment after hashing passwords
-            $hashPass = $userData["password"];
+            $hashPass = $userData["pword"];
+
             if(password_verify($userpassword,$hashPass)){
                 //if correct, return all data, but send password hashed
+
                 $statement->closeCursor();    
                 return $userData;
             }
@@ -579,17 +584,16 @@ function getUserCredentials($userName,$userpassword)
 
             }
         }
-        else{
-            $statement->closeCursor();    
-            return -3;//"server error"
-        }
+    else{
+        echo "ohno";
+        return -3;//"server error"
     }
-
-    
+} 
     //$results = $statement->fetch();
     
-    catch(Exception $execpt){
-        throw new Exception('Error getting userName and passWord');
+catch(Exception $execpt){
+        throw new Exception($statement->error);
+        print_r($dbh->errorInfo());
     }
 }
 

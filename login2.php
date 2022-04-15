@@ -1,74 +1,10 @@
-<?php
-  session_start();
-  $uName = "";
-  $pass = "";
-  $wrongUser = "";
-  $wrongPass = "";
-  $invalidLogin = "";
-if(isset($_SESSION["validlogin"]) && $_SESSION["validlogin"]===true){
-    header("location: addEventPage.php");
-    exit;
-}
-//continue from here
-  require("connect-db.php");
-  require('database_functions.php');
-
-if($_SERVER["REQUEST_METHOD"]=="POST"){
-
-  if(empty(trim($_POST["uName"]))){
-    $wrongUser = "Empty Username field.";
-  }
-  else{
-    $uName = trim($_POST["uName"]);
-  }
-  if(empty(trim($_POST["pass"]))){
-    $wrongPass = "Empty Password field.";
-  }
-  else{
-    $pass = trim($_POST["pass"]);
-  }
-  echo "this ran";
-  if((empty($uName)==FALSE) && (empty($pass)==TRUE)){
-    $userCreds = getUserCredentials($uName,$pass);
-//get credentials, return as hash, check hash in main function?
-//if 0 is returned, error, display invalid username or password
-//IF -3, other issue
-if($userCreds==-1){
-  $invalidLogin = "Invalid usename or password.";
-}
-if($userCreds==-3){
-$invalidLogin = "Invalid usename or password.";
-}
-else if(password_verify($pass,$userCreds['pass'])){
-  //if password is valid then set session to true an log user in
-//handle actual login stuff here
-  session_start();
-  $_SESSION["validlogin"] = true;
-  $_SESSION["uName"] = $userCreds['uName'];
-  //redirect to welcome page
-  header('location: updateEventPage.php');
-}
-else{
-  echo "Undefined Login Issue.";
-}
-
-}
- 
-//dont forget to navigate users to specific pages
-  
-}
-
-  ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">   
   <meta http-equiv="X-UA-Compatible" content="IE=edge">  <!-- required to handle IE -->
-
-  
-  
   <meta name="viewport" content="width=device-width, initial-scale=1">  
-  <title>UVA Calendar Login</title>
+  <title>PHP form handling</title>
  
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
   <style>
@@ -88,14 +24,8 @@ else{
 <body>
   
   <div>  
-    <h1>UVA Calendar Login</h1>
-    <p>Enter Credentials</p>
-    <?php
-    if(!empty($invalidLogin)){
-      echo '<div class="alert">'. $invalidLogin . '</div>';
-    }
-    ?>
-    <form action="login.php" method="post">
+    <h1>PHP: Form Handling</h1>
+    <form action="destination-component" method="request-method">
      
       Username: <input type="text" name="name" required /> <br/>
       Password: <input type="password" name="pwd" required /> <br/>
