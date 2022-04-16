@@ -531,26 +531,25 @@ function getUserCredentials($userName,$userpassword)
     try{
     global $db;
     //Prep SQL query
-    $query = "SELECT comp_id FROM User_by_id";
-    $statement = $db->prepare($query); //Prep statement and bind Values
-    print_r($statement->errorInfo());
-    $statement->bindValue(':comp_id',$userName);
-    $statement->bindValue(':pword',$userpassword);
+    $query = "SELECT comp_id, pword FROM User_by_id WHERE comp_id=:givenUName";
+    $statement = $db->prepare($query);
+//$statement =; //Prep statement and bind Values
+    $statement->bindValue(':givenUName',$userName);
 
     $paramUsername = $userName;
-    echo $query;
-    if($statement->execute()){
-        echo "hi sda";
-
+    $execStatement = $statement->execute();
+    if($execStatement){
         if($statement->rowCount()==1){
             $userData = $statement->fetch();
             $userName = $userData["comp_id"];
             //uncomment after hashing passwords
             $hashPass = $userData["pword"];
-
+            // echo "gets item";
+            // echo $userName;
+            // echo $hash
             if(password_verify($userpassword,$hashPass)){
                 //if correct, return all data, but send password hashed
-
+                //echo "this runs";
                 $statement->closeCursor();    
                 return $userData;
             }
@@ -560,6 +559,11 @@ function getUserCredentials($userName,$userpassword)
             }
 
             }
+            else{
+                echo $execStatement;
+                echo "rowcount issue";
+                return -4;
+            }
         }
     else{
         echo "ohno";
@@ -567,11 +571,68 @@ function getUserCredentials($userName,$userpassword)
     }
 } 
     //$results = $statement->fetch();
-    
+catch(PDOException $execption){
+    throw new Exception($execption->getMessage(), (int)$execption->getCode());
+}    
 catch(Exception $execpt){
         throw new Exception($statement->error);
-        print_r($dbh->errorInfo());
+        print_r($db->errorInfo());
     }
 }
+function addNewUser($desiredName,$desiredpassword)
+{ //register a new user
+    //post username and hashed pw to db
+    //this will be an insert method
+    //HASH THE PASSWORDS FIJI DONT FORGET, YA STUPID!
+    try{
+    global $db;
+    //Prep SQL query
+    $query = "SELECT comp_id, pword FROM User_by_id WHERE comp_id=:givenUName AND pword=:givenPword";
+    $statement = $db->prepare($query);
+//$statement =; //Prep statement and bind Values
+    $statement->bindValue(':givenUName',$userName);
+    $statement->bindValue(':givenPword',$userpassword);
 
+    $paramUsername = $userName;
+    $execStatement = $statement->execute();
+    if($execStatement){
+        if($statement->rowCount()==1){
+            $userData = $statement->fetch();
+            $userName = $userData["comp_id"];
+            //uncomment after hashing passwords
+            $hashPass = $userData["pword"];
+            echo "gets item";
+            echo $userName;
+            if($userpassword==$hashPass/*password_verify($userpassword,$hashPass)*/){
+                //if correct, return all data, but send password hashed
+                echo "this runs";
+                $statement->closeCursor();    
+                return $userData;
+            }
+            else{
+                $statement->closeCursor();    
+                return -1;//"invalid user or pass"
+            }
+
+            }
+            else{
+                echo $execStatement;
+                echo "rowcount issue";
+                return -4;
+            }
+        }
+    else{
+        echo "ohno";
+        return -3;//"server error"
+    }
+} 
+    //$results = $statement->fetch();
+catch(PDOException $execption){
+    throw new Exception($execption->getMessage(), (int)$execption->getCode());
+}    
+catch(Exception $execpt){
+        throw new Exception($statement->error);
+        print_r($db->errorInfo());
+    }
+}
 ?>

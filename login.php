@@ -15,33 +15,35 @@ if(isset($_SESSION["validlogin"]) && $_SESSION["validlogin"]===true){
 
 if($_SERVER["REQUEST_METHOD"]=="POST"){
 
-  if(empty(trim($_POST["uName"]))){
+  if(empty(trim($_POST["name"]))){
     $wrongUser = "Empty Username field.";
   }
   else{
-    $uName = trim($_POST["uName"]);
+    $uName = trim($_POST["name"]);
   }
-  if(empty(trim($_POST["pass"]))){
+  if(empty(trim($_POST["pwd"]))){
     $wrongPass = "Empty Password field.";
   }
   else{
-    $pass = trim($_POST["pass"]);
+    $pass = trim($_POST["pwd"]);
   }
-  echo "this ran";
-  if((empty($uName)==FALSE) && (empty($pass)==TRUE)){
-    $userCreds = getUserCredentials($uName,$pass);
+  if((empty($uName)==FALSE) && (empty($pass)==FALSE)){
+    $userCreds = getUserCredentials($_POST["name"],$_POST["pwd"]);
 //get credentials, return as hash, check hash in main function?
 //if 0 is returned, error, display invalid username or password
 //IF -3, other issue
+echo $userCreds;
+
 if($userCreds==-1){
   $invalidLogin = "Invalid usename or password.";
 }
 if($userCreds==-3){
 $invalidLogin = "Invalid usename or password.";
 }
-else if(password_verify($pass,$userCreds['pass'])){
+else if(password_verify($pass,$userCreds['pword'])){
   //if password is valid then set session to true an log user in
 //handle actual login stuff here
+echo $pass;
   session_start();
   $_SESSION["validlogin"] = true;
   $_SESSION["uName"] = $userCreds['uName'];
