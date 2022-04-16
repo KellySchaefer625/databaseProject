@@ -1,4 +1,9 @@
 ﻿<?php
+session_start(); 
+if($_SESSION["validlogin"] !== true){
+  header("location: login.php");
+  exit;
+}
  require('connect-db.php');
  
 

@@ -1,7 +1,10 @@
 ﻿<?php
+session_start(); 
+if($_SESSION["validlogin"] !== true){
+  header("location: login.php");
+  exit;
+}
  require('connect-db.php');
- 
-
  require('database_functions.php');
  $latest_event_id = null;
 
