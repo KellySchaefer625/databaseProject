@@ -92,9 +92,10 @@ if($_SESSION["validlogin"] !== true){
   
 <input type="submit" value="Register" name="btnAction" class="btn btn-dark"
         title = "Register Organization" />
-  </div>
-</form>
-
+   </div>
+  </form>
+</div>
+  
    <form name="subForm" action="registerOrganization.php" method="post">
             <div visibility: <?php if ($submitted == false || $addExec == true) echo 'hidden'; ?>>
                   <div class="row mb-3 mx-3">
@@ -106,7 +107,6 @@ if($_SESSION["validlogin"] !== true){
 <div class="row mb-3 mx-3">
    &nbsp
 </div>
-  </div>
   
  <div class="row mb-3 mx-3">
    <div visibility: <?php if ($addExec == false) echo 'hidden'; ?>>
