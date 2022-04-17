@@ -107,6 +107,16 @@ if($_SESSION["validlogin"] !== true){
                 &nbsp
             </div>
      
+      <div class="row mb-3 mx-3">
+                &nbsp
+            </div>
+      <div class="row mb-3 mx-3">
+                &nbsp
+            </div>
+      <div class="row mb-3 mx-3">
+                &nbsp
+            </div>
+     
        <div class="row mb-3 mx-3">
             &nbsp
         </div>
