@@ -123,6 +123,10 @@ if($_SESSION["validlogin"] !== true){
   <input type="hidden" id="orgName" name="orgName" value=<?php echo $orgName; ?> >
  </div>
   
+  <div class="row mb-3 mx-3">
+   &nbsp
+</div>
+  
 <div class="row mb-3 mx-3">
   <div visibility: <?php if ($addExec == false) echo 'hidden'; ?>>
    <button type="submit" value="execAdd" name="btnAction" class="btn btn-dark"
