@@ -1,4 +1,4 @@
-﻿<?php
+﻿﻿<?php
 
 function getLatestEventId()
 {
@@ -96,8 +96,7 @@ function updateEvent_By_ID($event_id, $name, $time_start, $time_end, $building, 
 
 function deleteEvent_By_ID($event_id)
 {
-    // $event_id = intval($event_id);
-    print_r($event_id);
+    $event_id = intval($event_id);
     //db handler
     //the db handler is in connect-db
     // keyword global allows us to access db in connect-db
@@ -105,13 +104,10 @@ function deleteEvent_By_ID($event_id)
     global $db;
 
     //sql
-    // Do you really want to execute "DELETE FROM `crb8ua`.`Event_by_id` WHERE `Event_by_id`.`event_id` = 123"?
-    // $query = "DELETE FROM Event_by_id WHERE Event_by_id.event_id=:event_id";
-    $query = "DELETE FROM Event_by_id WHERE Event_by_id.event_id=:event_id";
+    $query = "DELETE Event_by_id WHERE event_id=$event_id";
 
     //execute
     $statement = $db->prepare($query);
-    $statement->bindValue(':event_id', $event_id);
 
     $statement->execute();
 
@@ -182,25 +178,6 @@ function deleteEvent_restrictions($event_id)
     }
     catch(Exception $execpt){
         throw new Exception('Error restrictions to event');
-    }
-
-}
-
-function deleteEvent_subscriptions($event_id)
-{ try{
-    global $db;
-
-    $query = "DELETE from Subscribes_to WHERE event_id=:event_id";
-
-    $statement = $db->prepare($query);
-    $statement->bindValue(':event_id', $event_id);
-
-    $statement->execute();
-
-    $statement->closeCursor();
-    }
-    catch(Exception $execpt){
-        throw new Exception('Error deleting subscriptions');
     }
 
 }
@@ -343,8 +320,8 @@ function addToHost($org_name, $event_id)
 
 function addToSub($event_id,$userId)
 {   try{
-    // print_r($event_id);
-    // print_r($userId);
+    print_r($event_id);
+    print_r($userId);
     global $db;
 
     $query = "INSERT INTO Subscribes_to VALUES (:userId, :event_id)";
@@ -501,33 +478,6 @@ function getUserSubs($userID)
     }
 }
 
-function getUserExecRoles($userID,$event_id)
-{
-    try{
-    global $db;
-    // print_r($userID);
-    // print_r($event_id);
-    $query = "SELECT DISTINCT * FROM Event_by_id, Is_member, Host WHERE Event_by_id.event_id = Host.event_id AND Host.org_name = Is_member.org_name AND Is_member.comp_id = :userID AND Event_by_id.event_id = :event_id AND Is_member.is_exec = \"Yes\"";
-
-    // 1. prepare
-
-    // 2. bindValue & execute
-
-    // Prepare and bindValue helps protect against
-    // SQL injection attacks
-
-    $statement = $db->prepare($query);
-    $statement->bindValue(':userID', $userID);
-    $statement->bindValue(':event_id', $event_id);
-    $statement->execute();
-    $results = $statement->fetchAll();
-
-    $statement->closeCursor();
-    
-    return $results;
-    }
-    catch(Exception $execpt){
-        throw new Exception('Error getting all events');
 function getUserOrgs($user_id)
 {   try{
     global $db;
@@ -614,9 +564,8 @@ function getAllEventsByDate()
 {
     try{
     global $db;
-    // source https://ubiq.co/database-blog/how-to-get-current-date-and-time-in-mysql/#:~:text=You%20can%20run%20NOW(),date%20and%20time%20in%20MySQL.&text=You%20can%20also%20use%20current_timestamp,date%20and%20time%20in%20MySQL.&text=If%20you%20only%20want%20to,curdate()%20or%20current_date().
 
-    $query = "SELECT DISTINCT * FROM Event_by_id,Host WHERE Event_by_id.event_id = Host.event_id AND Event_by_id.date_of_event >= ALL (SELECT curdate()) ORDER BY Event_by_id.date_of_event, Event_by_id.name, Host.org_name";
+    $query = "SELECT DISTINCT * FROM Event_by_id,Host WHERE Event_by_id.event_id = Host.event_id ORDER BY Event_by_id.date_of_event, Event_by_id.name, Host.org_name";
 
     // 1. prepare
 
@@ -643,7 +592,7 @@ function getAllEventsByName()
     try{
     global $db;
 
-    $query = "SELECT DISTINCT * FROM Event_by_id,Host WHERE Event_by_id.event_id = Host.event_id AND Event_by_id.date_of_event >= ALL (SELECT curdate()) ORDER BY Event_by_id.name, Event_by_id.date_of_event, Host.org_name";
+    $query = "SELECT DISTINCT * FROM Event_by_id,Host WHERE Event_by_id.event_id = Host.event_id ORDER BY Event_by_id.name, Event_by_id.date_of_event, Host.org_name";
 
     // 1. prepare
 
@@ -670,7 +619,7 @@ function getAllEventsByOrg()
     try{
     global $db;
 
-    $query = "SELECT DISTINCT * FROM Event_by_id,Host WHERE Event_by_id.event_id = Host.event_id AND Event_by_id.date_of_event >= ALL (SELECT curdate()) ORDER BY Host.org_name, Event_by_id.name, Event_by_id.date_of_event";
+    $query = "SELECT DISTINCT * FROM Event_by_id,Host WHERE Event_by_id.event_id = Host.event_id ORDER BY Host.org_name, Event_by_id.name, Event_by_id.date_of_event";
 
     // 1. prepare
 
@@ -708,33 +657,6 @@ function getEventDetail($event_id)
 
     $statement = $db->prepare($query);
     $statement->bindValue(':event_id', $event_id);
-    $statement->execute();
-    $results = $statement->fetchAll();
-    //print($event_id);
-    $statement->closeCursor();
-    return $results;
-    }
-    catch(Exception $execpt){
-        throw new Exception('Error getting event details');
-    }
-}
-
-function getOrgDetail($org_name)
-{
-    try{
-    global $db;
-    // print_r($org_name);
-    $query = "SELECT * FROM Organization WHERE Organization.org_name = :org_name";
-
-    // 1. prepare
-
-    // 2. bindValue & execute
-
-    // Prepare and bindValue helps protect against
-    // SQL injection attacks
-
-    $statement = $db->prepare($query);
-    $statement->bindValue(':org_name', $org_name);
     $statement->execute();
     $results = $statement->fetchAll();
     //print($event_id);
