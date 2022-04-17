@@ -528,6 +528,85 @@ function getUserExecRoles($userID,$event_id)
     }
     catch(Exception $execpt){
         throw new Exception('Error getting all events');
+function getUserOrgs($user_id)
+{   try{
+    global $db;
+
+    $query = "SELECT DISTINCT * from Is_member WHERE comp_id='$user_id'";
+
+    $statement = $db->prepare($query);
+
+    $statement->execute();
+
+    $result = $statement->fetchAll();
+
+    $statement->closeCursor();
+
+    return $result;
+    }
+    catch(Exception $execpt){
+        throw new Exception('Error getting user\'s organizations');
+    }
+}
+
+function removeUserInterest($userID, $interest)
+{   try{
+    global $db;
+
+    $query = "DELETE from User_Interests WHERE comp_id = :userID AND interest=:interest";
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(':userID', $userID);
+    $statement->bindValue(':interest', $interest);
+
+    $statement->execute();
+
+    $statement->closeCursor();
+
+    }
+    catch(Exception $execpt){
+        throw new Exception('Error removing user interest');
+    }
+}
+
+function removeUserOrg($userID, $org_name)
+{   try{
+    global $db;
+
+    $query = "DELETE from Is_member WHERE comp_id = :userID AND org_name=:org_name";
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(':userID', $userID);
+    $statement->bindValue(':org_name', $org_name);
+
+    $statement->execute();
+
+    $statement->closeCursor();
+
+    }
+    catch(Exception $execpt){
+        throw new Exception('Error removing user from org');
+    }
+}
+
+function getUserInterests($user_id)
+{   try{
+    global $db;
+
+    $query = "SELECT DISTINCT * from User_Interests WHERE comp_id='$user_id'";
+
+    $statement = $db->prepare($query);
+
+    $statement->execute();
+
+    $result = $statement->fetchAll();
+
+    $statement->closeCursor();
+
+    return $result;
+    }
+    catch(Exception $execpt){
+        throw new Exception('Error getting user\'s organizations');
     }
 }
 
@@ -889,6 +968,7 @@ function addNewUser($desiredName,$desiredpassword)
 catch(PDOException $execption){
     throw new Exception($execption->getMessage(), (int)$execption->getCode());
 }    
+
 catch(Exception $execpt){
         throw new Exception($statement->error);
         print_r($db->errorInfo());

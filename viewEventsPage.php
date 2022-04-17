@@ -49,7 +49,6 @@ if($_SESSION["validlogin"] !== true){
         // $zombie_to_update = getZombie_byName($_POST['zombie_to_update']);
       }
       else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "Filter"){
-        echo $_POST['org_to_filter'];
         $list_of_events = getEventsByOrg($_POST['org_to_filter']);
       }
 
@@ -151,11 +150,14 @@ if($_SESSION["validlogin"] !== true){
   <header>
     <div style="float:right;">
     <div style="float:left;">
+    <div style="float:left;">
+    <form action="addEventPage.php" method="post">
+    <button class="btn btn-primary">Create Event</a></button>
+    </form>
+  </div>
 <div style="float:left;">
     <form action="userProfile.php" method="post">
-    
     <button class="btn btn-primary" class="glyphicon glyphicon-user">User Profile</a></button>
-   
     </form>
   </div>
 </div>

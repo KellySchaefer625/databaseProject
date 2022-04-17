@@ -94,11 +94,27 @@ if($_SESSION["validlogin"] !== true){
 <body>
 <header>
     <div style="float:right;">
-    <form action="logoutUser.php" method="post">
-      <button class="btn btn-primary">Logout</a></button>
+    <div style="float:left;">
+    <div style="float:left;">
+    <form action="addEventPage.php" method="post">
+    <button class="btn btn-primary">Create Event</a></button>
     </form>
+  </div>
+<div style="float:left;">
+    <form action="userProfile.php" method="post">
+    <button class="btn btn-primary" class="glyphicon glyphicon-user">User Profile</a></button>
+    </form>
+  </div>
+</div>
+  <div style="float:left;">
+    <form action="logoutUser.php" method="post">
+    
+    <button class="btn btn-primary">Logout</a></button>
+   
+    </form>
+  </div>
     </div>
-</header>
+  </header>
 <?php if ($event_audience!=null):?>
   <?php foreach ($event_audience as $event_a): ?>
     <?php $audience_str.=$event_a['audience_type']; ?>

@@ -6,6 +6,40 @@ if($_SESSION["validlogin"] !== true){
 }
  require('connect-db.php');
  require('database_functions.php');
+
+ $user_orgs = getUserOrgs($_SESSION['uName']);
+//  print "<pre>";
+//  print_r($user_orgs);
+// print "</pre>";
+ $user_interests = getUserInterests($_SESSION['uName']);
+//  print "<pre>";
+//  print_r($user_interests);
+// print "</pre>";
+$user_subs = getUserSubs($_SESSION['uName']);
+// print "<pre>";
+//  print_r($user_subs);
+// print "</pre>";
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    try{
+       if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "Leave Org") {
+        removeUserOrg($_SESSION['uName'], $_POST['org_to_leave']);
+        $user_orgs = getUserOrgs($_SESSION['uName']);
+       }
+       else if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "Remove Interest") {
+        removeUserInterest($_SESSION['uName'], $_POST['interest_to_remove']);
+        $user_interests = getUserInterests($_SESSION['uName']);
+       }
+       else if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "Unsubscribe") {
+        removeFromSub($_POST['event_to_unsubscribe'], $_SESSION['uName']);
+        $user_subs = getUserSubs($_SESSION['uName']);
+       }
+    }
+     catch(Exception $except){
+       throw new Exception('Error posting to server during view Events');
+     }
+  }
+
  ?>
 
 <!DOCTYPE html>
@@ -60,6 +94,11 @@ if($_SESSION["validlogin"] !== true){
 
 <div class="container">
   <header>
+  <form action="viewEventsPage.php" method="post">
+    
+    <button class="btn btn-primary">Go Back</a></button>
+   
+    </form>
     <div style="float:right;">
   <div style="float:left;">
     <form action="logoutUser.php" method="post">
@@ -85,7 +124,119 @@ if($_SESSION["validlogin"] !== true){
         </tr>
       </table>
   </div>
+
+<h2> <?php echo "Welcome, {$_SESSION['uName']} "?> </h2>
+<table class="w3-table w3-bordered w3-card-4" style="width:90%">
+<thead>
+<tr style="background-color:#b0b0b0">
+<th width="40%">Organizations</th>
+<th width="40%">Is Exec</th>
+<th width="20%">Leave Org</th>
+</tr>
+</thead>
+
+<?php foreach ($user_orgs as $org): ?>
+<tr>
+    <td><?php echo $org['org_name'] ?></td>
+    <td><?php echo $org['is_exec'] ?></td>
+    <td>
+        <form action="userProfile.php" method="post">
+        <input type="submit" name="btnAction" value="Leave Org" class="btn btn-danger" />
+        <input type="hidden" name="org_to_leave" value="<?php echo $org['org_name'] ?>" />      
+        </form>
+    </td>
+    <!-- <td><form action="viewEventsPage.php" method="post">
+        <input type="submit" name="btnAction" value="ShowDetails" class="btn btn-primary" />
+        <input type="hidden" name="event_to_display" value="<?php echo $event['event_id'] ?>" />      
+      </form></td> -->
+    <!-- <td><button class="btn btn-primary"><a href="updateEventPage.php?event_to_update=<?=$event['event_id']?>" style="color: white">UpdateEvent</a></button></td>
+    <td><form action="viewEventsPage.php" method="post">
+      <input type="submit" name="btnAction" value="DeleteEvent" class="btn btn-primary" />
+      <input type="hidden" name="event_to_delete" value="<?php echo $event['event_id'] ?>" />      
+    </form></td> -->
+</tr>
+ <?php endforeach; ?>
+
+  </table>
+
+  <table class="w3-table w3-bordered w3-card-4" style="width:90%">
+<thead>
+<tr style="background-color:#b0b0b0">
+<th width="80%">Subscribed Events</th>
+<th width="20%">Unsubscribe</th>
+
+
+<!--
+
+<th width="12%">Delete ?</th>
+/> -->
+</tr>
+</thead>
+
+<?php foreach ($user_subs as $sub): ?>
+<tr>
+    <td><?php echo $sub['name']; ?></td>
+    <td>
+        <form action="userProfile.php" method="post">
+        <input type="submit" name="btnAction" value="Unsubscribe" class="btn btn-danger" />
+        <input type="hidden" name="event_to_unsubscribe" value="<?php echo $sub['event_id'] ?>" />      
+        </form>
+    </td>
+    <!-- <td><?php echo $event['date_of_event']; ?></td>
+    <td><?php echo $event['org_name']; ?></td>
+    <td><form action="viewEventsPage.php" method="post">
+        <input type="submit" name="btnAction" value="ShowDetails" class="btn btn-primary" />
+        <input type="hidden" name="event_to_display" value="<?php echo $event['event_id'] ?>" />      
+      </form></td>
+    <td><button class="btn btn-primary"><a href="updateEventPage.php?event_to_update=<?=$event['event_id']?>" style="color: white">UpdateEvent</a></button></td>
+    <td><form action="viewEventsPage.php" method="post">
+      <input type="submit" name="btnAction" value="DeleteEvent" class="btn btn-primary" />
+      <input type="hidden" name="event_to_delete" value="<?php echo $event['event_id'] ?>" />      
+    </form></td> -->
+</tr>
+ <?php endforeach; ?>
+
+  </table>
+
+  <table class="w3-table w3-bordered w3-card-4" style="width:90%">
+<thead>
+<tr style="background-color:#b0b0b0">
+<th width="80%">Interests</th>
+<th width="20%">Remove Interest</th>
+
+<!--
+
+<th width="12%">Delete ?</th>
+/> -->
+</tr>
+</thead>
+
+<?php foreach ($user_interests as $interest): ?>
+<tr>
+    <td><?php echo $interest['interest']; ?></td>
+    <td>
+        <form action="userProfile.php" method="post">
+        <input type="submit" name="btnAction" value="Remove Interest" class="btn btn-danger" />
+        <input type="hidden" name="interest_to_remove" value="<?php echo $interest['interest'] ?>" />      
+        </form>
+    </td>
+    <!-- <td><?php echo $event['date_of_event']; ?></td>
+    <td><?php echo $event['org_name']; ?></td>
+    <td><form action="viewEventsPage.php" method="post">
+        <input type="submit" name="btnAction" value="ShowDetails" class="btn btn-primary" />
+        <input type="hidden" name="event_to_display" value="<?php echo $event['event_id'] ?>" />      
+      </form></td>
+    <td><button class="btn btn-primary"><a href="updateEventPage.php?event_to_update=<?=$event['event_id']?>" style="color: white">UpdateEvent</a></button></td>
+    <td><form action="viewEventsPage.php" method="post">
+      <input type="submit" name="btnAction" value="DeleteEvent" class="btn btn-primary" />
+      <input type="hidden" name="event_to_delete" value="<?php echo $event['event_id'] ?>" />      
+    </form></td> -->
+</tr>
+ <?php endforeach; ?>
+
+  </table>
   
-  <?php echo '<pre>'; print_r($_SESSION); echo '</pre>'; ?>
+</div> 
+  
 </body>
 </html>

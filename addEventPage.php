@@ -12,6 +12,40 @@ if($_SESSION["validlogin"] !== true){
  $addInfo = false;
   $addType = '';
   $fieldName = '';
+  if(isset($_POST["import"])){
+    $fileName = $_FILES["file"]["tmp_name"];
+     if(($_FILES["file"]["size"] > 0)){
+      $file = fopen($fileName, "r");
+       while(($data = fgetcsv($file, 1000, ","))!==FALSE){
+         for($c=0;$c<12;$c++){
+          $arr[$c] = $data[$c];
+          //echo $arr[$c] . "<br />\n";
+         }
+       }
+       
+       
+  
+      $name = $arr[0];
+      $time_start = $arr[1];
+      $time_end = $arr[2];
+      $building = $arr[3];
+      $room = $arr[4];
+      $date_of_event = $arr[5];
+      $cost = $arr[6];
+      $food = $arr[7];
+      $org_name = $arr[8];
+      $audience = $arr[9];
+      $categories = $arr[10];
+      $restrictions = $arr[11];
+      $latest_event_id = getLatestEventId();
+       addToEvent_By_ID($name, $time_start, $time_end, $building, $room, $date_of_event, $cost, $food);
+          addToHost($org_name, $latest_event_id);
+          addToEvent_audience($latest_event_id,$audience);
+          addToEvent_categories($latest_event_id,$categories);
+          addToEvent_restrictions($latest_event_id,$restrictions);
+  
+     }
+   }
  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
    try{
  
@@ -144,11 +178,42 @@ if($_SESSION["validlogin"] !== true){
 <body>
 <header>
     <div style="float:right;">
-    <form action="logoutUser.php" method="post">
-    <button class="btn btn-primary">Logout</a></button>
+    <div style="float:left;">
+    <div style="float:left;">
+    <form action="addEventPage.php" method="post">
+    <button class="btn btn-primary">Create Event</a></button>
     </form>
+  </div>
+<div style="float:left;">
+    <form action="userProfile.php" method="post">
+    <button class="btn btn-primary" class="glyphicon glyphicon-user">User Profile</a></button>
+    </form>
+  </div>
+</div>
+  <div style="float:left;">
+    <form action="logoutUser.php" method="post">
+    
+    <button class="btn btn-primary">Logout</a></button>
+   
+    </form>
+  </div>
     </div>
-</header>
+  </header>
+<form class="form-horizontal" action="" method="post"
+                name="frmCSVImport" id="frmCSVImport"
+                enctype="multipart/form-data">
+                <div class="input-row">
+                    <label class="col-md-4 control-label">Choose CSV
+                        File</label> <input type="file" name="file"
+                        id="file" accept=".csv">
+                    <button type="submit" id="submit" name="import"
+                        class="btn-submit">Import</button>
+                    <br />
+
+                </div>
+
+            </form>
+
 <div class="container">
 <h1>Add Event</h1>
 <div visibility: <?php if ($submitted == true) echo 'hidden'; ?>>
