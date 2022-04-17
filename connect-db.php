@@ -1,4 +1,5 @@
-﻿<?php
+﻿
+<?php
 // Remember to start the database server (or GCP SQL instance) before trying to connect to it
 
 ////////////////////////////////////////////
@@ -22,7 +23,7 @@
 // to get public IP addres of the SQL instance, go to GCP SQL overview page
 
 // To connect from a local PHP to GCP SQL instance, need to add authorized network
-// to allow your machine to connect to the SQL instance.
+// to allow your machine to connect to the SQL instance. 
 // 1. Get IP of the computer that will connect to the SQL instance
 //    (use http://ipv4.whatismyv6.com/ to find the IP address)
 // 2. On the cloud SQL connections page, add authorized networks, enter the IP address
@@ -36,7 +37,7 @@ $dbname = 'crb8ua';
 $dsn ="mysql:host=$host;dbname=$dbname";
 ////////////////////////////////////////////
 
-
+ 
 /** S22, PHP (on GCP, local XAMPP, or CS server) connect to MySQL (on CS server) **/
 // $username = 'your-computingID';
 // $password = 'your-password';
@@ -46,32 +47,32 @@ $dsn ="mysql:host=$host;dbname=$dbname";
 
 ////////////////////////////////////////////
 
-// DSN (Data Source Name) specifies the host computer for the MySQL datbase
+// DSN (Data Source Name) specifies the host computer for the MySQL datbase 
 // and the name of the database. If the MySQL datbase is running on the same server
 // as PHP, use the localhost keyword to specify the host computer
 
-// To connect to a MySQL database, need three arguments:
+// To connect to a MySQL database, need three arguments: 
 // - specify a DSN, username, and password
 
 // Create an instance of PDO (PHP Data Objects) which connects to a MySQL database
 // (PDO defines an interface for accessing databases)
-// Syntax:
+// Syntax: 
 //    new PDO(dsn, username, password);
 
 
 /** connect to the database **/
-try
+try 
 {
    $db = new PDO($dsn, $username, $password);
-
+   
    // dispaly a message to let us know that we are connected to the database
    echo "<p>You are connected to the database --- dsn=$dsn, user=$username, pwd=$password </p>";
 }
 catch (PDOException $e)     // handle a PDO exception (errors thrown by the PDO library)
 {
    // Call a method from any object, use the object's name followed by -> and then method's name
-   // All exception objects provide a getMessage() method that returns the error message
-   $error_message = $e->getMessage();
+   // All exception objects provide a getMessage() method that returns the error message 
+   $error_message = $e->getMessage();        
    echo "<p>An error occurred while connecting to the database: $error_message </p>";
 }
 catch (Exception $e)       // handle any type of exception
@@ -79,3 +80,5 @@ catch (Exception $e)       // handle any type of exception
    $error_message = $e->getMessage();
    echo "<p>Error message: $error_message </p>";
 }
+
+?>
