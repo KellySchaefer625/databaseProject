@@ -2,10 +2,10 @@
 
 session_start(); 
 if($_SESSION["validlogin"] !== true){
-  header("location: login.php");
+  header("location: userReg.php");
   exit;
 }
-  require('connect-db.php');
+ require('connect-db.php');
  require('database_functions.php');
  $event_details = getEventDetail($_GET['event_to_update']);
  $event_audience = getEventAudience($_GET['event_to_update']);
@@ -73,6 +73,14 @@ if($_SESSION["validlogin"] !== true){
     <!-- <link rel="stylesheet" href="custom.css" />  -->
 </head>
 <body>
+
+<header>
+    <div style="float:right;">
+    <form action="logoutUser.php" method="post">
+    <button class="btn btn-primary">Logout</a></button>
+    </form>
+    </div>
+</header>
 
 <div class="container">
 <td><button class="btn btn-primary"><a href="viewEventsPage.php">Go Back</a></button></td>

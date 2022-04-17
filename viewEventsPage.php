@@ -1,7 +1,7 @@
 ﻿<?php
 session_start(); 
 if($_SESSION["validlogin"] !== true){
-  header("location: login.php");
+  header("location: userReg.php");
   exit;
 }
  require('connect-db.php');
@@ -126,24 +126,13 @@ if($_SESSION["validlogin"] !== true){
 
 
 <div class="container">
-  <!-- <header>
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/University_of_Virginia_Rotunda_logo.svg/1200px-University_of_Virginia_Rotunda_logo.svg.png" class="logo floatLeft" alt="UVA Logo" width="300" height="300">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/University_of_Virginia_Rotunda_logo.svg/1200px-University_of_Virginia_Rotunda_logo.svg.png" class="logo floatRight" alt="UVA Logo" width="300" height="300">
-    <h1>UVA Calendar</h1>
-  </header> -->
-  <!-- <div class="header">
-    <div class="content-right">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/University_of_Virginia_Rotunda_logo.svg/1200px-University_of_Virginia_Rotunda_logo.svg.png" style="vertical-align: middle" width="300" height="300">
+  <header>
+    <div style="float:right;">
+    <form action="logoutUser.php" method="post">
+    <button class="btn btn-primary">Logout</a></button>
+    </form>
     </div>
-
-    <div class="content-left">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/University_of_Virginia_Rotunda_logo.svg/1200px-University_of_Virginia_Rotunda_logo.svg.png" style="vertical-align: middle" width="300" height="300">
-    </div>
-    <div class="content">
-      <h1>UVA Calendar</h1>
-    </div>
-  </div> -->
-  <!-- Source: https://stackoverflow.com/questions/19697585/text-between-two-image/19697666 , https://www.computerhope.com/issues/ch001968.html-->
+  </header>
   <div class="header">
       <table style="margin-left:auto;margin-right:auto;">
         <tr>

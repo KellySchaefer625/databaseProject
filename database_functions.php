@@ -586,10 +586,10 @@ function getUserCredentials($userName,$userpassword)
     try{
     global $db;
     //Prep SQL query
-    $query = "SELECT comp_id, pword FROM User_by_id WHERE comp_id=:givenUName";
+    $query = "SELECT comp_id, pword FROM User_by_id WHERE comp_id=:userName";
     $statement = $db->prepare($query);
 //$statement =; //Prep statement and bind Values
-    $statement->bindValue(':givenUName',$userName);
+    $statement->bindValue(':userName',$userName);
 
     $paramUsername = $userName;
     $execStatement = $statement->execute();
@@ -601,7 +601,7 @@ function getUserCredentials($userName,$userpassword)
             $hashPass = $userData["pword"];
             // echo "gets item";
             // echo $userName;
-            // echo $hash
+            // echo $hashPass;
             if(password_verify($userpassword,$hashPass)){
                 //if correct, return all data, but send password hashed
                 //echo "this runs";
