@@ -11,14 +11,8 @@ if($_SESSION["validlogin"] !== true){
   $orgName = '';
  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
    try{
-
-      if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "Register") {
-        
-        addToEvent_By_ID($_POST['name'], $_POST['time_start'], $_POST['time_end'], $_POST['building'], $_POST['room'], $_POST['date_of_event'], $_POST['cost'], $_POST['food']);
-        addToHost($_POST['org_name'], $latest_event_id);
-        addToEvent_audience($latest_event_id,$_POST['audience']);
-        addToEvent_categories($latest_event_id,$_POST['categories']);
-        addToEvent_restrictions($latest_event_id,$_POST['restrictions']);
+      if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "Register") { 
+        registerOrg($_POST['org_name'], $_POST['org_email'], $_POST['org_description']);
         $submitted = true;
         $orgName = $_POST['org_name'];
       }
