@@ -11,6 +11,7 @@ if($_SESSION["validlogin"] !== true){
 
  $list_of_events = getAllEventsByDate();
  $list_of_orgs = getAllOrgs();
+ $list_of_categories = getAllCats();
  $event_details = null;
  $event_audience = null;
  $event_categories = null;
@@ -54,6 +55,9 @@ if($_SESSION["validlogin"] !== true){
       }
       else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "Filter"){
         $list_of_events = getEventsByOrg($_POST['org_to_filter']);
+      }
+      else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "Filter "){
+        $list_of_events = getEventsByCat($_POST['cat_to_filter']);
       }
 
       else if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "Confirm Update" && $zombie_to_update != null) {
@@ -211,15 +215,53 @@ if($_SESSION["validlogin"] !== true){
 
 <!-- source: https://blog.hubspot.com/website/html-dropdown and https://www.w3schools.com/tags/att_option_value.asp and https://stackoverflow.com/questions/3518002/how-can-i-set-the-default-value-for-an-html-select-element-->
 <form action="viewEventsPage.php" method="post">
-  <label for="org-names">Choose an organization to filter on:</label>
-  <select name="org-names" id="org-names">
+  <label for="cat-names">Choose a category to filter on:</label>
+  <select name="cat-names" id="cat-names" onChange="update2()">
     <option value="" selected disabled hidden>Choose here</option>
-    <?php foreach ($list_of_orgs as $org): ?>
-      <option value=<?php echo $org['org_name'] ?> name="OrgToSearch"><?php echo $org['org_name'] ?></option>
+    <?php foreach ($list_of_categories as $cat): ?>
+      <option value="<?php echo $cat['category_name'] ?>"><?php echo $cat['category_name'] ?></option>
     <?php endforeach; ?>
   </select>
-  <input type="submit" name="btnAction" value="Filter">
-  <input type="hidden" name="org_to_filter" value=<?php echo $org['org_name'] ?> /> 
+  <input type="submit" name="btnAction" value='Filter '>
+  <input type="hidden" name ="cat_to_filter" id="value" value="<?php $val2 ?>">
+  <!-- source: https://ricardometring.com/getting-the-value-of-a-select-in-javascript -->
+		<script type="text/javascript">
+			function update2() {
+				var select = document.getElementById('cat-names');
+				var option = select.options[select.selectedIndex];
+
+				document.getElementById('value').value = option.value;
+        var val2 = option.val
+			}
+
+			update2();
+		</script>
+  <!-- <input type="hidden" name="org_to_filter" value=<?php $text ?>/>  -->
+</form>
+
+<form action="viewEventsPage.php" method="post">
+  <label for="org-names">Choose an organization to filter on:</label>
+  <select name="org-names" id="org-names" onChange="update1()">
+    <option value="" selected disabled hidden>Choose here</option>
+    <?php foreach ($list_of_orgs as $org): ?>
+      <option value="<?php echo $org['org_name'] ?>"><?php echo $org['org_name'] ?></option>
+    <?php endforeach; ?>
+  </select>
+  <input type="submit" name="btnAction" value='Filter'>
+  <input type="hidden" name ="org_to_filter" id="value1" value="<?php $val ?>">
+  <!-- source: https://ricardometring.com/getting-the-value-of-a-select-in-javascript -->
+		<script type="text/javascript">
+			function update1() {
+				var select = document.getElementById('org-names');
+				var option = select.options[select.selectedIndex];
+
+				document.getElementById('value1').value = option.value;
+        var val = option.val
+			}
+
+			update1();
+		</script>
+  <!-- <input type="hidden" name="org_to_filter" value=<?php $text ?>/>  -->
 </form>
 
 
@@ -245,7 +287,7 @@ if($_SESSION["validlogin"] !== true){
     <td><?php echo $event['name']; ?></td>
     <td><?php echo $event['date_of_event']; ?></td>
     <td><?php echo $event['org_name']; ?></td>
-    <td><form action="viewEventsPage.php" method="post">
+    <td><form action="viewEventDetail.php" method="post">
         <input type="submit" name="btnAction" value="ShowDetails" class="btn btn-primary" />
         <input type="hidden" name="event_to_display" value="<?php echo $event['event_id'] ?>" />      
       </form></td>
