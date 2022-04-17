@@ -318,6 +318,28 @@ function addToHost($org_name, $event_id)
     }
 }
 
+function addToSub($event_id,$userId)
+{   try{
+    print_r($event_id);
+    print_r($userId);
+    global $db;
+
+    $query = "INSERT INTO Subscribes_to VALUES (:userId, :event_id)";
+
+    $statement = $db->prepare($query);
+
+    $statement->bindValue(':userId', $userId);
+    $statement->bindValue(':event_id', $event_id);
+
+    $statement->execute();
+
+    $statement->closeCursor();
+    }
+    catch(Exception $execpt){
+        throw new Exception('Error adding to Subscribes to');
+    }
+}
+
 function updateHost($org_name, $event_id)
 {   try{
     global $db;
@@ -352,6 +374,25 @@ function deleteHost($event_id)
     }
     catch(Exception $execpt){
         throw new Exception('Error adding to host');
+    }
+}
+
+function removeFromSub($event_id,$userID)
+{   try{
+    global $db;
+
+    $query = "DELETE from Subscribes_to WHERE comp_id = :userID AND event_id=:event_id";
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(':userID', $userID);
+    $statement->bindValue(':event_id', $event_id);
+
+    $statement->execute();
+
+    $statement->closeCursor();
+    }
+    catch(Exception $execpt){
+        throw new Exception('Error deleting from subscribes to');
     }
 }
 
@@ -397,6 +438,34 @@ function getAllCats()
     // SQL injection attacks
     // $statement->bindValue(':org', $event_id);
     $statement = $db->prepare($query);
+    $statement->execute();
+    $results = $statement->fetchAll();
+
+    $statement->closeCursor();
+    
+    return $results;
+    }
+    catch(Exception $execpt){
+        throw new Exception('Error getting all events');
+    }
+}
+
+function getUserSubs($userID)
+{
+    try{
+    global $db;
+
+    $query = "SELECT DISTINCT * FROM Event_by_id,Host,Subscribes_to WHERE Event_by_id.event_id = Host.event_id AND Event_by_id.event_id = Subscribes_to.event_id AND Subscribes_to.comp_id = :userID ORDER BY Event_by_id.date_of_event, Event_by_id.name, Host.org_name";
+
+    // 1. prepare
+
+    // 2. bindValue & execute
+
+    // Prepare and bindValue helps protect against
+    // SQL injection attacks
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(':userID', $userID);
     $statement->execute();
     $results = $statement->fetchAll();
 

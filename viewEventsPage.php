@@ -12,6 +12,7 @@ if($_SESSION["validlogin"] !== true){
  $list_of_events = getAllEventsByDate();
  $list_of_orgs = getAllOrgs();
  $list_of_categories = getAllCats();
+ $list_of_sub_events = getUserSubs($_SESSION['uName']);
  $event_details = null;
  $event_audience = null;
  $event_categories = null;
@@ -33,12 +34,6 @@ if($_SESSION["validlogin"] !== true){
       if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "Exit Event Detail") {
         $event_details = null;
       }
-      // else if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "ShowDetails") {
-      //   $event_details = getEventDetail($_POST['event_to_display']);
-      //   $event_audience = getEventAudience($_POST['event_to_display']);
-      //   $event_categories = getEventCategories($_POST['event_to_display']);
-      //   $event_restrictions = getEventRestrictions($_POST['event_to_display']);
-      // }
       else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "Sort By Event Name") {
         $list_of_events = getAllEventsByName();
 
@@ -54,8 +49,24 @@ if($_SESSION["validlogin"] !== true){
         // $zombie_to_update = getZombie_byName($_POST['zombie_to_update']);
       }
       else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "Filter"){
+        echo $_POST['org_to_filter'];
         $list_of_events = getEventsByOrg($_POST['org_to_filter']);
       }
+
+      else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "<3"){
+        // echo $_POST['org_to_filter'];
+        // print_r($_SESSION['uName']);
+        addToSub($_POST['event_to_like'],$_SESSION['uName']);
+        $list_of_sub_events = getUserSubs($_SESSION['uName']);
+      }
+
+      else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == ":("){
+        // echo $_POST['org_to_filter'];
+        // print_r($_SESSION['uName']);
+        removeFromSub($_POST['event_to_unlike'],$_SESSION['uName']);
+        $list_of_sub_events = getUserSubs($_SESSION['uName']);
+      }
+
       else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "Filter "){
         $list_of_events = getEventsByCat($_POST['cat_to_filter']);
       }
@@ -124,6 +135,9 @@ if($_SESSION["validlogin"] !== true){
     <style>
     h1 {text-align: center;}
     </style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
 </head>
 <body>
 
@@ -132,9 +146,22 @@ if($_SESSION["validlogin"] !== true){
 <div class="container">
   <header>
     <div style="float:right;">
-    <form action="logoutUser.php" method="post">
-    <button class="btn btn-primary">Logout</a></button>
+    <div style="float:left;">
+<div style="float:left;">
+    <form action="userProfile.php" method="post">
+    
+    <button class="btn btn-primary" class="glyphicon glyphicon-user">User Profile</a></button>
+   
     </form>
+  </div>
+</div>
+  <div style="float:left;">
+    <form action="logoutUser.php" method="post">
+    
+    <button class="btn btn-primary">Logout</a></button>
+   
+    </form>
+  </div>
     </div>
   </header>
   <div class="header">
@@ -152,50 +179,48 @@ if($_SESSION["validlogin"] !== true){
         </tr>
       </table>
   </div>
-  
 
+  <table class="w3-table w3-bordered w3-card-4" style="width:90%">
+<h2>Events you have subscribed to:</h2>
+<thead>
+<tr style="background-color:#b0b0b0">
+<th width="25%">Name</th>
+<th width="20%">Date of Event</th>
+<th width="25%">Host Organization</th>
+<th width="7.5%">Event Details</th>
+<th width="7.5%">Update Event</th>
+<th width="7.5%">Delete Event</th>
+<th width="7.5%">Unlike Event</th>
 <!--
-<form name="mainForm" action="simpleform.php" method="post">   
-  <div class="row mb-3 mx-3">
-    Your name:
-    <input type="text" class="form-control" name="name" required
-    value = "<?php if ($zombie_to_update!=null) echo $zombie_to_update['name']?>" />      
-  </div>  
-    <div class="row mb-3 mx-3">
-        Danger:
-        <input type="number" class="form-control" name="Danger" required 
-        value = "<?php if ($zombie_to_update!=null) echo $zombie_to_update['Danger'] ?>"/>        
-    </div>  
 
-    <div class="row mb-3 mx-3">
-        Speed:
-        <input type="text" class="form-control" name="Speed" required 
-        value = "<?php if ($zombie_to_update!=null) echo $zombie_to_update['Speed'] ?>"/>        
-    </div> 
-
-    <input type="submit" value="Add" name="btnAction" class="btn btn-dark"
-
-        title = "insert a zombie" />
-
-    <input type="submit" value="Confirm Update" name="btnAction" class="btn btn-dark"
-
-        title = "Confirm Changes" />
-</form>  
+<th width="12%">Delete ?</th>
 /> -->
+</tr>
+</thead>
 
+<?php foreach ($list_of_sub_events as $event): ?>
+<tr>
+    <td><?php echo $event['name']; ?></td>
+    <td><?php echo $event['date_of_event']; ?></td>
+    <td><?php echo $event['org_name']; ?></td>
+    <td><form action="viewEventDetail.php" method="post">
+        <input type="submit" name="btnAction" value="ShowDetails" class="btn btn-primary" />
+        <input type="hidden" name="event_to_display" value="<?php echo $event['event_id'] ?>" />      
+      </form></td>
+    <td><button class="btn btn-primary"><a href="updateEventPage.php?event_to_update=<?=$event['event_id']?>" style="color: white">UpdateEvent</a></button></td>
+    <td><form action="viewEventsPage.php" method="post">
+      <input type="submit" name="btnAction" value="DeleteEvent" class="btn btn-primary" />
+      <input type="hidden" name="event_to_delete" value="<?php echo $event['event_id'] ?>" />      
+    </form></td>
+    <td><form action="viewEventsPage.php" method="post">
+        <input type="submit" name="btnAction" value=":(" class="btn btn-danger" /> 
+        <input type="hidden" name="event_to_unlike" value="<?php echo $event['event_id'] ?>" />      
+      </form></td>
+</tr>
+ <?php endforeach; ?>
 
-  <!-- <table class="w3-table w3-bordered w3-card-4" style="width:90%">
-  <thead>
-  <tr style="background-color:#b0b0b0">
-  <th width="25%">Name</th>
-  <th width="20%">Date of Event</th>
-  <th width="25%">Host Organization</th>
-  <tr>
-      <td><?php echo $name; ?></td>
-      <td><?php echo $date; ?></td>
-      <td><?php echo $audience_str; ?></td>
-  </tr>
-  </table> -->
+  </table>
+  
   <form action="viewEventsPage.php" method="post">
   <div class="row">
     <div class="col-auto">
@@ -272,9 +297,10 @@ if($_SESSION["validlogin"] !== true){
 <th width="25%">Name</th>
 <th width="20%">Date of Event</th>
 <th width="25%">Host Organization</th>
-<th width="12%">Event Details</th>
-<th width="12%">Update Event</th>
-<th width="12%">Delete Event</th>
+<th width="7.5%">Event Details</th>
+<th width="7.5%">Update Event</th>
+<th width="7.5%">Delete Event</th>
+<th width="7.5%">Like Event</th>
 <!--
 
 <th width="12%">Delete ?</th>
@@ -291,11 +317,15 @@ if($_SESSION["validlogin"] !== true){
         <input type="submit" name="btnAction" value="ShowDetails" class="btn btn-primary" />
         <input type="hidden" name="event_to_display" value="<?php echo $event['event_id'] ?>" />      
       </form></td>
-    <td><button class="btn btn-primary"><a href="updateEventPage.php?event_to_update=<?=$event['event_id']?>">UpdateEvent</a></button></td>
+    <td><button class="btn btn-primary"><a href="updateEventPage.php?event_to_update=<?=$event['event_id']?>" style="color: white">UpdateEvent</a></button></td>
     <td><form action="viewEventsPage.php" method="post">
       <input type="submit" name="btnAction" value="DeleteEvent" class="btn btn-primary" />
       <input type="hidden" name="event_to_delete" value="<?php echo $event['event_id'] ?>" />      
     </form></td>
+    <td><form action="viewEventsPage.php" method="post">
+        <input type="submit" name="btnAction" value="<3" class="btn btn-danger" /> 
+        <input type="hidden" name="event_to_like" value="<?php echo $event['event_id'] ?>" />      
+      </form></td>
 </tr>
  <?php endforeach; ?>
 
