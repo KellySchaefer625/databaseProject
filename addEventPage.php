@@ -68,20 +68,21 @@ $submitted = false;
         $addInfo = false;
         $submitted = true;
         if($addHost == true) {
-        addToHost($_POST['additionalInput'], $latest_event_id);
-        $addHost = false;
+          addToHost($_POST['additionalInput'], $latest_event_id);
+          $addHost = false;
+          echo "this got here";
         }
         if($addAudience == true) {
-        addToEvent_audience($latest_event_id,$_POST['additionalInput']);
-        $addAudience = false;
+          addToEvent_audience($latest_event_id,$_POST['additionalInput']);
+          $addAudience = false;
         }
         if($addCategory == true) {
-        addToEvent_categories($latest_event_id,$_POST['additionalInput']);
-        $addCategory = false;
+          addToEvent_categories($latest_event_id,$_POST['additionalInput']);
+          $addCategory = false;
        }
        if($addRestriction == true) {
-        addToEvent_restrictions($latest_event_id,$_POST['additionalInput']);
-        $addRestriction = false;
+          addToEvent_restrictions($latest_event_id,$_POST['additionalInput']);
+          $addRestriction = false;
         }
   
         }
