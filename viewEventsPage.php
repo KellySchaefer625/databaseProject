@@ -52,7 +52,7 @@ if($_SESSION["validlogin"] !== true){
 
         // $zombie_to_update = getZombie_byName($_POST['zombie_to_update']);
       }
-      else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "Sort By Date"){
+      else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "Filter"){
         $list_of_events = getEventsByOrg($_POST['org_to_filter']);
       }
 
@@ -226,11 +226,11 @@ if($_SESSION["validlogin"] !== true){
   <select name="org-names" id="org-names">
     <option value="" selected disabled hidden>Choose here</option>
     <?php foreach ($list_of_orgs as $org): ?>
-      <option value=$org><?php echo $org['org_name'] ?></option>
+      <option value=<?php echo $org['org_name'] ?> name="OrgToSearch"><?php echo $org['org_name'] ?></option>
     <?php endforeach; ?>
   </select>
   <input type="submit" name="btnAction" value="Filter">
-  <input type="hidden" name="org_to_filter" value="<?php echo $org['org_name'] ?>" /> 
+  <input type="hidden" name="org_to_filter" value=<?php echo $org['org_name'] ?> /> 
 </form>
 
 

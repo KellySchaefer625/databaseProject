@@ -495,7 +495,7 @@ function getEventsByOrg($org_name)
 {
     try{
     global $db;
-
+    print_r($org_name);
     $query = "SELECT * FROM Event_by_id,Host WHERE Event_by_id.event_id = Host.event_id AND Host.org_name=:org_name";
 
     // 1. prepare
@@ -511,6 +511,7 @@ function getEventsByOrg($org_name)
     $results = $statement->fetchAll();
     //print($event_id);
     $statement->closeCursor();
+    //print($results);
     return $results;
     }
     catch(Exception $execpt){
