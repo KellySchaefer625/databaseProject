@@ -94,8 +94,9 @@ function updateEvent_By_ID($event_id, $name, $time_start, $time_end, $building, 
     }
 }
 
-function deleteEvent_By_ID($event_id, $name, $time_start, $time_end, $building, $room, $date_of_event, $cost, $food)
+function deleteEvent_By_ID($event_id)
 {
+    $event_id = intval($event_id);
     //db handler
     //the db handler is in connect-db
     // keyword global allows us to access db in connect-db
@@ -104,23 +105,11 @@ function deleteEvent_By_ID($event_id, $name, $time_start, $time_end, $building, 
 
     //sql
     $query = "DELETE Event_by_id WHERE event_id=$event_id";
-    // $query = "INSERT INTO Event_by_id (name, time_start, time_end, building, room, date_of_event, cost, food) VALUES (:name, :time_start, :time_end, :building, :room, :date_of_event, :cost, :food)";
 
     //execute
     $statement = $db->prepare($query);
 
-    $statement->bindValue(':name', $name);
-    $statement->bindValue(':time_start', $time_start);
-    $statement->bindValue(':time_end', $time_end);
-    $statement->bindValue(':building', $building);
-    $statement->bindValue(':room', $room);
-    $statement->bindValue(':date_of_event', $date_of_event);
-    $statement->bindValue(':cost', $cost);
-    $statement->bindValue(':food', $food);
-
-
     $statement->execute();
-    echo "this ran";
 
     //$statement = $db->query($query);
 
@@ -175,16 +164,13 @@ function updateEvent_restrictions($event_id, $restrictions)
 
 }
 
-function deleteEvent_restrictions($event_id, $restrictions)
+function deleteEvent_restrictions($event_id)
 { try{
     global $db;
 
     $query = "DELETE from Event_restrictions WHERE event_id=$event_id";
 
     $statement = $db->prepare($query);
-
-    $statement->bindValue(':event_id', $event_id);
-    $statement->bindValue(':restrictions', $restrictions);
 
     $statement->execute();
 
@@ -237,7 +223,7 @@ function updateEvent_categories($event_id, $categories)
     }
 }
 
-function deleteEvent_categories($event_id, $categories)
+function deleteEvent_categories($event_id)
 {   try{
     global $db;
 
@@ -245,9 +231,6 @@ function deleteEvent_categories($event_id, $categories)
     // $query = "INSERT INTO Event_categories VALUES (:event_id, :categories)";
 
     $statement = $db->prepare($query);
-
-    $statement->bindValue(':event_id', $event_id);
-    $statement->bindValue(':categories', $categories);
 
     $statement->execute();
 
@@ -298,16 +281,13 @@ function updateEvent_audience($event_id, $audience)
     }
 }
 
-function deleteEvent_audience($event_id, $audience)
+function deleteEvent_audience($event_id)
 {   try{
     global $db;
 
     $query = "DELETE from Event_audience WHERE event_id=$event_id";
 
     $statement = $db->prepare($query);
-
-    $statement->bindValue(':event_id', $event_id);
-    $statement->bindValue(':audience', $audience);
 
     $statement->execute();
 
@@ -358,16 +338,13 @@ function updateHost($org_name, $event_id)
     }
 }
 
-function deleteHost($org_name, $event_id)
+function deleteHost($event_id)
 {   try{
     global $db;
 
     $query = "DELETE from Host WHERE event_id=$event_id";
 
     $statement = $db->prepare($query);
-
-    $statement->bindValue(':event_id', $event_id);
-    $statement->bindValue(':org_name', $org_name);
 
     $statement->execute();
 
@@ -601,5 +578,115 @@ function getEventRestrictions($event_id)
         throw new Exception('Error getting restrictions');
     }
 }
+//TODO: make get username and get password function
+function getUserCredentials($userName,$userpassword)
+{ //not finished
+    //HASH THE PASSWORDS FIJI DONT FORGET, YA STUPID!
+    try{
+    global $db;
+    //Prep SQL query
+    $query = "SELECT comp_id, pword FROM User_by_id WHERE comp_id=:givenUName";
+    $statement = $db->prepare($query);
+//$statement =; //Prep statement and bind Values
+    $statement->bindValue(':givenUName',$userName);
 
+    $paramUsername = $userName;
+    $execStatement = $statement->execute();
+    if($execStatement){
+        if($statement->rowCount()==1){
+            $userData = $statement->fetch();
+            $userName = $userData["comp_id"];
+            //uncomment after hashing passwords
+            $hashPass = $userData["pword"];
+            // echo "gets item";
+            // echo $userName;
+            // echo $hash
+            if(password_verify($userpassword,$hashPass)){
+                //if correct, return all data, but send password hashed
+                //echo "this runs";
+                $statement->closeCursor();    
+                return $userData;
+            }
+            else{
+                $statement->closeCursor();    
+                return -1;//"invalid user or pass"
+            }
+
+            }
+            else{
+                echo $execStatement;
+                echo "rowcount issue";
+                return -4;
+            }
+        }
+    else{
+        echo "ohno";
+        return -3;//"server error"
+    }
+} 
+    //$results = $statement->fetch();
+catch(PDOException $execption){
+    throw new Exception($execption->getMessage(), (int)$execption->getCode());
+}    
+catch(Exception $execpt){
+        throw new Exception($statement->error);
+        print_r($db->errorInfo());
+    }
+}
+function addNewUser($desiredName,$desiredpassword)
+{ //register a new user
+    //post username and hashed pw to db
+    //this will be an insert method
+    //HASH THE PASSWORDS FIJI DONT FORGET, YA STUPID!
+    try{
+    global $db;
+    //Prep SQL query
+    $query = "SELECT comp_id, pword FROM User_by_id WHERE comp_id=:givenUName AND pword=:givenPword";
+    $statement = $db->prepare($query);
+//$statement =; //Prep statement and bind Values
+    $statement->bindValue(':givenUName',$userName);
+    $statement->bindValue(':givenPword',$userpassword);
+
+    $paramUsername = $userName;
+    $execStatement = $statement->execute();
+    if($execStatement){
+        if($statement->rowCount()==1){
+            $userData = $statement->fetch();
+            $userName = $userData["comp_id"];
+            //uncomment after hashing passwords
+            $hashPass = $userData["pword"];
+            echo "gets item";
+            echo $userName;
+            if($userpassword==$hashPass/*password_verify($userpassword,$hashPass)*/){
+                //if correct, return all data, but send password hashed
+                echo "this runs";
+                $statement->closeCursor();    
+                return $userData;
+            }
+            else{
+                $statement->closeCursor();    
+                return -1;//"invalid user or pass"
+            }
+
+            }
+            else{
+                echo $execStatement;
+                echo "rowcount issue";
+                return -4;
+            }
+        }
+    else{
+        echo "ohno";
+        return -3;//"server error"
+    }
+} 
+    //$results = $statement->fetch();
+catch(PDOException $execption){
+    throw new Exception($execption->getMessage(), (int)$execption->getCode());
+}    
+catch(Exception $execpt){
+        throw new Exception($statement->error);
+        print_r($db->errorInfo());
+    }
+}
 ?>
