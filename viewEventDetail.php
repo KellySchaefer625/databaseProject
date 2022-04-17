@@ -84,7 +84,7 @@ if($_SESSION["validlogin"] !== true){
 <header>
     <div style="float:right;">
     <form action="logoutUser.php" method="post">
-    <button class="btn btn-primary">Logout</a></button>
+      <button class="btn btn-primary">Logout</a></button>
     </form>
     </div>
 </header>

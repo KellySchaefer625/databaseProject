@@ -47,7 +47,7 @@ else if(password_verify($pass,$userCreds['pword'])){
 echo $pass;
   session_start();
   $_SESSION["validlogin"] = true;
-  $_SESSION["uName"] = $userCreds['uName'];
+  $_SESSION["uName"] = $_POST["name"];
   //redirect to welcome page
   header('location: viewEventsPage.php');
 }
