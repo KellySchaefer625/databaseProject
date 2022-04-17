@@ -106,6 +106,14 @@ if($_SESSION["validlogin"] !== true){
    <form name="subForm" action="registerOrganization.php" method="post">
      
      <div class="row mb-3 mx-3">
+        <div visibility: <?php if ($addExec == false) echo 'hidden'; ?>>
+            Executive Member Username:
+          <input type="text" class="form-control" name="execName"  />
+       </div>
+     </div>
+     
+     
+     <div class="row mb-3 mx-3">
                 &nbsp
             </div>
      
@@ -131,14 +139,7 @@ if($_SESSION["validlogin"] !== true){
                         title = "Add Executive Member?" /> Add Executive Member </button>
                    </div>
             </div>
-  
- <div class="row mb-3 mx-3">
-   <div visibility: <?php if ($addExec == false) echo 'hidden'; ?>>
-      Executive Member Username:
-      <input type="text" class="form-control" name="execName"  />
-   </div>
- </div>
-     
+
  <div class="row mb-3 mx-3">
    &nbsp
  </div>
