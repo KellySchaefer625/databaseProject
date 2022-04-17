@@ -499,6 +499,26 @@ function getUserOrgs($user_id)
     }
 }
 
+function removeUserInterest($userID, $interest)
+{   try{
+    global $db;
+
+    $query = "DELETE from User_Interests WHERE comp_id = :userID AND interest=:interest";
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(':userID', $userID);
+    $statement->bindValue(':interest', $interest);
+
+    $statement->execute();
+
+    $statement->closeCursor();
+
+    }
+    catch(Exception $execpt){
+        throw new Exception('Error removing user interest');
+    }
+}
+
 function removeUserOrg($userID, $org_name)
 {   try{
     global $db;
