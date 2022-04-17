@@ -22,6 +22,8 @@ if($_SESSION["validlogin"] !== true){
  $organization_name = '';
  $eventId = '';
 
+
+ 
  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
    try{
       if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "DeleteEvent") {
