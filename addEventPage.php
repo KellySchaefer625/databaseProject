@@ -1,23 +1,20 @@
-﻿<?php
+<?php
 session_start(); 
 if($_SESSION["validlogin"] !== true){
   header("location: login.php");
   exit;
-}
+ }
  require('connect-db.php');
  require('database_functions.php');
 
- 
-$latest_event_id = null;
-$submitted = false;
+ $latest_event_id = null;
+ $submitted = false;
  $addInfo = false;
- $addHost = false;
- $addCategory = false;
- $addRestriction = false;
- $addAudience = false;
- $fieldName = '';
+  $addType = '';
+  $fieldName = '';
  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
    try{
+ 
       if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "Add") {
         $temp_event_id = getLatestEventId();
         foreach ($temp_event_id as $id_num) {
@@ -34,16 +31,15 @@ $submitted = false;
       }
 
         if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "AddHost") {
-        echo "got here";
         $addInfo = true;
-        $addHost = true;
+        $addType = "Host";
         $fieldName = "Additional Host: ";
         $submitted = true;
         }
 
         if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "AddAudience") {
         $addInfo = true;
-        $addAudience = true;
+        $addType = "Audience";
         $fieldName = "Additional Audience: ";
         $submitted = true;
   
@@ -51,38 +47,42 @@ $submitted = false;
 
          if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "AddCategory") {
         $addInfo = true;
-        $addCategory = true;
+        $addType = "Category";
         $fieldName = "Additional Category: ";
         $submitted = true;
         }
 
         if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "AddRestriction") {
         $addInfo = true;
-        $addRestriction = true;
+        $addType = "Restriction";
         $fieldName = "Additional Restriction: ";
         $submitted = true;
-  
         }
 
        if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "newAdd") {
+        $addType = $_POST['addType'];
+        $temp_event_id = getLatestEventId();
+        foreach ($temp_event_id as $id_num) {
+         $latest_event_id = $id_num;      
+         }
         $addInfo = false;
         $submitted = true;
-        if($addHost == true) {
+        if($addType == "Host") {
           addToHost($_POST['additionalInput'], $latest_event_id);
-          $addHost = false;
-          echo "this got here";
+          $addType = "";
+   
         }
-        if($addAudience == true) {
+        if($addType == 'Audience') {
           addToEvent_audience($latest_event_id,$_POST['additionalInput']);
-          $addAudience = false;
+          $addType = '';
         }
-        if($addCategory == true) {
+        if($addType == 'Category') {
           addToEvent_categories($latest_event_id,$_POST['additionalInput']);
-          $addCategory = false;
+          $addType = '';
        }
-       if($addRestriction == true) {
+       if($addType == 'Restriction') {
           addToEvent_restrictions($latest_event_id,$_POST['additionalInput']);
-          $addRestriction = false;
+          $addType= '';
         }
   
         }
@@ -114,7 +114,7 @@ $submitted = false;
     <meta name="description" content="This is a subpage to add events to the UVA calendar page">
 
     <title>Add Event Page</title>
-
+   
     <!-- 3. link bootstrap -->
     <!-- if you choose to use CDN for CSS bootstrap -->
  
@@ -160,65 +160,57 @@ $submitted = false;
  
  <div class="row mb-3 mx-3">
   Event Date:
-    <input type="date" class="form-control" name="date_of_event"  />        
+    <input type="date" class="form-control" name="date_of_event" required />        
  </div> 
 
   <div class="row mb-3 mx-3">
     Event Categories: 
-       <input type="text" class="form-control" name="categories" />
-  </div>
- 
- <div class="row mb-3 mx-3"> 
-  <button class="btn btn-outline-secondary" value="CategoryAdd" type="button">+</button>
- </div>
+       <input type="text" class="form-control" name="categories" required/>
+  </div> 
  
   <div class="row mb-3 mx-3">
     Event Audience:
-    <input type="text" class="form-control" name="audience"  />      
+    <input type="text" class="form-control" name="audience" required />      
   </div>
- 
- <div class="row mb-3 mx-3"> 
-  <button class="btn btn-outline-secondary" value="AudienceAdd" type="button">+</button>
- </div>
 
   <div class="row mb-3 mx-3">
     Event Details:
-    <input type="text" class="form-control" name="details" />      
+    <input type="text" class="form-control" name="details" required/>      
   </div>
 
     <div class="row mb-3 mx-3">
     Start Time:
-        <input type="time" class="form-control" name="time_start"  />        
+        <input type="time" class="form-control" name="time_start" required />        
     </div>  
  
    <div class="row mb-3 mx-3">
     End Time:
-        <input type="time" class="form-control" name="time_end"  />        
+        <input type="time" class="form-control" name="time_end"  required/>        
     </div>  
  
   <div class="row mb-3 mx-3">
     Building:
-        <input type="text" class="form-control" name="building" />        
+        <input type="text" class="form-control" name="building" required/>        
     </div>  
  
   <div class="row mb-3 mx-3">
     Room:
-        <input type="text" class="form-control" name="room" />        
+        <input type="text" class="form-control" name="room" required  />        
     </div>  
  
  <div class="row mb-3 mx-3">
     Cost:
-        <input type="number" class="form-control" name="cost" />        
+        <input type="number" class="form-control" name="cost" required/>        
     </div>
  
  <div class="row mb-3 mx-3">
     Food?
-        <input type="text" class="form-control" name="food" />         
+        <input type="text" class="form-control" name="food" required />         
     </div>  
  
  <div class="row mb-3 mx-3">
     Restrictions
-        <input type="text" class="form-control" name="restrictions" />
+        <input type="text" class="form-control" name="restrictions" required/>
  </div>
        
     <input type="submit" value="Add" name="btnAction" class="btn btn-dark"
@@ -275,10 +267,8 @@ $submitted = false;
   
   <div class="row mb-3 mx-3">
   <div visibility: <?php if ($submitted == false || $addInfo == true) echo 'hidden'; ?>>
-  <a href="additionalEventFields.php">
   <button type="submit" value="AddCategory" name="btnAction" class="btn btn-dark btn-block"
         title = "Add Additional Category?"/> Add Additional Category </button>
-  </a>
   </div>
   </div>
 
@@ -288,6 +278,9 @@ $submitted = false;
   <input type="text" class="form-control" name="additionalInput"  />
      <div class="row mb-3 mx-3">
                  &nbsp
+  </div>
+  <div> 
+  <input type="hidden" id="addType" name="addType" value=<?php echo $addType; ?> >
   </div>
    <button type="submit" value="newAdd" name="btnAction" class="btn btn-dark"
         title = "Add Info" /> Add To Event </button>
