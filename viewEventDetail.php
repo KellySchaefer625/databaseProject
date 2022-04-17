@@ -20,22 +20,33 @@ if($_SESSION["validlogin"] !== true){
  $building = '';
  $room = '';
  $organization_name = '';
- $event_details = getEventDetail($_POST['event_to_display']);
- $event_audience = getEventAudience($_POST['event_to_display']);
- $event_categories = getEventCategories($_POST['event_to_display']);
- $event_restrictions = getEventRestrictions($_POST['event_to_display']);
-//  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-//    try{
-//       if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "ShowDetails") {
-        
+ $eventId = '';
 
-//       }
-//      }
+ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+   try{
+      if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "DeleteEvent") {
+        print_r($_POST['event_to_delete']);
+        deleteHost($_POST['event_to_delete']);
+        deleteEvent_audience($_POST['event_to_delete']);
+        deleteEvent_categories($_POST['event_to_delete']);
+        deleteEvent_restrictions($_POST['event_to_delete']);
+        deleteEvent_subscriptions($_POST['event_to_delete']);
+        deleteEvent_By_ID($_POST['event_to_delete']);
+        header("location: viewEventsPage.php");
+      }
+    else {
+      $event_details = getEventDetail($_POST['event_to_display']);
+      $event_audience = getEventAudience($_POST['event_to_display']);
+      $event_categories = getEventCategories($_POST['event_to_display']);
+      $event_restrictions = getEventRestrictions($_POST['event_to_display']);
+      $exec_roles = getUserExecRoles($_SESSION['uName'],$_POST['event_to_display']);
+    }
+     }
 
-//     catch(Exception $except){
-//       throw new Exception("Error loading event detail page");
-//     }
-//  }
+    catch(Exception $except){
+      throw new Exception("Error loading event detail page");
+    }
+ }
  ?>
 
 
@@ -119,6 +130,7 @@ if($_SESSION["validlogin"] !== true){
     <?php $building=$event_d['building']; ?>
     <?php $room=$event_d['room']; ?>
     <?php $organization_name=$event_d['org_name']; ?>
+    <?php $eventId=$event_d['event_id']; ?>
   <?php endforeach; ?>
   <?php endif; ?>
 <?php if ($event_details!=null):?>
@@ -196,7 +208,32 @@ if($_SESSION["validlogin"] !== true){
       </tr>
   </tbody>
   <tbody>
-    <a href="viewEventsPage.php">Return to Full Events List</a>
+      <tr>
+        <th scope="row">Event ID</th>
+        <td><?php echo $eventId?></td>
+      </tr>
+  </tbody>
+  <tbody>
+ <?php if ($exec_roles==null):?>
+    <tr>
+        <th scope="row">Delete Event</th>
+        <td>You do not have permission to delete this event</td>
+      </tr>
+  <?php endif; ?>
+ </tbody>
+ <tbody>
+  <?php if ($exec_roles!=null):?>
+    <td><form action="viewEventDetail.php" method="post">
+      <input type="submit" name="btnAction" value="DeleteEvent" class="btn btn-primary" />
+      <input type="hidden" name="event_to_delete" value=<?php echo $eventId?> />      
+    </form></td>
+  <?php endif; ?>
+  </tbody>
+  <tbody>
+      <tr>
+        <th scope="row">Exit</th>
+        <td><a href="viewEventsPage.php">Return to Full Events List</a></td>
+      </tr>
  </tbody>
   </table>
   <?php endif; ?>
