@@ -478,6 +478,48 @@ function getUserSubs($userID)
     }
 }
 
+function getUserOrgs($user_id)
+{   try{
+    global $db;
+
+    $query = "SELECT DISTINCT * from Is_member WHERE comp_id='$user_id'";
+
+    $statement = $db->prepare($query);
+
+    $statement->execute();
+
+    $result = $statement->fetchAll();
+
+    $statement->closeCursor();
+
+    return $result;
+    }
+    catch(Exception $execpt){
+        throw new Exception('Error getting user\'s organizations');
+    }
+}
+
+function getUserInterests($user_id)
+{   try{
+    global $db;
+
+    $query = "SELECT DISTINCT * from User_Interests WHERE comp_id='$user_id'";
+
+    $statement = $db->prepare($query);
+
+    $statement->execute();
+
+    $result = $statement->fetchAll();
+
+    $statement->closeCursor();
+
+    return $result;
+    }
+    catch(Exception $execpt){
+        throw new Exception('Error getting user\'s organizations');
+    }
+}
+
 function getAllEventsByDate()
 {
     try{
@@ -808,6 +850,7 @@ function addNewUser($desiredName,$desiredpassword)
 catch(PDOException $execption){
     throw new Exception($execption->getMessage(), (int)$execption->getCode());
 }    
+
 catch(Exception $execpt){
         throw new Exception($statement->error);
         print_r($db->errorInfo());
