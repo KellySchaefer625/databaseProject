@@ -144,11 +144,6 @@ if($_SESSION["validlogin"] !== true){
   </div>
  </div>
 
-
-            <div class="row mb-3 mx-3">
-                &nbsp
-            </div>
-  
 <div visibility: <?php if ($submitted == false || $addExec == true) echo 'hidden'; ?>>
    <div class="row mb-3 mx-3">
    <a href="viewEventsPage.php">
