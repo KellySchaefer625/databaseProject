@@ -355,6 +355,33 @@ function deleteHost($event_id)
     }
 }
 
+function getAllOrgs()
+{
+    try{
+    global $db;
+
+    $query = "SELECT DISTINCT org_name FROM Host ORDER BY org_name";
+
+    // 1. prepare
+
+    // 2. bindValue & execute
+
+    // Prepare and bindValue helps protect against
+    // SQL injection attacks
+    // $statement->bindValue(':org', $event_id);
+    $statement = $db->prepare($query);
+    $statement->execute();
+    $results = $statement->fetchAll();
+
+    $statement->closeCursor();
+    
+    return $results;
+    }
+    catch(Exception $execpt){
+        throw new Exception('Error getting all events');
+    }
+}
+
 
 function getAllEventsByDate()
 {
@@ -453,6 +480,33 @@ function getEventDetail($event_id)
 
     $statement = $db->prepare($query);
     $statement->bindValue(':event_id', $event_id);
+    $statement->execute();
+    $results = $statement->fetchAll();
+    //print($event_id);
+    $statement->closeCursor();
+    return $results;
+    }
+    catch(Exception $execpt){
+        throw new Exception('Error getting event details');
+    }
+}
+
+function getEventsByOrg($org_name)
+{
+    try{
+    global $db;
+
+    $query = "SELECT * FROM Event_by_id,Host WHERE Event_by_id.event_id = Host.event_id AND Host.org_name=:org_name";
+
+    // 1. prepare
+
+    // 2. bindValue & execute
+
+    // Prepare and bindValue helps protect against
+    // SQL injection attacks
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(':org_name', $org_name);
     $statement->execute();
     $results = $statement->fetchAll();
     //print($event_id);

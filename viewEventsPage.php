@@ -10,6 +10,7 @@ if($_SESSION["validlogin"] !== true){
  require('database_functions.php');
 
  $list_of_events = getAllEventsByDate();
+ $list_of_orgs = getAllOrgs();
  $event_details = null;
  $event_audience = null;
  $event_categories = null;
@@ -50,6 +51,9 @@ if($_SESSION["validlogin"] !== true){
        else if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "Update") {
 
         // $zombie_to_update = getZombie_byName($_POST['zombie_to_update']);
+      }
+      else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "Sort By Date"){
+        $list_of_events = getEventsByOrg($_POST['org_to_filter']);
       }
 
       else if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "Confirm Update" && $zombie_to_update != null) {
@@ -204,6 +208,20 @@ if($_SESSION["validlogin"] !== true){
     </div>
   </div>
 </form>
+
+<!-- source: https://blog.hubspot.com/website/html-dropdown and https://www.w3schools.com/tags/att_option_value.asp and https://stackoverflow.com/questions/3518002/how-can-i-set-the-default-value-for-an-html-select-element-->
+<form action="viewEventsPage.php" method="post">
+  <label for="org-names">Choose an organization to filter on:</label>
+  <select name="org-names" id="org-names">
+    <option value="" selected disabled hidden>Choose here</option>
+    <?php foreach ($list_of_orgs as $org): ?>
+      <option value=$org><?php echo $org['org_name'] ?></option>
+    <?php endforeach; ?>
+  </select>
+  <input type="submit" name="btnAction" value="Filter">
+  <input type="hidden" name="org_to_filter" value="<?php echo $org['org_name'] ?>" /> 
+</form>
+
 
 <!--<h2> List of Zombies </h2>/> -->
 <table class="w3-table w3-bordered w3-card-4" style="width:90%">
