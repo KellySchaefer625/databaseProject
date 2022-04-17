@@ -416,6 +416,27 @@ function removeFromSub($event_id,$userID)
     }
 }
 
+
+function registerOrg($name, $email, $description) {
+   try{
+    global $db;
+
+    $query = "INSERT INTO Organization VALUES (:name, :email, :description)";
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(':name', $name);
+    $statement->bindValue(':email', $email);
+    $statement->bindValue(':description', $description);
+
+    $statement->execute();
+
+    $statement->closeCursor();
+    }
+    catch(Exception $execpt){
+        throw new Exception('Error inserting into organization table');
+    }
+}
+
 function getAllOrgs()
 {
     try{
