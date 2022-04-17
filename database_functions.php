@@ -499,6 +499,26 @@ function getUserOrgs($user_id)
     }
 }
 
+function removeUserInterest($userID, $interest)
+{   try{
+    global $db;
+
+    $query = "DELETE from User_Interests WHERE comp_id = :userID AND interest=:interest";
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(':userID', $userID);
+    $statement->bindValue(':interest', $interest);
+
+    $statement->execute();
+
+    $statement->closeCursor();
+
+    }
+    catch(Exception $execpt){
+        throw new Exception('Error removing user interest');
+    }
+}
+
 function removeUserOrg($userID, $org_name)
 {   try{
     global $db;
@@ -641,6 +661,62 @@ function getEventDetail($event_id)
     $results = $statement->fetchAll();
     //print($event_id);
     $statement->closeCursor();
+    return $results;
+    }
+    catch(Exception $execpt){
+        throw new Exception('Error getting event details');
+    }
+}
+
+function getEventsByOrg($org_name)
+{
+    try{
+    global $db;
+    //print_r($org_name);
+    $query = "SELECT * FROM Event_by_id,Host WHERE Event_by_id.event_id = Host.event_id AND Host.org_name = :org_name";
+
+    // 1. prepare
+
+    // 2. bindValue & execute
+
+    // Prepare and bindValue helps protect against
+    // SQL injection attacks
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(':org_name', $org_name);
+    $statement->execute();
+    $results = $statement->fetchAll();
+    //print($event_id);
+    $statement->closeCursor();
+    //print($results);
+    return $results;
+    }
+    catch(Exception $execpt){
+        throw new Exception('Error getting event details');
+    }
+}
+
+function getEventsByCat($cat_name)
+{
+    try{
+    global $db;
+    //print_r($org_name);
+    $query = "SELECT * FROM Event_by_id,Event_categories,Host WHERE Event_by_id.event_id = Event_categories.event_id AND Event_by_id.event_id = Host.event_id AND Event_categories.category_name = :cat_name";
+
+    // 1. prepare
+
+    // 2. bindValue & execute
+
+    // Prepare and bindValue helps protect against
+    // SQL injection attacks
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(':cat_name', $cat_name);
+    $statement->execute();
+    $results = $statement->fetchAll();
+    //print($event_id);
+    $statement->closeCursor();
+    //print($results);
     return $results;
     }
     catch(Exception $execpt){

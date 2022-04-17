@@ -22,9 +22,17 @@ $user_subs = getUserSubs($_SESSION['uName']);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     try{
-       if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "Bye") {
+       if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "Leave Org") {
         removeUserOrg($_SESSION['uName'], $_POST['org_to_leave']);
         $user_orgs = getUserOrgs($_SESSION['uName']);
+       }
+       else if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "Remove Interest") {
+        removeUserInterest($_SESSION['uName'], $_POST['interest_to_remove']);
+        $user_interests = getUserInterests($_SESSION['uName']);
+       }
+       else if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "Unsubscribe") {
+        removeFromSub($_POST['event_to_unsubscribe'], $_SESSION['uName']);
+        $user_subs = getUserSubs($_SESSION['uName']);
        }
     }
      catch(Exception $except){
@@ -121,9 +129,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <table class="w3-table w3-bordered w3-card-4" style="width:90%">
 <thead>
 <tr style="background-color:#b0b0b0">
-<th width="25%">Organizations</th>
-<th width="25%">Is Exec</th>
-<th width="25%">Leave Org</th>
+<th width="40%">Organizations</th>
+<th width="40%">Is Exec</th>
+<th width="20%">Leave Org</th>
 </tr>
 </thead>
 
@@ -133,7 +141,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <td><?php echo $org['is_exec'] ?></td>
     <td>
         <form action="userProfile.php" method="post">
-        <input type="submit" name="btnAction" value="Bye" class="btn btn-danger" />
+        <input type="submit" name="btnAction" value="Leave Org" class="btn btn-danger" />
         <input type="hidden" name="org_to_leave" value="<?php echo $org['org_name'] ?>" />      
         </form>
     </td>
@@ -154,7 +162,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   <table class="w3-table w3-bordered w3-card-4" style="width:90%">
 <thead>
 <tr style="background-color:#b0b0b0">
-<th width="25%">Subscribed Events</th>
+<th width="80%">Subscribed Events</th>
+<th width="20%">Unsubscribe</th>
+
 
 <!--
 
@@ -166,6 +176,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <?php foreach ($user_subs as $sub): ?>
 <tr>
     <td><?php echo $sub['name']; ?></td>
+    <td>
+        <form action="userProfile.php" method="post">
+        <input type="submit" name="btnAction" value="Unsubscribe" class="btn btn-danger" />
+        <input type="hidden" name="event_to_unsubscribe" value="<?php echo $sub['event_id'] ?>" />      
+        </form>
+    </td>
     <!-- <td><?php echo $event['date_of_event']; ?></td>
     <td><?php echo $event['org_name']; ?></td>
     <td><form action="viewEventsPage.php" method="post">
@@ -185,7 +201,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   <table class="w3-table w3-bordered w3-card-4" style="width:90%">
 <thead>
 <tr style="background-color:#b0b0b0">
-<th width="25%">Interests</th>
+<th width="80%">Interests</th>
+<th width="20%">Remove Interest</th>
 
 <!--
 
@@ -197,6 +214,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <?php foreach ($user_interests as $interest): ?>
 <tr>
     <td><?php echo $interest['interest']; ?></td>
+    <td>
+        <form action="userProfile.php" method="post">
+        <input type="submit" name="btnAction" value="Remove Interest" class="btn btn-danger" />
+        <input type="hidden" name="interest_to_remove" value="<?php echo $interest['interest'] ?>" />      
+        </form>
+    </td>
     <!-- <td><?php echo $event['date_of_event']; ?></td>
     <td><?php echo $event['org_name']; ?></td>
     <td><form action="viewEventsPage.php" method="post">

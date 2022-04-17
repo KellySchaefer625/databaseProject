@@ -138,7 +138,7 @@ global $db;
 
       <input type="submit" value="Submit" class="btn btn-secondary" />
       <div>
-      <p> Click here if you already have an account <a href="login.php"> Login Here</a>.</p>
+      <p> If you already have an account, click <a href="login.php"> here</a></p>
         </div>
     </form>
   </div>
