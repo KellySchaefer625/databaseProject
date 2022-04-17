@@ -74,7 +74,8 @@ if($_SESSION["validlogin"] !== true){
     <div class="container">
         <h1>Register Organization</h1>
 <form name="mainForm" action="registerOrganization.php" method="post">
- <div class="row mb-3 mx-3">
+ <div visibility: <?php if ($submitted == true) echo 'hidden'; ?>>
+  <div class="row mb-3 mx-3">
  Organization Name:
  <input type="text" class="form-control" name="org_name" required />
  </div>
@@ -105,6 +106,7 @@ if($_SESSION["validlogin"] !== true){
 <div class="row mb-3 mx-3">
    &nbsp
 </div>
+  </div>
   
  <div class="row mb-3 mx-3">
    <div visibility: <?php if ($addExec == false) echo 'hidden'; ?>>
