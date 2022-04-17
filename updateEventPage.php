@@ -84,7 +84,6 @@ if($_SESSION["validlogin"] !== true){
 
 <div class="container">
 <td><button class="btn btn-primary"><a href="viewEventsPage.php">Go Back</a></button></td>
-<td><button class="btn btn-secondary"><a href="logoutUser.php">Logout</a></button></td>
 
 <h1>Update Event</h1>
 <form name="mainForm" action="updateEventPage.php?event_to_update=<?=$_GET['event_to_update']?>" method="POST">   
