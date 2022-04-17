@@ -1,4 +1,3 @@
-
 <?php
 // Remember to start the database server (or GCP SQL instance) before trying to connect to it
 
@@ -39,10 +38,10 @@
 
  
 /** S22, PHP (on GCP, local XAMPP, or CS server) connect to MySQL (on CS server) **/
-$username = 'crb8ua_c'; //usually have comp ID here
+$username = 'crb8ua_d'; //usually have comp ID here
 $password = 'Winter2022!!'; // usually have DB pass here
 $host = 'mysql01.cs.virginia.edu';
-$dbname = 'crb8ua_c';
+$dbname = 'crb8ua';
 $dsn = "mysql:host=$host;dbname=$dbname";     
 
 ////////////////////////////////////////////
@@ -65,8 +64,8 @@ try
 {
    $db = new PDO($dsn, $username, $password);
    
-   // display a message to let us know that we are connected to the database 
-   // echo "<p>You are connected to the database --- dsn=$dsn</p>";
+   // dispaly a message to let us know that we are connected to the database 
+   //echo "<p>You are connected to the database --- dsn=$dsn</p>";
 }
 catch (PDOException $e)     // handle a PDO exception (errors thrown by the PDO library)
 {

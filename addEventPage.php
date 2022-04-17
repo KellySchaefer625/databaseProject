@@ -142,6 +142,13 @@ if($_SESSION["validlogin"] !== true){
     <!-- <link rel="stylesheet" href="custom.css" />  -->
 </head>
 <body>
+<header>
+    <div style="float:right;">
+    <form action="logoutUser.php" method="post">
+    <button class="btn btn-primary">Logout</a></button>
+    </form>
+    </div>
+</header>
 <div class="container">
 <h1>Add Event</h1>
 <div visibility: <?php if ($submitted == true) echo 'hidden'; ?>>
