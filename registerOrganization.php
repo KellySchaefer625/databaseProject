@@ -113,10 +113,6 @@ if($_SESSION["validlogin"] !== true){
                         title = "Add Executive Member?" /> Add Executive Member </button>
                    </div>
             </div>
-
-<div class="row mb-3 mx-3">
-   &nbsp
-</div>
   
  <div class="row mb-3 mx-3">
    <div visibility: <?php if ($addExec == false) echo 'hidden'; ?>>
