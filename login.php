@@ -6,7 +6,7 @@
   $wrongPass = "";
   $invalidLogin = "";
 if(isset($_SESSION["validlogin"]) && $_SESSION["validlogin"]===true){
-    header("location: addEventPage.php");
+    header("location: viewEventsPage.php");
     exit;
 }
 //continue from here
@@ -27,6 +27,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
   else{
     $pass = trim($_POST["pwd"]);
   }
+
   if((empty($uName)==FALSE) && (empty($pass)==FALSE)){
     $userCreds = getUserCredentials($_POST["name"],$_POST["pwd"]);
 //get credentials, return as hash, check hash in main function?
@@ -37,7 +38,7 @@ echo $userCreds;
 if($userCreds==-1){
   $invalidLogin = "Invalid usename or password.";
 }
-if($userCreds==-3){
+else if($userCreds==-3){
 $invalidLogin = "Invalid usename or password.";
 }
 else if(password_verify($pass,$userCreds['pword'])){
@@ -46,9 +47,9 @@ else if(password_verify($pass,$userCreds['pword'])){
 echo $pass;
   session_start();
   $_SESSION["validlogin"] = true;
-  $_SESSION["uName"] = $userCreds['uName'];
+  $_SESSION["uName"] = $_POST["name"];
   //redirect to welcome page
-  header('location: updateEventPage.php');
+  header('location: viewEventsPage.php');
 }
 else{
   echo "Undefined Login Issue.";

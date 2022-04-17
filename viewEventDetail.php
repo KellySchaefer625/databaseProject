@@ -81,6 +81,13 @@ if($_SESSION["validlogin"] !== true){
     <!-- <link rel="stylesheet" href="custom.css" />  -->
 </head>
 <body>
+<header>
+    <div style="float:right;">
+    <form action="logoutUser.php" method="post">
+      <button class="btn btn-primary">Logout</a></button>
+    </form>
+    </div>
+</header>
 <?php if ($event_audience!=null):?>
   <?php foreach ($event_audience as $event_a): ?>
     <?php $audience_str.=$event_a['audience_type']; ?>

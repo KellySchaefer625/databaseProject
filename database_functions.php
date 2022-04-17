@@ -318,6 +318,28 @@ function addToHost($org_name, $event_id)
     }
 }
 
+function addToSub($event_id,$userId)
+{   try{
+    print_r($event_id);
+    print_r($userId);
+    global $db;
+
+    $query = "INSERT INTO Subscribes_to VALUES (:userId, :event_id)";
+
+    $statement = $db->prepare($query);
+
+    $statement->bindValue(':userId', $userId);
+    $statement->bindValue(':event_id', $event_id);
+
+    $statement->execute();
+
+    $statement->closeCursor();
+    }
+    catch(Exception $execpt){
+        throw new Exception('Error adding to Subscribes to');
+    }
+}
+
 function updateHost($org_name, $event_id)
 {   try{
     global $db;
@@ -355,6 +377,168 @@ function deleteHost($event_id)
     }
 }
 
+function removeFromSub($event_id,$userID)
+{   try{
+    global $db;
+
+    $query = "DELETE from Subscribes_to WHERE comp_id = :userID AND event_id=:event_id";
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(':userID', $userID);
+    $statement->bindValue(':event_id', $event_id);
+
+    $statement->execute();
+
+    $statement->closeCursor();
+    }
+    catch(Exception $execpt){
+        throw new Exception('Error deleting from subscribes to');
+    }
+}
+
+function getAllOrgs()
+{
+    try{
+    global $db;
+
+    $query = "SELECT DISTINCT org_name FROM Host ORDER BY org_name";
+
+    // 1. prepare
+
+    // 2. bindValue & execute
+
+    // Prepare and bindValue helps protect against
+    // SQL injection attacks
+    // $statement->bindValue(':org', $event_id);
+    $statement = $db->prepare($query);
+    $statement->execute();
+    $results = $statement->fetchAll();
+
+    $statement->closeCursor();
+    
+    return $results;
+    }
+    catch(Exception $execpt){
+        throw new Exception('Error getting all events');
+    }
+}
+
+function getAllCats()
+{
+    try{
+    global $db;
+
+    $query = "SELECT DISTINCT category_name FROM Event_categories ORDER BY category_name";
+
+    // 1. prepare
+
+    // 2. bindValue & execute
+
+    // Prepare and bindValue helps protect against
+    // SQL injection attacks
+    // $statement->bindValue(':org', $event_id);
+    $statement = $db->prepare($query);
+    $statement->execute();
+    $results = $statement->fetchAll();
+
+    $statement->closeCursor();
+    
+    return $results;
+    }
+    catch(Exception $execpt){
+        throw new Exception('Error getting all events');
+    }
+}
+
+function getUserSubs($userID)
+{
+    try{
+    global $db;
+
+    $query = "SELECT DISTINCT * FROM Event_by_id,Host,Subscribes_to WHERE Event_by_id.event_id = Host.event_id AND Event_by_id.event_id = Subscribes_to.event_id AND Subscribes_to.comp_id = :userID ORDER BY Event_by_id.date_of_event, Event_by_id.name, Host.org_name";
+
+    // 1. prepare
+
+    // 2. bindValue & execute
+
+    // Prepare and bindValue helps protect against
+    // SQL injection attacks
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(':userID', $userID);
+    $statement->execute();
+    $results = $statement->fetchAll();
+
+    $statement->closeCursor();
+    
+    return $results;
+    }
+    catch(Exception $execpt){
+        throw new Exception('Error getting all events');
+    }
+}
+
+function getUserOrgs($user_id)
+{   try{
+    global $db;
+
+    $query = "SELECT DISTINCT * from Is_member WHERE comp_id='$user_id'";
+
+    $statement = $db->prepare($query);
+
+    $statement->execute();
+
+    $result = $statement->fetchAll();
+
+    $statement->closeCursor();
+
+    return $result;
+    }
+    catch(Exception $execpt){
+        throw new Exception('Error getting user\'s organizations');
+    }
+}
+
+function removeUserOrg($userID, $org_name)
+{   try{
+    global $db;
+
+    $query = "DELETE from Is_member WHERE comp_id = :userID AND org_name=:org_name";
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(':userID', $userID);
+    $statement->bindValue(':org_name', $org_name);
+
+    $statement->execute();
+
+    $statement->closeCursor();
+
+    }
+    catch(Exception $execpt){
+        throw new Exception('Error removing user from org');
+    }
+}
+
+function getUserInterests($user_id)
+{   try{
+    global $db;
+
+    $query = "SELECT DISTINCT * from User_Interests WHERE comp_id='$user_id'";
+
+    $statement = $db->prepare($query);
+
+    $statement->execute();
+
+    $result = $statement->fetchAll();
+
+    $statement->closeCursor();
+
+    return $result;
+    }
+    catch(Exception $execpt){
+        throw new Exception('Error getting user\'s organizations');
+    }
+}
 
 function getAllEventsByDate()
 {
@@ -464,6 +648,62 @@ function getEventDetail($event_id)
     }
 }
 
+function getEventsByOrg($org_name)
+{
+    try{
+    global $db;
+    //print_r($org_name);
+    $query = "SELECT * FROM Event_by_id,Host WHERE Event_by_id.event_id = Host.event_id AND Host.org_name = :org_name";
+
+    // 1. prepare
+
+    // 2. bindValue & execute
+
+    // Prepare and bindValue helps protect against
+    // SQL injection attacks
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(':org_name', $org_name);
+    $statement->execute();
+    $results = $statement->fetchAll();
+    //print($event_id);
+    $statement->closeCursor();
+    //print($results);
+    return $results;
+    }
+    catch(Exception $execpt){
+        throw new Exception('Error getting event details');
+    }
+}
+
+function getEventsByCat($cat_name)
+{
+    try{
+    global $db;
+    //print_r($org_name);
+    $query = "SELECT * FROM Event_by_id,Event_categories,Host WHERE Event_by_id.event_id = Event_categories.event_id AND Event_by_id.event_id = Host.event_id AND Event_categories.category_name = :cat_name";
+
+    // 1. prepare
+
+    // 2. bindValue & execute
+
+    // Prepare and bindValue helps protect against
+    // SQL injection attacks
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(':cat_name', $cat_name);
+    $statement->execute();
+    $results = $statement->fetchAll();
+    //print($event_id);
+    $statement->closeCursor();
+    //print($results);
+    return $results;
+    }
+    catch(Exception $execpt){
+        throw new Exception('Error getting event details');
+    }
+}
+
 function getEventAudience($event_id)
 {
     try{
@@ -531,10 +771,10 @@ function getUserCredentials($userName,$userpassword)
     try{
     global $db;
     //Prep SQL query
-    $query = "SELECT comp_id, pword FROM User_by_id WHERE comp_id=:givenUName";
+    $query = "SELECT comp_id, pword FROM User_by_id WHERE comp_id=:userName";
     $statement = $db->prepare($query);
 //$statement =; //Prep statement and bind Values
-    $statement->bindValue(':givenUName',$userName);
+    $statement->bindValue(':userName',$userName);
 
     $paramUsername = $userName;
     $execStatement = $statement->execute();
@@ -546,7 +786,7 @@ function getUserCredentials($userName,$userpassword)
             $hashPass = $userData["pword"];
             // echo "gets item";
             // echo $userName;
-            // echo $hash
+            // echo $hashPass;
             if(password_verify($userpassword,$hashPass)){
                 //if correct, return all data, but send password hashed
                 //echo "this runs";
@@ -630,6 +870,7 @@ function addNewUser($desiredName,$desiredpassword)
 catch(PDOException $execption){
     throw new Exception($execption->getMessage(), (int)$execption->getCode());
 }    
+
 catch(Exception $execpt){
         throw new Exception($statement->error);
         print_r($db->errorInfo());

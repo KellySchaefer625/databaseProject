@@ -1,7 +1,7 @@
 ﻿<?php
 session_start(); 
 if($_SESSION["validlogin"] !== true){
-  header("location: login.php");
+  header("location: userReg.php");
   exit;
 }
  require('connect-db.php');
@@ -10,6 +10,9 @@ if($_SESSION["validlogin"] !== true){
  require('database_functions.php');
 
  $list_of_events = getAllEventsByDate();
+ $list_of_orgs = getAllOrgs();
+ $list_of_categories = getAllCats();
+ $list_of_sub_events = getUserSubs($_SESSION['uName']);
  $event_details = null;
  $event_audience = null;
  $event_categories = null;
@@ -31,12 +34,6 @@ if($_SESSION["validlogin"] !== true){
       if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "Exit Event Detail") {
         $event_details = null;
       }
-      // else if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "ShowDetails") {
-      //   $event_details = getEventDetail($_POST['event_to_display']);
-      //   $event_audience = getEventAudience($_POST['event_to_display']);
-      //   $event_categories = getEventCategories($_POST['event_to_display']);
-      //   $event_restrictions = getEventRestrictions($_POST['event_to_display']);
-      // }
       else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "Sort By Event Name") {
         $list_of_events = getAllEventsByName();
 
@@ -50,6 +47,28 @@ if($_SESSION["validlogin"] !== true){
        else if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "Update") {
 
         // $zombie_to_update = getZombie_byName($_POST['zombie_to_update']);
+      }
+      else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "Filter"){
+        echo $_POST['org_to_filter'];
+        $list_of_events = getEventsByOrg($_POST['org_to_filter']);
+      }
+
+      else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "<3"){
+        // echo $_POST['org_to_filter'];
+        // print_r($_SESSION['uName']);
+        addToSub($_POST['event_to_like'],$_SESSION['uName']);
+        $list_of_sub_events = getUserSubs($_SESSION['uName']);
+      }
+
+      else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == ":("){
+        // echo $_POST['org_to_filter'];
+        // print_r($_SESSION['uName']);
+        removeFromSub($_POST['event_to_unlike'],$_SESSION['uName']);
+        $list_of_sub_events = getUserSubs($_SESSION['uName']);
+      }
+
+      else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "Filter "){
+        $list_of_events = getEventsByCat($_POST['cat_to_filter']);
       }
 
       else if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "Confirm Update" && $zombie_to_update != null) {
@@ -116,30 +135,35 @@ if($_SESSION["validlogin"] !== true){
     <style>
     h1 {text-align: center;}
     </style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
 </head>
 <body>
 
 
 
 <div class="container">
-  <!-- <header>
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/University_of_Virginia_Rotunda_logo.svg/1200px-University_of_Virginia_Rotunda_logo.svg.png" class="logo floatLeft" alt="UVA Logo" width="300" height="300">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/University_of_Virginia_Rotunda_logo.svg/1200px-University_of_Virginia_Rotunda_logo.svg.png" class="logo floatRight" alt="UVA Logo" width="300" height="300">
-    <h1>UVA Calendar</h1>
-  </header> -->
-  <!-- <div class="header">
-    <div class="content-right">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/University_of_Virginia_Rotunda_logo.svg/1200px-University_of_Virginia_Rotunda_logo.svg.png" style="vertical-align: middle" width="300" height="300">
+  <header>
+    <div style="float:right;">
+    <div style="float:left;">
+<div style="float:left;">
+    <form action="userProfile.php" method="post">
+    
+    <button class="btn btn-primary" class="glyphicon glyphicon-user">User Profile</a></button>
+   
+    </form>
+  </div>
+</div>
+  <div style="float:left;">
+    <form action="logoutUser.php" method="post">
+    
+    <button class="btn btn-primary">Logout</a></button>
+   
+    </form>
+  </div>
     </div>
-
-    <div class="content-left">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/University_of_Virginia_Rotunda_logo.svg/1200px-University_of_Virginia_Rotunda_logo.svg.png" style="vertical-align: middle" width="300" height="300">
-    </div>
-    <div class="content">
-      <h1>UVA Calendar</h1>
-    </div>
-  </div> -->
-  <!-- Source: https://stackoverflow.com/questions/19697585/text-between-two-image/19697666 , https://www.computerhope.com/issues/ch001968.html-->
+  </header>
   <div class="header">
       <table style="margin-left:auto;margin-right:auto;">
         <tr>
@@ -155,50 +179,48 @@ if($_SESSION["validlogin"] !== true){
         </tr>
       </table>
   </div>
-  
 
+  <table class="w3-table w3-bordered w3-card-4" style="width:90%">
+<h2>Events you have subscribed to:</h2>
+<thead>
+<tr style="background-color:#b0b0b0">
+<th width="25%">Name</th>
+<th width="20%">Date of Event</th>
+<th width="25%">Host Organization</th>
+<th width="7.5%">Event Details</th>
+<th width="7.5%">Update Event</th>
+<th width="7.5%">Delete Event</th>
+<th width="7.5%">Unlike Event</th>
 <!--
-<form name="mainForm" action="simpleform.php" method="post">   
-  <div class="row mb-3 mx-3">
-    Your name:
-    <input type="text" class="form-control" name="name" required
-    value = "<?php if ($zombie_to_update!=null) echo $zombie_to_update['name']?>" />      
-  </div>  
-    <div class="row mb-3 mx-3">
-        Danger:
-        <input type="number" class="form-control" name="Danger" required 
-        value = "<?php if ($zombie_to_update!=null) echo $zombie_to_update['Danger'] ?>"/>        
-    </div>  
 
-    <div class="row mb-3 mx-3">
-        Speed:
-        <input type="text" class="form-control" name="Speed" required 
-        value = "<?php if ($zombie_to_update!=null) echo $zombie_to_update['Speed'] ?>"/>        
-    </div> 
-
-    <input type="submit" value="Add" name="btnAction" class="btn btn-dark"
-
-        title = "insert a zombie" />
-
-    <input type="submit" value="Confirm Update" name="btnAction" class="btn btn-dark"
-
-        title = "Confirm Changes" />
-</form>  
+<th width="12%">Delete ?</th>
 /> -->
+</tr>
+</thead>
 
+<?php foreach ($list_of_sub_events as $event): ?>
+<tr>
+    <td><?php echo $event['name']; ?></td>
+    <td><?php echo $event['date_of_event']; ?></td>
+    <td><?php echo $event['org_name']; ?></td>
+    <td><form action="viewEventDetail.php" method="post">
+        <input type="submit" name="btnAction" value="ShowDetails" class="btn btn-primary" />
+        <input type="hidden" name="event_to_display" value="<?php echo $event['event_id'] ?>" />      
+      </form></td>
+    <td><button class="btn btn-primary"><a href="updateEventPage.php?event_to_update=<?=$event['event_id']?>" style="color: white">UpdateEvent</a></button></td>
+    <td><form action="viewEventsPage.php" method="post">
+      <input type="submit" name="btnAction" value="DeleteEvent" class="btn btn-primary" />
+      <input type="hidden" name="event_to_delete" value="<?php echo $event['event_id'] ?>" />      
+    </form></td>
+    <td><form action="viewEventsPage.php" method="post">
+        <input type="submit" name="btnAction" value=":(" class="btn btn-danger" /> 
+        <input type="hidden" name="event_to_unlike" value="<?php echo $event['event_id'] ?>" />      
+      </form></td>
+</tr>
+ <?php endforeach; ?>
 
-  <!-- <table class="w3-table w3-bordered w3-card-4" style="width:90%">
-  <thead>
-  <tr style="background-color:#b0b0b0">
-  <th width="25%">Name</th>
-  <th width="20%">Date of Event</th>
-  <th width="25%">Host Organization</th>
-  <tr>
-      <td><?php echo $name; ?></td>
-      <td><?php echo $date; ?></td>
-      <td><?php echo $audience_str; ?></td>
-  </tr>
-  </table> -->
+  </table>
+  
   <form action="viewEventsPage.php" method="post">
   <div class="row">
     <div class="col-auto">
@@ -216,6 +238,58 @@ if($_SESSION["validlogin"] !== true){
   </div>
 </form>
 
+<!-- source: https://blog.hubspot.com/website/html-dropdown and https://www.w3schools.com/tags/att_option_value.asp and https://stackoverflow.com/questions/3518002/how-can-i-set-the-default-value-for-an-html-select-element-->
+<form action="viewEventsPage.php" method="post">
+  <label for="cat-names">Choose a category to filter on:</label>
+  <select name="cat-names" id="cat-names" onChange="update2()">
+    <option value="" selected disabled hidden>Choose here</option>
+    <?php foreach ($list_of_categories as $cat): ?>
+      <option value="<?php echo $cat['category_name'] ?>"><?php echo $cat['category_name'] ?></option>
+    <?php endforeach; ?>
+  </select>
+  <input type="submit" name="btnAction" value='Filter '>
+  <input type="hidden" name ="cat_to_filter" id="value" value="<?php $val2 ?>">
+  <!-- source: https://ricardometring.com/getting-the-value-of-a-select-in-javascript -->
+		<script type="text/javascript">
+			function update2() {
+				var select = document.getElementById('cat-names');
+				var option = select.options[select.selectedIndex];
+
+				document.getElementById('value').value = option.value;
+        var val2 = option.val
+			}
+
+			update2();
+		</script>
+  <!-- <input type="hidden" name="org_to_filter" value=<?php $text ?>/>  -->
+</form>
+
+<form action="viewEventsPage.php" method="post">
+  <label for="org-names">Choose an organization to filter on:</label>
+  <select name="org-names" id="org-names" onChange="update1()">
+    <option value="" selected disabled hidden>Choose here</option>
+    <?php foreach ($list_of_orgs as $org): ?>
+      <option value="<?php echo $org['org_name'] ?>"><?php echo $org['org_name'] ?></option>
+    <?php endforeach; ?>
+  </select>
+  <input type="submit" name="btnAction" value='Filter'>
+  <input type="hidden" name ="org_to_filter" id="value1" value="<?php $val ?>">
+  <!-- source: https://ricardometring.com/getting-the-value-of-a-select-in-javascript -->
+		<script type="text/javascript">
+			function update1() {
+				var select = document.getElementById('org-names');
+				var option = select.options[select.selectedIndex];
+
+				document.getElementById('value1').value = option.value;
+        var val = option.val
+			}
+
+			update1();
+		</script>
+  <!-- <input type="hidden" name="org_to_filter" value=<?php $text ?>/>  -->
+</form>
+
+
 <!--<h2> List of Zombies </h2>/> -->
 <table class="w3-table w3-bordered w3-card-4" style="width:90%">
 <thead>
@@ -223,9 +297,10 @@ if($_SESSION["validlogin"] !== true){
 <th width="25%">Name</th>
 <th width="20%">Date of Event</th>
 <th width="25%">Host Organization</th>
-<th width="12%">Event Details</th>
-<th width="12%">Update Event</th>
-<th width="12%">Delete Event</th>
+<th width="7.5%">Event Details</th>
+<th width="7.5%">Update Event</th>
+<th width="7.5%">Delete Event</th>
+<th width="7.5%">Like Event</th>
 <!--
 
 <th width="12%">Delete ?</th>
@@ -238,15 +313,19 @@ if($_SESSION["validlogin"] !== true){
     <td><?php echo $event['name']; ?></td>
     <td><?php echo $event['date_of_event']; ?></td>
     <td><?php echo $event['org_name']; ?></td>
-    <td><form action="viewEventsPage.php" method="post">
+    <td><form action="viewEventDetail.php" method="post">
         <input type="submit" name="btnAction" value="ShowDetails" class="btn btn-primary" />
         <input type="hidden" name="event_to_display" value="<?php echo $event['event_id'] ?>" />      
       </form></td>
-    <td><button class="btn btn-primary"><a href="updateEventPage.php?event_to_update=<?=$event['event_id']?>">UpdateEvent</a></button></td>
+    <td><button class="btn btn-primary"><a href="updateEventPage.php?event_to_update=<?=$event['event_id']?>" style="color: white">UpdateEvent</a></button></td>
     <td><form action="viewEventsPage.php" method="post">
       <input type="submit" name="btnAction" value="DeleteEvent" class="btn btn-primary" />
       <input type="hidden" name="event_to_delete" value="<?php echo $event['event_id'] ?>" />      
     </form></td>
+    <td><form action="viewEventsPage.php" method="post">
+        <input type="submit" name="btnAction" value="<3" class="btn btn-danger" /> 
+        <input type="hidden" name="event_to_like" value="<?php echo $event['event_id'] ?>" />      
+      </form></td>
 </tr>
  <?php endforeach; ?>
 
