@@ -17,6 +17,12 @@ if($_SESSION["validlogin"] !== true){
         $orgName = $_POST['org_name'];
       }
      
+     if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "AddExec") {
+       $submitted = true;
+       $addExec = true;
+       $orgName = $_POST['org_name'];
+     }
+     
   }
 
     catch(Exception $except){
