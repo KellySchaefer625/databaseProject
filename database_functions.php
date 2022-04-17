@@ -499,6 +499,26 @@ function getUserOrgs($user_id)
     }
 }
 
+function removeUserOrg($userID, $org_name)
+{   try{
+    global $db;
+
+    $query = "DELETE from Is_member WHERE comp_id = :userID AND org_name=:org_name";
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(':userID', $userID);
+    $statement->bindValue(':org_name', $org_name);
+
+    $statement->execute();
+
+    $statement->closeCursor();
+
+    }
+    catch(Exception $execpt){
+        throw new Exception('Error removing user from org');
+    }
+}
+
 function getUserInterests($user_id)
 {   try{
     global $db;

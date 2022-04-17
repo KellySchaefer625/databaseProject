@@ -20,6 +20,18 @@ $user_subs = getUserSubs($_SESSION['uName']);
 //  print_r($user_subs);
 // print "</pre>";
 
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    try{
+       if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "Bye") {
+        removeUserOrg($_SESSION['uName'], $_POST['org_to_leave']);
+        $user_orgs = getUserOrgs($_SESSION['uName']);
+       }
+    }
+     catch(Exception $except){
+       throw new Exception('Error posting to server during view Events');
+     }
+  }
+
  ?>
 
 <!DOCTYPE html>
@@ -111,6 +123,7 @@ $user_subs = getUserSubs($_SESSION['uName']);
 <tr style="background-color:#b0b0b0">
 <th width="25%">Organizations</th>
 <th width="25%">Is Exec</th>
+<th width="25%">Leave Org</th>
 </tr>
 </thead>
 
@@ -118,6 +131,12 @@ $user_subs = getUserSubs($_SESSION['uName']);
 <tr>
     <td><?php echo $org['org_name'] ?></td>
     <td><?php echo $org['is_exec'] ?></td>
+    <td>
+        <form action="userProfile.php" method="post">
+        <input type="submit" name="btnAction" value="Bye" class="btn btn-danger" />
+        <input type="hidden" name="org_to_leave" value="<?php echo $org['org_name'] ?>" />      
+        </form>
+    </td>
     <!-- <td><form action="viewEventsPage.php" method="post">
         <input type="submit" name="btnAction" value="ShowDetails" class="btn btn-primary" />
         <input type="hidden" name="event_to_display" value="<?php echo $event['event_id'] ?>" />      
