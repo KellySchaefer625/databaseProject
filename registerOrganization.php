@@ -6,7 +6,9 @@ if($_SESSION["validlogin"] !== true){
  }
  require('connect-db.php');
  require('database_functions.php');
-
+  $submitted = false;
+  $addExec = false;
+  $orgName = '';
  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
    try{
 
@@ -18,12 +20,13 @@ if($_SESSION["validlogin"] !== true){
         addToEvent_categories($latest_event_id,$_POST['categories']);
         addToEvent_restrictions($latest_event_id,$_POST['restrictions']);
         $submitted = true;
-
+        $orgName = $_POST['org_name'];
       }
+     
   }
 
     catch(Exception $except){
-      throw new Exception("Error adding event page");
+      throw new Exception("Error registering organization page");
     }
  }
 
@@ -78,153 +81,65 @@ if($_SESSION["validlogin"] !== true){
         <h1>Register Organization</h1>
 <form name="mainForm" action="registerOrganization.php" method="post">
  <div class="row mb-3 mx-3">
- Event Name:
- <input type="text" class="form-control" name="name" required />
- </div>
-
- <div class="row mb-3 mx-3">
- Event Host:
+ Organization Name:
  <input type="text" class="form-control" name="org_name" required />
  </div>
 
-
-
  <div class="row mb-3 mx-3">
-  Event Date:
-    <input type="date" class="form-control" name="date_of_event" required />
+ Email:
+ <input type="text" class="form-control" name="org_email" required />
  </div>
 
-  <div class="row mb-3 mx-3">
-    Event Categories:
-       <input type="text" class="form-control" name="categories" required/>
-  </div>
-
-  <div class="row mb-3 mx-3">
-    Event Audience:
-    <input type="text" class="form-control" name="audience" required />
-  </div>
-
-  <div class="row mb-3 mx-3">
-    Event Details:
-    <input type="text" class="form-control" name="details" required/>
-  </div>
-
-    <div class="row mb-3 mx-3">
-    Start Time:
-        <input type="time" class="form-control" name="time_start" required />
-    </div>
-
-   <div class="row mb-3 mx-3">
-    End Time:
-        <input type="time" class="form-control" name="time_end"  required/>
-    </div>
-
-  <div class="row mb-3 mx-3">
-    Building:
-        <input type="text" class="form-control" name="building" required/>
-    </div>
-
-  <div class="row mb-3 mx-3">
-    Room:
-        <input type="text" class="form-control" name="room" required  />
-    </div>
-
  <div class="row mb-3 mx-3">
-    Cost:
-        <input type="number" class="form-control" name="cost" required/>
-    </div>
+  Description of Organization:
+ <input type="text" class="form-control" name="org_description" required />
+ </div>
+  
+<input type="submit" value="Register" name="btnAction" class="btn btn-dark"
+        title = "Register Organization" />
+  </div>
+</form>
 
- <div class="row mb-3 mx-3">
-    Food?
-        <input type="text" class="form-control" name="food" required />
-    </div>
+   <form name="subForm" action="registerOrganization.php" method="post">
+            <div visibility: <?php if ($submitted == false || $addExec == true) echo 'hidden'; ?>>
+                  <div class="row mb-3 mx-3">
+                      <button type="submit" value="AddExec" name="btnAction" class="btn btn-dark btn-block"
+                        title = "Add Executive Member?" /> Add Executive Member </button>
+                   </div>
+            </div>
 
+<div class="row mb-3 mx-3">
+   &nbsp
+</div>
+  
  <div class="row mb-3 mx-3">
-    Restrictions
-        <input type="text" class="form-control" name="restrictions" required/>
+   <div visibility: <?php if ($addExec == false) echo 'hidden'; ?>>
+      Executive Member Username:
+      <input type="text" class="form-control" name="execName"  />
+   </div>
+ </div>
+     
+ <div class="row mb-3 mx-3">
+   &nbsp
+ </div>
+  
+ <div>
+  <input type="hidden" id="orgName" name="orgName" value=<?php echo $orgName; ?> >
+ </div>
+  
+<div class="row mb-3 mx-3">
+  <div visibility: <?php if ($addExec == false) echo 'hidden'; ?>>
+   <button type="submit" value="execAdd" name="btnAction" class="btn btn-dark"
+        title = "Add Exec" /> Add Executive Member </button>
+  </div>
  </div>
 
-    <input type="submit" value="Add" name="btnAction" class="btn btn-dark"
-        title = "Add Event" />
-  </div>
-        </form>
-
-        <form name="subForm" action="addEventPage.php" method="post">
-            <div visibility: <?php if ($submitted == false || $addInfo == true) echo 'hidden'; ?>>
-  <div class="row mb-3 mx-3">
-  <button type="submit" value="AddHost" name="btnAction" class="btn btn-dark btn-block"
-        title = "Add Additional Host?" /> Add Additional Host </button>
-  </div>
-  </div>
 
             <div class="row mb-3 mx-3">
                 &nbsp
             </div>
-
-            <div class="row mb-3 mx-3">
-                <div visibility: <?php if ($submitted == false || $addInfo == true) echo 'hidden'; ?>>
-  <button type="submit" value="AddCategory" name="btnAction" class="btn btn-dark btn-block"
-        title = "Add Additional Category?"/> Add Additional Category </button>
-  </div>
-            </div>
-
-
-            <div class="row mb-3 mx-3">
-                &nbsp
-            </div>
-
-            <div class="row mb-3 mx-3">
-                <div visibility: <?php if ($submitted == false || $addInfo == true) echo 'hidden'; ?>>
-  <button type="submit" value="AddAudience" name="btnAction" class="btn btn-dark btn-block"
-        title = "Add Additional Audience?" />Add Additional Audience </button>
-  </div>
-            </div>
-
-            <div class="row mb-3 mx-3">
-                &nbsp
-            </div>
-
-
-            <div class="row mb-3 mx-3">
-                <div visibility: <?php if ($submitted == false || $addInfo == true) echo 'hidden'; ?>>
-  <button type="submit" value="AddRestriction" name="btnAction" class="btn btn-dark btn-block"
-        title = "Add Additional Event Restriction" /> Add Addditional Event Restriction </button>
-  </div>
-            </div>
-
-            <div class="row mb-3 mx-3">
-                &nbsp
-            </div>
-
-            <div class="row mb-3 mx-3">
-                <div visibility: <?php if ($submitted == false || $addInfo == true) echo 'hidden'; ?>>
-  <button type="submit" value="AddCategory" name="btnAction" class="btn btn-dark btn-block"
-        title = "Add Additional Category?"/> Add Additional Category </button>
-  </div>
-            </div>
-
-            <div class="row mb-3 mx-3">
-                <div visibility: <?php if ($addInfo == false) echo 'hidden'; ?>>
-  <?php echo $fieldName ?>
-  <input type="text" class="form-control" name="additionalInput"  />
-     <div class="row mb-3 mx-3">
-                 &nbsp
-  </div>
-  <div>
-  <input type="hidden" id="addType" name="addType" value=<?php echo $addType; ?> >
-  </div>
-   <button type="submit" value="newAdd" name="btnAction" class="btn btn-dark"
-        title = "Add Info" /> Add To Event </button>
-  </div>
-            </div>
-
-
-            <div class="row mb-3 mx-3">
-                &nbsp
-            </div>
-
-
-            <div visibility: <?php if ($submitted == false || $addInfo == true) echo 'hidden'; ?>>
+  
+<div visibility: <?php if ($submitted == false || $addExec == true) echo 'hidden'; ?>>
    <div class="row mb-3 mx-3">
    <a href="viewEventsPage.php">
   <input href="viewEventsPage.php"  type="button" value="Done" name="btnAction" class="btn btn-dark btn-block"
