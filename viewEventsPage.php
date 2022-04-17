@@ -75,13 +75,17 @@ if($_SESSION["validlogin"] !== true){
         $list_of_zombies = getAllZombies();
       }
 
-      else if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "DeleteEvent") {
-        deleteEvent_By_ID($_POST['event_to_delete']);
-        deleteHost($_POST['event_to_delete']);
-        deleteEvent_audience($_POST['event_to_delete']);
-        deleteEvent_categories($_POST['event_to_delete']);
-        deleteEvent_restrictions($_POST['event_to_delete']);
-      }
+      // else if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "DeleteEvent") {
+      //   // $exec_roles = getUserExecRoles($_SESSION['uName'],$_POST['event_to_delete']);
+      //   // if ($exec_roles == null) {
+
+      //   // }
+      //   deleteEvent_By_ID($_POST['event_to_delete']);
+      //   deleteHost($_POST['event_to_delete']);
+      //   deleteEvent_audience($_POST['event_to_delete']);
+      //   deleteEvent_categories($_POST['event_to_delete']);
+      //   deleteEvent_restrictions($_POST['event_to_delete']);
+      // }
     }
     catch(Exception $except){
       throw new Exception('Error posting to server during view Events');
@@ -204,7 +208,10 @@ if($_SESSION["validlogin"] !== true){
 <tr>
     <td><?php echo $event['name']; ?></td>
     <td><?php echo $event['date_of_event']; ?></td>
-    <td><?php echo $event['org_name']; ?></td>
+    <td><form action="viewOrgDetail.php" method="post">
+        <input type="submit" name="btnOrgDetails" value="<?php echo $event['org_name']; ?>" class="btn btn-link" />
+        <input type="hidden" name="org_to_display" value="<?php echo $event['org_name']; ?>" />      
+      </form></td>
     <td><form action="viewEventDetail.php" method="post">
         <input type="submit" name="btnAction" value="ShowDetails" class="btn btn-primary" />
         <input type="hidden" name="event_to_display" value="<?php echo $event['event_id'] ?>" />      
@@ -314,16 +321,20 @@ if($_SESSION["validlogin"] !== true){
 <tr>
     <td><?php echo $event['name']; ?></td>
     <td><?php echo $event['date_of_event']; ?></td>
-    <td><?php echo $event['org_name']; ?></td>
+    <!-- <td><?php echo $event['org_name']; ?></td> -->
+    <td><form action="viewOrgDetail.php" method="post">
+        <input type="submit" name="btnOrgDetails" value="<?php echo $event['org_name']; ?>" class="btn btn-link" />
+        <input type="hidden" name="org_to_display" value="<?php echo $event['org_name']; ?>" />      
+      </form></td>
     <td><form action="viewEventDetail.php" method="post">
         <input type="submit" name="btnAction" value="ShowDetails" class="btn btn-primary" />
         <input type="hidden" name="event_to_display" value="<?php echo $event['event_id'] ?>" />      
       </form></td>
     <td><button class="btn btn-primary"><a href="updateEventPage.php?event_to_update=<?=$event['event_id']?>" style="color: white">UpdateEvent</a></button></td>
-    <td><form action="viewEventsPage.php" method="post">
+    <!-- <td><form action="viewEventsPage.php" method="post">
       <input type="submit" name="btnAction" value="DeleteEvent" class="btn btn-primary" />
       <input type="hidden" name="event_to_delete" value="<?php echo $event['event_id'] ?>" />      
-    </form></td>
+    </form></td> -->
     <td><form action="viewEventsPage.php" method="post">
         <input type="submit" name="btnAction" value="<3" class="btn btn-danger" /> 
         <input type="hidden" name="event_to_like" value="<?php echo $event['event_id'] ?>" />      
