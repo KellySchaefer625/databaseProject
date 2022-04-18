@@ -472,7 +472,8 @@ function deleteMember($comp_id) {
     try{
  
     global $db;
-        
+    echo 'I am in delete member';
+    echo $comp_id;
     $query = "DELETE * FROM Is_member WHERE comp_id = :comp_id";
 
     $statement = $db->prepare($query);
