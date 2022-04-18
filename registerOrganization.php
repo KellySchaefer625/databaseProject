@@ -26,7 +26,7 @@ if($_SESSION["validlogin"] !== true){
      if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "execAdd") {
        $submitted = true;
        $addExec = false;
-       $orgName = $_POST['org_name'];
+       $orgName = $_POST['orgName'];
        $comp_id = $_POST['execName'];
        addMemberAsExec($comp_id, $orgName);
      }
@@ -110,13 +110,6 @@ if($_SESSION["validlogin"] !== true){
   </div>
    </form>
  
-    <div class="container">
-     <div class="row mb-3 mx-3">
-        <div visibility: <?php if ($addExec == false) echo 'hidden'; ?>>
-            Executive Member Username:
-          <input type="text" class="form-control" name="execName"  />
-       </div>
-     </div>
      
    <form name="subform" action="registerOrganization.php" method="post">  
      <div class="row mb-3 mx-3">
@@ -126,6 +119,14 @@ if($_SESSION["validlogin"] !== true){
          <div class="row mb-3 mx-3">
                 &nbsp
          </div>
+     
+     <div class="container">
+     <div class="row mb-3 mx-3">
+        <div visibility: <?php if ($addExec == false) echo 'hidden'; ?>>
+            Executive Member Username:
+          <input type="text" class="form-control" name="execName"  />
+       </div>
+     </div>
     
       <div class="row mb-3 mx-3">
                 &nbsp
