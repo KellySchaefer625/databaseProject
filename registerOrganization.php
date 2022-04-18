@@ -107,7 +107,6 @@ if($_SESSION["validlogin"] !== true){
             Executive Member Username:
           <input type="text" class="form-control" name="execName"  />
        </div>
-     </div>
    </div>
      
      
@@ -127,7 +126,7 @@ if($_SESSION["validlogin"] !== true){
             &nbsp
         </div>
      
-       <div class="row mb-3 mx-3">
+      <div clas</div>s="row mb-3 mx-3">
           &nbsp
         </div>
      
@@ -137,7 +136,8 @@ if($_SESSION["validlogin"] !== true){
                         title = "Add Executive Member?" /> Add Executive Member </button>
                    </div>
             </div>
-
+     
+  </div>
  <div class="row mb-3 mx-3">
    &nbsp
  </div>
