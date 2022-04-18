@@ -19,6 +19,7 @@ if($_SESSION["validlogin"] !== true){
         updateHost($_POST['org_name'], $_GET['event_to_update']);
         updateEvent_audience($_GET['event_to_update'],$_POST['audience']);
         updateEvent_categories($_GET['event_to_update'],$_POST['categories']);
+        header("location: viewEventsPage.php");
         // updateEvent_restrictions($_GET['event_to_update'],$_POST['restrictions']);
 
       }
