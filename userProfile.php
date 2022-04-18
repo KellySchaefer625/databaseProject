@@ -16,6 +16,9 @@ if($_SESSION["validlogin"] !== true){
 //  print_r($user_interests);
 // print "</pre>";
 $user_subs = getUserSubs($_SESSION['uName']);
+$list_of_interests = getAllCats();
+
+$sug_events = getUsersEventInterests($_SESSION['uName']);
 // print "<pre>";
 //  print_r($user_subs);
 // print "</pre>";
@@ -34,6 +37,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         removeFromSub($_POST['event_to_unsubscribe'], $_SESSION['uName']);
         $user_subs = getUserSubs($_SESSION['uName']);
        }
+       else if(!empty($_POST['btnActionUser']) && $_POST['btnActionUser'] == "Add") {
+        addInterest($_POST['cat_to_add'], $_SESSION['uName']);
+        $user_interests = getUserInterests($_SESSION['uName']);
+        $sug_events = getUsersEventInterests($_SESSION['uName']);
+       }
+       else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "<3"){
+        // echo $_POST['org_to_filter'];
+        // print_r($_SESSION['uName']);
+        addToSub($_POST['event_to_like'],$_SESSION['uName']);
+        $user_subs = getUserSubs($_SESSION['uName']);
+      }
     }
      catch(Exception $except){
        throw new Exception('Error posting to server during view Events');
@@ -131,7 +145,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <tr style="background-color:#b0b0b0">
 <th width="40%">Organizations</th>
 <th width="40%">Is Exec</th>
-<th width="20%">Leave Org</th>
+<th width="10%">Add Event for Org</th>
+<th width="10%">Leave Org</th>
+
 </tr>
 </thead>
 
@@ -139,6 +155,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <tr>
     <td><?php echo $org['org_name'] ?></td>
     <td><?php echo $org['is_exec'] ?></td>
+    <?php if ($org['is_exec']=="Yes"):?>
+      <td>
+        <form action="addEventPage.php" method="post">
+        <input type="submit" name="btnAction" value="Add Event For This Org" class="btn btn-primary" />
+        <input type="hidden" name="org_to_add" value="<?php echo $org['org_name'] ?>" />      
+        </form>
+    </td>
+    <?php endif; ?>
     <td>
         <form action="userProfile.php" method="post">
         <input type="submit" name="btnAction" value="Leave Org" class="btn btn-danger" />
@@ -202,7 +226,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <thead>
 <tr style="background-color:#b0b0b0">
 <th width="80%">Interests</th>
-<th width="20%">Remove Interest</th>
+<th width="30%">Remove Interest</th>
 
 <!--
 
@@ -235,7 +259,72 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
  <?php endforeach; ?>
 
   </table>
-  
+
+  <table class="w3-table w3-bordered w3-card-4" style="width:90%">
+  <thead>
+      <tr>
+        <th scope="col">Interests</th>
+        <th scope="col">Add Interests</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row"> </th>
+        <td>
+        <form action="userProfile.php" method="post">
+          <label for="int-names">Choose an interest to add:</label>
+          <select name="int-names" id="int-names" onChange="update2()">
+            <option value="" selected disabled hidden>Choose here</option>
+            <?php foreach ($list_of_interests as $int): ?>
+              <option value="<?php echo $int['category_name'] ?>"><?php echo $int['category_name'] ?></option>
+            <?php endforeach; ?>
+          </select>
+          <input type="submit" name="btnActionUser" value='Add'>
+          <input type="text" name ="cat_to_add" id="value" value="<?php $val2 ?>">
+          <!-- source: https://ricardometring.com/getting-the-value-of-a-select-in-javascript -->
+            <script type="text/javascript">
+              function update2() {
+                var select = document.getElementById('int-names');
+                var option = select.options[select.selectedIndex];
+
+                document.getElementById('value').value = option.value;
+                var val2 = option.val
+              }
+
+              update2();
+            </script>
+          <!-- <input type="hidden" name="org_to_filter" value=<?php $text ?>/>  -->
+        </form>
+        </td>
+      </tr>
+  </tbody>
+  </table>
+<h2>Events you might be interested in:</h2>
+<table class="w3-table w3-bordered w3-card-4" style="width:90%">
+<thead>
+<tr style="background-color:#b0b0b0">
+<th width="40%">Event Name</th>
+<th width="30%">Date of Event</th>
+<th width="30%">Like Event</th>
+
+<!--
+
+<th width="12%">Delete ?</th>
+/> -->
+</tr>
+</thead>
+<?php if ($sug_events!=null):?>
+  <?php foreach ($sug_events as $e): ?>
+  <tr>
+      <td><?php echo $e['name']; ?></td>
+      <td><?php echo $e['date_of_event']; ?></td>
+      <td><form action="UserProfile.php" method="post">
+        <input type="submit" name="btnAction" value="<3" class="btn btn-danger" /> 
+        <input type="hidden" name="event_to_like" value="<?php echo $e['event_id'] ?>" />      
+      </form></td>
+      </tr>
+    <?php endforeach; ?>
+  <?php endif; ?>
 </div> 
   
 </body>

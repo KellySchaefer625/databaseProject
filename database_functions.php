@@ -78,6 +78,66 @@ function addToEvent_By_ID($name, $time_start, $time_end, $building, $room, $date
     }
 }
 
+function addInterest($interest, $user_id)
+{
+    //db handler
+    // the db handler is in connect-db
+    // keyword global allows us to access db in connect-db
+    try{
+    global $db;
+
+    //sql
+    $query = "INSERT INTO User_Interests (comp_id, interest) VALUES (:user_id, :interest)";
+
+    //execute
+    $statement = $db->prepare($query);
+
+    $statement->bindValue(':user_id', $user_id);
+    $statement->bindValue(':interest', $interest);
+
+    $statement->execute();
+
+    //$statement = $db->query($query);
+
+    //release
+    $statement->closeCursor();}
+    catch(Exception $execpt){
+        throw new Exception('Error adding to interests');
+    }
+}
+
+function getUsersEventInterests($user_id)
+{
+    //db handler
+    // the db handler is in connect-db
+    // keyword global allows us to access db in connect-db
+    try{
+    global $db;
+
+    //sql
+    $query = "SELECT * FROM Event_by_id, Event_categories WHERE Event_by_id.event_id = Event_categories.event_id AND Event_by_id.date_of_event >= ALL (SELECT curdate()) AND Event_categories.category_name IN (SELECT interest FROM User_Interests WHERE User_Interests.comp_id = :user_id)";
+
+    //execute
+    $statement = $db->prepare($query);
+
+    $statement->bindValue(':user_id', $user_id);
+
+    $statement->execute();
+    
+
+    //$statement = $db->query($query);
+
+    //release
+    $results = $statement->fetchAll();
+    $statement->closeCursor();
+    return $results;
+    }
+
+    catch(Exception $execpt){
+        throw new Exception('Error adding to interests');
+    }
+}
+
 function updateEvent_By_ID($event_id, $name, $time_start, $time_end, $building, $room, $date_of_event, $cost, $food)
 {
     //db handler
@@ -340,8 +400,8 @@ function addToHost($org_name, $event_id)
 
 function addToSub($event_id,$userId)
 {   try{
-    print_r($event_id);
-    print_r($userId);
+    // print_r($event_id);
+    // print_r($userId);
     global $db;
 
     $query = "INSERT INTO Subscribes_to VALUES (:userId, :event_id)";
@@ -442,6 +502,7 @@ function getAllOrgs()
         throw new Exception('Error getting all events');
     }
 }
+
 
 function getAllCats()
 {

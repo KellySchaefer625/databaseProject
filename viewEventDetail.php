@@ -225,12 +225,12 @@ if($_SESSION["validlogin"] !== true){
         <td><?php echo $audience_str?></td>
       </tr>
   </tbody>
-  <tbody>
+  <!-- <tbody>
       <tr>
         <th scope="row">Event ID</th>
         <td><?php echo $eventId?></td>
       </tr>
-  </tbody>
+  </tbody> -->
   <tbody>
  <?php if ($exec_roles==null):?>
     <tr>
@@ -241,11 +241,26 @@ if($_SESSION["validlogin"] !== true){
  </tbody>
  <tbody>
   <?php if ($exec_roles!=null):?>
+    <th scope="row">Delete Event</th>
     <td><form action="viewEventDetail.php" method="post">
       <input type="submit" name="btnAction" value="DeleteEvent" class="btn btn-primary" />
       <input type="hidden" name="event_to_delete" value=<?php echo $eventId?> />      
     </form></td>
   <?php endif; ?>
+  </tbody>
+  <tbody>
+    <?php if ($exec_roles==null):?>
+        <tr>
+            <th scope="row">Update Event</th>
+            <td>You do not have permission to update this event</td>
+          </tr>
+      <?php endif; ?>
+    </tbody>
+    <tbody>
+      <?php if ($exec_roles!=null):?>
+        <th scope="row">Update Event</th>
+        <td><button class="btn btn-primary"><a href="updateEventPage.php?event_to_update=<?=$eventId?>" style="color: white">UpdateEvent</a></button></td>
+      <?php endif; ?>
   </tbody>
   <tbody>
       <tr>

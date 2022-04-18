@@ -149,19 +149,18 @@ if($_SESSION["validlogin"] !== true){
 <div class="container">
   <header>
     <div style="float:right;">
-    <div style="float:left;">
-    <div style="float:left;">
-    <form action="addEventPage.php" method="post">
-    <button class="btn btn-primary">Create Event</a></button>
+    <div style="float:right;">
+    <form action="userProfile.php" method="post">
+    <button class="btn btn-primary">User Profile</a></button>
     </form>
   </div>
-<div style="float:left;">
+<!-- <div style="float:right;">
     <form action="userProfile.php" method="post">
     <button class="btn btn-primary" class="glyphicon glyphicon-user">User Profile</a></button>
     </form>
-  </div>
-</div>
-  <div style="float:left;">
+  </div> -->
+<!-- </div> -->
+  <div style="float:right;">
     <form action="logoutUser.php" method="post">
     
     <button class="btn btn-primary">Logout</a></button>
@@ -193,10 +192,9 @@ if($_SESSION["validlogin"] !== true){
 <th width="25%">Name</th>
 <th width="20%">Date of Event</th>
 <th width="25%">Host Organization</th>
-<th width="7.5%">Event Details</th>
-<th width="7.5%">Update Event</th>
-<th width="7.5%">Delete Event</th>
-<th width="7.5%">Unlike Event</th>
+<th width="12%">Event Details</th>
+<th width="12%">Update Event</th>
+<th width="12%">Unlike Event</th>
 <!--
 
 <th width="12%">Delete ?</th>
@@ -217,10 +215,10 @@ if($_SESSION["validlogin"] !== true){
         <input type="hidden" name="event_to_display" value="<?php echo $event['event_id'] ?>" />      
       </form></td>
     <td><button class="btn btn-primary"><a href="updateEventPage.php?event_to_update=<?=$event['event_id']?>" style="color: white">UpdateEvent</a></button></td>
-    <td><form action="viewEventsPage.php" method="post">
+    <!-- <td><form action="viewEventsPage.php" method="post">
       <input type="submit" name="btnAction" value="DeleteEvent" class="btn btn-primary" />
       <input type="hidden" name="event_to_delete" value="<?php echo $event['event_id'] ?>" />      
-    </form></td>
+    </form></td> -->
     <td><form action="viewEventsPage.php" method="post">
         <input type="submit" name="btnAction" value=":(" class="btn btn-danger" /> 
         <input type="hidden" name="event_to_unlike" value="<?php echo $event['event_id'] ?>" />      
@@ -306,10 +304,9 @@ if($_SESSION["validlogin"] !== true){
 <th width="25%">Name</th>
 <th width="20%">Date of Event</th>
 <th width="25%">Host Organization</th>
-<th width="7.5%">Event Details</th>
-<th width="7.5%">Update Event</th>
-<th width="7.5%">Delete Event</th>
-<th width="7.5%">Like Event</th>
+<th width="15%">Event Details</th>
+<!-- <th width="12%">Update Event</th> -->
+<th width="15%">Like Event</th>
 <!--
 
 <th width="12%">Delete ?</th>
@@ -330,7 +327,7 @@ if($_SESSION["validlogin"] !== true){
         <input type="submit" name="btnAction" value="ShowDetails" class="btn btn-primary" />
         <input type="hidden" name="event_to_display" value="<?php echo $event['event_id'] ?>" />      
       </form></td>
-    <td><button class="btn btn-primary"><a href="updateEventPage.php?event_to_update=<?=$event['event_id']?>" style="color: white">UpdateEvent</a></button></td>
+    <!-- <td><button class="btn btn-primary"><a href="updateEventPage.php?event_to_update=<?=$event['event_id']?>" style="color: white">UpdateEvent</a></button></td> -->
     <!-- <td><form action="viewEventsPage.php" method="post">
       <input type="submit" name="btnAction" value="DeleteEvent" class="btn btn-primary" />
       <input type="hidden" name="event_to_delete" value="<?php echo $event['event_id'] ?>" />      
