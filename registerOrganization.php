@@ -153,9 +153,9 @@ if($_SESSION["validlogin"] !== true){
 <div class="row mb-3 mx-3">
   <div visibility: <?php if ($addExec == false) echo 'hidden'; ?>>
    <button type="submit" value="execAdd" name="btnAction" class="btn btn-dark"
-        title = "Add Exec" /> Add Executive Member </button>
+        title = "Add Exec" /> Add Member As Exec </button>
   </div>
- 
+  </div>
 
    <div class="row mb-3 mx-3">
                 &nbsp
@@ -172,7 +172,6 @@ if($_SESSION["validlogin"] !== true){
         title = "Done" />
    </a>
   </div>
-</div>
 </body>
 </div>
 </html>
