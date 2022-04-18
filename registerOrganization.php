@@ -130,16 +130,14 @@ if($_SESSION["validlogin"] !== true){
           &nbsp
         </div>
      
-     <div class="container">
-      <div visibility:<?php if ($submitted == false || $addExec == true) echo 'hidden'; ?>>
+   
+   <div visibility:<?php if ($submitted == false || $addExec == true) echo 'hidden'; ?>>
               <div class="row mb-3 mx-3">
                    <button type="submit" value="AddExec" name="btnAction" class="btn btn-dark btn-block"
                         title = "Add Executive Member?" /> Add Executive Member </button>
               </div>
-      </div>
    </div>
      
-  </div>
  <div class="row mb-3 mx-3">
    &nbsp
  </div>
@@ -157,8 +155,9 @@ if($_SESSION["validlogin"] !== true){
    <button type="submit" value="execAdd" name="btnAction" class="btn btn-dark"
         title = "Add Exec" /> Add Member As Exec </button>
   </div>
+ </div>
   </div>
-
+  
    <div class="row mb-3 mx-3">
                 &nbsp
             </div>
