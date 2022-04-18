@@ -490,6 +490,7 @@ function addMemberAsExec($comp_id, $org_name) {
  
     global $db;
     $yes = 'yes';
+    deleteMember($comp_id);
     echo "this got here";
     echo $comp_id;
     echo $org_name;
