@@ -20,26 +20,37 @@ if($_SESSION["validlogin"] !== true){
  $building = '';
  $room = '';
  $organization_name = '';
- $event_details = getEventDetail($_POST['event_to_display']);
- $event_audience = getEventAudience($_POST['event_to_display']);
- $event_categories = getEventCategories($_POST['event_to_display']);
- $event_restrictions = getEventRestrictions($_POST['event_to_display']);
-//  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-//    try{
-//       if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "ShowDetails") {
-        
-
-//       }
-//      }
-
-//     catch(Exception $except){
-//       throw new Exception("Error loading event detail page");
-//     }
-//  }
- ?>
+ $eventId = '';
 
 
  
+ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+   try{
+      if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "DeleteEvent") {
+        print_r($_POST['event_to_delete']);
+        
+        deleteHost($_POST['event_to_delete']);
+        deleteEvent_audience($_POST['event_to_delete']);
+        deleteEvent_categories($_POST['event_to_delete']);
+        deleteEvent_restrictions($_POST['event_to_delete']);
+        deleteEvent_subscriptions($_POST['event_to_delete']);
+        deleteEvent_By_ID($_POST['event_to_delete']);
+        header("location: viewEventsPage.php");
+      }
+    else {
+      $event_details = getEventDetail($_POST['event_to_display']);
+      $event_audience = getEventAudience($_POST['event_to_display']);
+      $event_categories = getEventCategories($_POST['event_to_display']);
+      $event_restrictions = getEventRestrictions($_POST['event_to_display']);
+      $exec_roles = getUserExecRoles($_SESSION['uName'],$_POST['event_to_display']);
+    }
+     }
+
+    catch(Exception $except){
+      throw new Exception("Error loading event detail page");
+    }
+ }
+ ?> 
 
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
@@ -194,6 +205,38 @@ if($_SESSION["validlogin"] !== true){
         <th scope="row">Audience Type</th>
         <td><?php echo $audience_str?></td>
       </tr>
+  </tbody>
+  //This goes in the table of viewEventDetail
+<tbody>
+ <?php if ($exec_roles==null):?>
+    <tr>
+        <th scope="row">Delete Event</th>
+        <td>You do not have permission to delete this event</td>
+      </tr>
+  <?php endif; ?>
+ </tbody>
+ <tbody>
+  <?php if ($exec_roles!=null):?>
+    <th scope="row">Delete Event</th>
+    <td><form action="viewEventDetail.php" method="post">
+      <input type="submit" name="btnAction" value="DeleteEvent" class="btn btn-primary" />
+      <input type="hidden" name="event_to_delete" value=<?php echo $eventId?> />      
+    </form></td>
+  <?php endif; ?>
+  </tbody>
+  <tbody>
+    <?php if ($exec_roles==null):?>
+        <tr>
+            <th scope="row">Update Event</th>
+            <td>You do not have permission to update this event</td>
+          </tr>
+      <?php endif; ?>
+    </tbody>
+    <tbody>
+      <?php if ($exec_roles!=null):?>
+        <th scope="row">Update Event</th>
+        <td><button class="btn btn-primary"><a href="updateEventPage.php?event_to_update=<?=$eventId?>" style="color: white">UpdateEvent</a></button></td>
+      <?php endif; ?>
   </tbody>
   <tbody>
     <a href="viewEventsPage.php">Return to Full Events List</a>

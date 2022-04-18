@@ -69,11 +69,6 @@ function addToEvent_By_ID($name, $time_start, $time_end, $building, $room, $date
 
     $statement->execute();
 
-    //$statement = $db->query($query);
-    print "<pre>";
-    print_r($statement->errorInfo());
-    print "</pre>";
-
     //release
     $statement->closeCursor();}
     catch(Exception $execpt){
@@ -860,7 +855,6 @@ function getEventDetail($event_id)
     $statement->bindValue(':event_id', $event_id);
     $statement->execute();
     $results = $statement->fetchAll();
-    //print($event_id);
     $statement->closeCursor();
     return $results;
     }
