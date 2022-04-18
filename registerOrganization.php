@@ -164,13 +164,13 @@ if($_SESSION["validlogin"] !== true){
                 &nbsp
             </div>
   
+  </div>
 <div visibility: <?php if ($submitted == false || $addExec == true) echo 'hidden'; ?>>
    <div class="row mb-3 mx-3">
    <a href="viewEventsPage.php">
   <input href="viewEventsPage.php"  type="button" value="Done" name="btnAction" class="btn btn-dark btn-block"
         title = "Done" />
    </a>
-  </div>
   </div>
 </div>
 </body>
