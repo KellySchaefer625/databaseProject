@@ -47,6 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // print_r($_SESSION['uName']);
         addToSub($_POST['event_to_like'],$_SESSION['uName']);
         $user_subs = getUserSubs($_SESSION['uName']);
+        $sug_events = getUsersEventInterests($_SESSION['uName']);
       }
     }
      catch(Exception $except){
@@ -161,6 +162,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <input type="submit" name="btnAction" value="Add Event For This Org" class="btn btn-primary" />
         <input type="hidden" name="org_to_add" value="<?php echo $org['org_name'] ?>" />      
         </form>
+    </td>
+    <?php endif; ?>
+    <?php if ($org['is_exec']!="Yes"):?>
+      <td>
+        User does not have the privileges to add an event for this organization
     </td>
     <?php endif; ?>
     <td>

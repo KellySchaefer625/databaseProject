@@ -13,6 +13,7 @@ if($_SESSION["validlogin"] !== true){
  $orgName = "";
  $orgEmail = "";
  $orgDesc = "";
+//  $org_membership = getOrgMembership($_POST['org_to_display'],$_SESSION['uName']);
 
 //  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 //    try{

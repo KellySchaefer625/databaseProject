@@ -145,7 +145,7 @@ function getUsersEventInterests($user_id)
     global $db;
 
     //sql
-    $query = "SELECT * FROM Event_by_id, Event_categories WHERE Event_by_id.event_id = Event_categories.event_id AND Event_by_id.date_of_event >= ALL (SELECT curdate()) AND Event_categories.category_name IN (SELECT interest FROM User_Interests WHERE User_Interests.comp_id = :user_id)";
+    $query = "SELECT * FROM Event_by_id, Event_categories WHERE Event_by_id.event_id = Event_categories.event_id AND Event_by_id.date_of_event >= ALL (SELECT curdate()) AND Event_categories.category_name IN (SELECT interest FROM User_Interests WHERE User_Interests.comp_id = :user_id) AND Event_by_id.event_id NOT IN (SELECT event_id FROM Subscribes_to WHERE Subscribes_to.comp_id = :user_id)";
 
     //execute
     $statement = $db->prepare($query);
@@ -841,6 +841,34 @@ function getOrgDetail($org_name)
     }
 }
 
+// function getOrgMembership($org_name,$user_id)
+// {
+//     try{
+//     global $db;
+//     // print_r($org_name);
+//     $query = "SELECT * FROM Organization,Is_member WHERE rganization.org_name = Is_member.org_name AND Is_member.comp_id = :user_id AND Organization.org_name = :org_name";
+
+//     // 1. prepare
+
+//     // 2. bindValue & execute
+
+//     // Prepare and bindValue helps protect against
+//     // SQL injection attacks
+
+//     $statement = $db->prepare($query);
+//     $statement->bindValue(':user_id', $user_id);
+//     $statement->bindValue(':org_name', $org_name);
+//     $statement->execute();
+//     $results = $statement->fetchAll();
+//     //print($event_id);
+//     $statement->closeCursor();
+//     return $results;
+//     }
+//     catch(Exception $execpt){
+//         throw new Exception('Error getting event details');
+//     }
+// }
+
 function getEventDetail($event_id)
 {
     try{
@@ -873,7 +901,7 @@ function getEventsByOrg($org_name)
     try{
     global $db;
     //print_r($org_name);
-    $query = "SELECT * FROM Event_by_id,Host WHERE Event_by_id.event_id = Host.event_id AND Host.org_name = :org_name";
+    $query = "SELECT * FROM Event_by_id,Host WHERE Event_by_id.event_id = Host.event_id AND Event_by_id.date_of_event >= ALL (SELECT curdate()) AND Host.org_name = :org_name";
 
     // 1. prepare
 
@@ -901,7 +929,7 @@ function getEventsByCat($cat_name)
     try{
     global $db;
     //print_r($org_name);
-    $query = "SELECT * FROM Event_by_id,Event_categories,Host WHERE Event_by_id.event_id = Event_categories.event_id AND Event_by_id.event_id = Host.event_id AND Event_categories.category_name = :cat_name";
+    $query = "SELECT * FROM Event_by_id,Event_categories,Host WHERE Event_by_id.event_id = Event_categories.event_id AND Event_by_id.date_of_event >= ALL (SELECT curdate()) AND Event_by_id.event_id = Host.event_id AND Event_categories.category_name = :cat_name";
 
     // 1. prepare
 

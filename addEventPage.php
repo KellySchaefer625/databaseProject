@@ -43,7 +43,7 @@ if($_SESSION["validlogin"] !== true){
         // $temp_event_id = getLatestEventId();
         // echo $temp_event_id;
         // foreach ($temp_event_id as $id_num) {
-        $latest_event_id = getLatestEventId();;      
+        $latest_event_id = getLatestEventId();      
         
         // echo $latest_event_id
         // $latest_event_id = $latest_event_id+1;
