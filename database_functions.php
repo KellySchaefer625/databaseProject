@@ -467,6 +467,47 @@ function registerOrg($name, $email, $description) {
     }
 }
 
+
+function deleteMember($comp_id) {
+    try{
+ 
+    global $db;
+        
+    $query = "DELETE * FROM Is_member WHERE comp_id = :comp_id";
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(':comp_id', $comp_id);
+    $statement->execute();
+    $statement->closeCursor();
+}
+     catch(Exception $execpt){
+        throw new Exception('Error inserting into organization table');
+    }
+}
+
+function addMemberAsExec($comp_id, $org_name) {
+    try{
+ 
+    global $db;
+    $yes = "yes";
+    
+    deleteMember($comp_id);
+        
+    $query = "INSERT INTO Is_member VALUES (:comp_id, :org_name, $yes)";
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(':comp_id', $comp_id);
+    $statement->bindValue(':org_name', $org_name);
+
+    $statement->execute();
+
+    $statement->closeCursor();
+    }
+    catch(Exception $execpt){
+        throw new Exception('Error inserting into organization table');
+    }
+}
+
 function getAllOrgs()
 {
     try{
