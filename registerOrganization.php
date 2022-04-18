@@ -155,7 +155,7 @@ if($_SESSION["validlogin"] !== true){
    <button type="submit" value="execAdd" name="btnAction" class="btn btn-dark"
         title = "Add Exec" /> Add Executive Member </button>
   </div>
- </div>
+ 
 
    <div class="row mb-3 mx-3">
                 &nbsp
@@ -172,7 +172,7 @@ if($_SESSION["validlogin"] !== true){
    </a>
   </div>
   </div>
-
+</div>
 </body>
 </div>
 </html>
