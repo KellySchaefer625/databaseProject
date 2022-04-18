@@ -116,15 +116,12 @@ if($_SESSION["validlogin"] !== true){
          }
        }
       $temp_event_id = getLatestEventId();
-      // foreach ($temp_event_id as $id_num) {
-      //  $latest_event_id = $id_num;      
-      // }
       $latest_event_id = $latest_event_id+1;
       print "<pre>";
       print_r($arr);
       print "</pre>";
       addToEvent_By_ID($arr[0], $arr[1], $arr[2], $arr[3], $arr[4], $arr[5], $arr[6], $arr[7]);
-      addToHost($arr[8], temp_event_id);
+      addToHost($arr[8], $temp_event_id);
       addToEvent_audience($latest_event_id,$arr[9]);
       addToEvent_categories($latest_event_id,$arr[10]);
       addToEvent_restrictions($latest_event_id,$arr[11]);
@@ -264,17 +261,18 @@ if($_SESSION["validlogin"] !== true){
   </div>
     </div>
   </header>
+  <br />
   <div class="input-row">
-      <div style="float:left">
-        <label class="col-md-4 control-label">Choose CSV File</label> 
-        <input type="file" name="file"  id="file" accept=".csv">
-      </div>
-      <div style="float:left">
-        <form action="addEventPage.php" method="post"> 
-          <input type="submit" value="Import" name="btnAction" class="btn btn-dark" title = "Import" />
-        </form>
-      </div>
-      <br />
+    <form action="" method="post" name="frmCSVImport" id="frmCSVImport" enctype="multipart/form-data"> 
+        <div style="float:left">
+          <label class="col-md-4 control-label">Choose CSV File</label> 
+          <input type="file" name="file"  id="file" accept=".csv">
+        </div>
+        <div style="float:left">
+            <input type="submit" value="Import" name="btnAction" class="btn-submit" title = "Import" />
+        </div>
+    </form>
+    <br />
   </div>
 
 
