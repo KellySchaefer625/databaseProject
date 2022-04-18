@@ -99,7 +99,8 @@ if($_SESSION["validlogin"] !== true){
 <input type="submit" value="Register" name="btnAction" class="btn btn-dark"
         title = "Register Organization" />
    </div>
-</div>
+  </div>
+   </form>
  
     <div class="container">
      <div class="row mb-3 mx-3">
@@ -109,7 +110,7 @@ if($_SESSION["validlogin"] !== true){
        </div>
      </div>
      
-     
+   <form name="subform" action="registerOrganization.php" method="post">  
      <div class="row mb-3 mx-3">
                 &nbsp
      </div>
@@ -173,6 +174,7 @@ if($_SESSION["validlogin"] !== true){
         title = "Done" />
    </a>
   </div>
+  </form>
 </body>
 </div>
 </html>
