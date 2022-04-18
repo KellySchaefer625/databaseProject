@@ -108,6 +108,66 @@ function addToEvent_By_ID($name, $time_start, $time_end, $building, $room, $date
     }
 }
 
+function addInterest($interest, $user_id)
+{
+    //db handler
+    // the db handler is in connect-db
+    // keyword global allows us to access db in connect-db
+    try{
+    global $db;
+
+    //sql
+    $query = "INSERT INTO User_Interests (comp_id, interest) VALUES (:user_id, :interest)";
+
+    //execute
+    $statement = $db->prepare($query);
+
+    $statement->bindValue(':user_id', $user_id);
+    $statement->bindValue(':interest', $interest);
+
+    $statement->execute();
+
+    //$statement = $db->query($query);
+
+    //release
+    $statement->closeCursor();}
+    catch(Exception $execpt){
+        throw new Exception('Error adding to interests');
+    }
+}
+
+function getUsersEventInterests($user_id)
+{
+    //db handler
+    // the db handler is in connect-db
+    // keyword global allows us to access db in connect-db
+    try{
+    global $db;
+
+    //sql
+    $query = "SELECT * FROM Event_by_id, Event_categories WHERE Event_by_id.event_id = Event_categories.event_id AND Event_by_id.date_of_event >= ALL (SELECT curdate()) AND Event_categories.category_name IN (SELECT interest FROM User_Interests WHERE User_Interests.comp_id = :user_id) AND Event_by_id.event_id NOT IN (SELECT event_id FROM Subscribes_to WHERE Subscribes_to.comp_id = :user_id)";
+
+    //execute
+    $statement = $db->prepare($query);
+
+    $statement->bindValue(':user_id', $user_id);
+
+    $statement->execute();
+    
+
+    //$statement = $db->query($query);
+
+    //release
+    $results = $statement->fetchAll();
+    $statement->closeCursor();
+    return $results;
+    }
+
+    catch(Exception $execpt){
+        throw new Exception('Error adding to interests');
+    }
+}
+
 function updateEvent_By_ID($event_id, $name, $time_start, $time_end, $building, $room, $date_of_event, $cost, $food)
 {
     //db handler
@@ -370,8 +430,8 @@ function addToHost($org_name, $event_id)
 
 function addToSub($event_id,$userId)
 {   try{
-    print_r($event_id);
-    print_r($userId);
+    // print_r($event_id);
+    // print_r($userId);
     global $db;
 
     $query = "INSERT INTO Subscribes_to VALUES (:userId, :event_id)";
@@ -467,6 +527,49 @@ function registerOrg($name, $email, $description) {
     }
 }
 
+
+function deleteMember($comp_id) {
+    try{
+ 
+    global $db;
+    echo 'I am in delete member';
+    echo $comp_id;
+    $query = "DELETE * FROM Is_member WHERE comp_id = :comp_id";
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(':comp_id', $comp_id);
+    $statement->execute();
+    $statement->closeCursor();
+}
+     catch(Exception $execpt){
+        throw new Exception('Error inserting into organization table');
+    }
+}
+
+function addMemberAsExec($comp_id, $org_name) {
+    try{
+ 
+    global $db;
+    $yes = 'yes';
+    deleteMember($comp_id);
+    echo "this got here";
+    echo $comp_id;
+    echo $org_name;
+    $query = "INSERT INTO Is_member VALUES (:comp_id, :org_name, $yes)";
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(':comp_id', $comp_id);
+    $statement->bindValue(':org_name', $org_name);
+
+    $statement->execute();
+
+    $statement->closeCursor();
+    }
+    catch(Exception $execpt){
+        throw new Exception('Error inserting into organization table');
+    }
+}
+
 function getAllOrgs()
 {
     try{
@@ -493,6 +596,7 @@ function getAllOrgs()
         throw new Exception('Error getting all events');
     }
 }
+
 
 function getAllCats()
 {
@@ -737,6 +841,34 @@ function getOrgDetail($org_name)
     }
 }
 
+// function getOrgMembership($org_name,$user_id)
+// {
+//     try{
+//     global $db;
+//     // print_r($org_name);
+//     $query = "SELECT * FROM Organization,Is_member WHERE rganization.org_name = Is_member.org_name AND Is_member.comp_id = :user_id AND Organization.org_name = :org_name";
+
+//     // 1. prepare
+
+//     // 2. bindValue & execute
+
+//     // Prepare and bindValue helps protect against
+//     // SQL injection attacks
+
+//     $statement = $db->prepare($query);
+//     $statement->bindValue(':user_id', $user_id);
+//     $statement->bindValue(':org_name', $org_name);
+//     $statement->execute();
+//     $results = $statement->fetchAll();
+//     //print($event_id);
+//     $statement->closeCursor();
+//     return $results;
+//     }
+//     catch(Exception $execpt){
+//         throw new Exception('Error getting event details');
+//     }
+// }
+
 function getEventDetail($event_id)
 {
     try{
@@ -769,7 +901,7 @@ function getEventsByOrg($org_name)
     try{
     global $db;
     //print_r($org_name);
-    $query = "SELECT * FROM Event_by_id,Host WHERE Event_by_id.event_id = Host.event_id AND Host.org_name = :org_name";
+    $query = "SELECT * FROM Event_by_id,Host WHERE Event_by_id.event_id = Host.event_id AND Event_by_id.date_of_event >= ALL (SELECT curdate()) AND Host.org_name = :org_name";
 
     // 1. prepare
 
@@ -797,7 +929,7 @@ function getEventsByCat($cat_name)
     try{
     global $db;
     //print_r($org_name);
-    $query = "SELECT * FROM Event_by_id,Event_categories,Host WHERE Event_by_id.event_id = Event_categories.event_id AND Event_by_id.event_id = Host.event_id AND Event_categories.category_name = :cat_name";
+    $query = "SELECT * FROM Event_by_id,Event_categories,Host WHERE Event_by_id.event_id = Event_categories.event_id AND Event_by_id.date_of_event >= ALL (SELECT curdate()) AND Event_by_id.event_id = Host.event_id AND Event_categories.category_name = :cat_name";
 
     // 1. prepare
 

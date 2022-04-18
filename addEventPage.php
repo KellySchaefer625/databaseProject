@@ -36,13 +36,18 @@ if($_SESSION["validlogin"] !== true){
    try{
  
       if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "Add") {
-        $temp_event_id = getLatestEventId();
-        // foreach ($temp_event_id as $id_num) {
-        //  $latest_event_id = $id_num;      
-        // }
-        $latest_event_id = $latest_event_id+1;
+        
+        // echo $_POST['addForHost'];
+        // echo $latest_event_id;
         addToEvent_By_ID($_POST['name'], $_POST['time_start'], $_POST['time_end'], $_POST['building'], $_POST['room'], $_POST['date_of_event'], $_POST['cost'], $_POST['food']);
-        addToHost($_POST['org_name'], $latest_event_id);
+        // $temp_event_id = getLatestEventId();
+        // echo $temp_event_id;
+        // foreach ($temp_event_id as $id_num) {
+        $latest_event_id = getLatestEventId();      
+        
+        // echo $latest_event_id
+        // $latest_event_id = $latest_event_id+1;
+        addToHost($_POST['addForHost'], $latest_event_id);
         addToEvent_audience($latest_event_id,$_POST['audience']);
         addToEvent_categories($latest_event_id,$_POST['categories']);
         addToEvent_restrictions($latest_event_id,$_POST['restrictions']);
@@ -285,10 +290,10 @@ if($_SESSION["validlogin"] !== true){
  <input type="text" class="form-control" name="name" required />      
  </div>  
  
- <div class="row mb-3 mx-3">
+ <!-- <div class="row mb-3 mx-3">
  Event Host:
- <input type="text" class="form-control" name="org_name" required /> 
- </div>
+ <input type="text" class="form-control" name="org_name" value="<?php echo $_POST['org_to_add']?>" required /> 
+ </div> -->
  
  
  
@@ -307,10 +312,10 @@ if($_SESSION["validlogin"] !== true){
     <input type="text" class="form-control" name="audience" required />      
   </div>
 
-  <div class="row mb-3 mx-3">
+  <!-- <div class="row mb-3 mx-3">
     Event Details:
     <input type="text" class="form-control" name="details" required/>      
-  </div>
+  </div> -->
 
     <div class="row mb-3 mx-3">
     Start Time:
@@ -349,6 +354,7 @@ if($_SESSION["validlogin"] !== true){
        
     <input type="submit" value="Add" name="btnAction" class="btn btn-dark"
         title = "Add Event" />
+      <input type="hidden" id="addForHost" name="addForHost" value="<?php echo $_POST['org_to_add']; ?>" >
   </div>
   </form>
 

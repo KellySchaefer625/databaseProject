@@ -17,6 +17,20 @@ if($_SESSION["validlogin"] !== true){
         $orgName = $_POST['org_name'];
       }
      
+     if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "AddExec") {
+       $submitted = true;
+       $addExec = true;
+       $orgName = $_POST['org_name'];
+     }
+     
+     if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "execAdd") {
+       $submitted = true;
+       $addExec = false;
+       $orgName = $_POST['orgName'];
+       $comp_id = $_POST['execName'];
+       addMemberAsExec($comp_id, $orgName);
+     }
+     
   }
 
     catch(Exception $except){
@@ -71,7 +85,7 @@ if($_SESSION["validlogin"] !== true){
     <!-- <link rel="stylesheet" href="custom.css" />  -->
 </head>
 <body>
-    <div class="container">
+ <div class="container">
         <h1>Register Organization</h1>
 <form name="mainForm" action="registerOrganization.php" method="post">
  <div visibility: <?php if ($submitted == true) echo 'hidden'; ?>>
@@ -92,28 +106,47 @@ if($_SESSION["validlogin"] !== true){
   
 <input type="submit" value="Register" name="btnAction" class="btn btn-dark"
         title = "Register Organization" />
-  </div>
-</form>
-
-   <form name="subForm" action="registerOrganization.php" method="post">
-            <div visibility: <?php if ($submitted == false || $addExec == true) echo 'hidden'; ?>>
-                  <div class="row mb-3 mx-3">
-                      <button type="submit" value="AddExec" name="btnAction" class="btn btn-dark btn-block"
-                        title = "Add Executive Member?" /> Add Executive Member </button>
-                   </div>
-            </div>
-
-<div class="row mb-3 mx-3">
-   &nbsp
-</div>
-  </div>
-  
- <div class="row mb-3 mx-3">
-   <div visibility: <?php if ($addExec == false) echo 'hidden'; ?>>
-      Executive Member Username:
-      <input type="text" class="form-control" name="execName"  />
    </div>
- </div>
+  </div>
+   </form>
+ 
+     
+   <form name="subform" action="registerOrganization.php" method="post">  
+     <div class="row mb-3 mx-3">
+                &nbsp
+     </div>
+     
+         <div class="row mb-3 mx-3">
+                &nbsp
+         </div>
+     
+     <div class="container">
+     <div class="row mb-3 mx-3">
+        <div visibility: <?php if ($addExec == false) echo 'hidden'; ?>>
+            Executive Member Username:
+          <input type="text" class="form-control" name="execName"  />
+       </div>
+     </div>
+    
+      <div class="row mb-3 mx-3">
+                &nbsp
+      </div>
+     
+       <div class="row mb-3 mx-3">
+            &nbsp
+       </div>
+     
+      <div class="row mb-3 mx-3">
+          &nbsp
+        </div>
+     
+   
+   <div visibility: <?php if ($submitted == false || $addExec == true) echo 'hidden'; ?>>
+              <div class="row mb-3 mx-3">
+                   <button type="submit" value="AddExec" name="btnAction" class="btn btn-dark btn-block"
+                        title = "Add Executive Member?" /> Add Executive Member </button>
+              </div>
+   </div>
      
  <div class="row mb-3 mx-3">
    &nbsp
@@ -123,18 +156,26 @@ if($_SESSION["validlogin"] !== true){
   <input type="hidden" id="orgName" name="orgName" value=<?php echo $orgName; ?> >
  </div>
   
+  <div class="row mb-3 mx-3">
+   &nbsp
+</div>
+  
 <div class="row mb-3 mx-3">
   <div visibility: <?php if ($addExec == false) echo 'hidden'; ?>>
    <button type="submit" value="execAdd" name="btnAction" class="btn btn-dark"
-        title = "Add Exec" /> Add Executive Member </button>
+        title = "Add Exec" /> Add Member As Exec </button>
   </div>
  </div>
-
-
-            <div class="row mb-3 mx-3">
+  </div>
+  
+   <div class="row mb-3 mx-3">
+                &nbsp
+            </div>
+      <div class="row mb-3 mx-3">
                 &nbsp
             </div>
   
+  </div>
 <div visibility: <?php if ($submitted == false || $addExec == true) echo 'hidden'; ?>>
    <div class="row mb-3 mx-3">
    <a href="viewEventsPage.php">
@@ -142,8 +183,7 @@ if($_SESSION["validlogin"] !== true){
         title = "Done" />
    </a>
   </div>
-  </div>
-
+  </form>
 </body>
 </div>
 </html>
