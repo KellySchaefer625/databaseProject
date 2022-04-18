@@ -23,6 +23,14 @@ if($_SESSION["validlogin"] !== true){
        $orgName = $_POST['org_name'];
      }
      
+     if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "execAdd") {
+       $submitted = true;
+       $addExec = false;
+       $orgName = $_POST['org_name'];
+       $comp_id = $_POST['execName'];
+       addMemberAsExec($comp_id, $orgName);
+     }
+     
   }
 
     catch(Exception $except){
