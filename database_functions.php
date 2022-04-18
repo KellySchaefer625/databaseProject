@@ -490,9 +490,7 @@ function addMemberAsExec($comp_id, $org_name) {
  
     global $db;
     $yes = "yes";
-    
-    deleteMember($comp_id);
-        
+    echo "this got here";
     $query = "INSERT INTO Is_member VALUES (:comp_id, :org_name, $yes)";
 
     $statement = $db->prepare($query);
