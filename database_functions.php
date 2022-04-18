@@ -51,36 +51,6 @@ function addToEvent_By_ID($name, $time_start, $time_end, $building, $room, $date
     try{
     global $db;
 
-    print "<pre>";
-    print_r ($name);
-    print_r (gettype($name));
-    print_r ($time_start);
-    print_r (gettype($time_start));
-    print_r ($time_end);
-    print_r (gettype($time_end));
-    print_r ($building);
-    print_r (gettype($building));
-    print_r ($room);
-    print_r (gettype($room));
-    print_r ($date_of_event);
-    print_r (gettype($date_of_event));
-    print_r ($cost);
-    print_r (gettype($cost));
-    print_r ($food);
-    // print_r (gettype($food));
-    // print_r ($org_name);
-    // print_r (gettype($org_name));
-    // print_r ($audience);
-    // print_r (gettype($audience));
-    // print_r ($categories);
-    // print_r (gettype($categories));
-    // print_r ($restrictions);
-    // print_r (gettype($restrictions));
-    // print_r ($latest_event_id);
-    // print_r (gettype($latest_event_id));
-    print "</pre>";
-
-
     //sql
     $query = "INSERT INTO Event_by_id (name, time_start, time_end, building, room, date_of_event, cost, food) VALUES (:name, :time_start, :time_end, :building, :room, :date_of_event, :cost, :food)";
 
@@ -100,6 +70,9 @@ function addToEvent_By_ID($name, $time_start, $time_end, $building, $room, $date
     $statement->execute();
 
     //$statement = $db->query($query);
+    print "<pre>";
+    print_r($statement->errorInfo());
+    print "</pre>";
 
     //release
     $statement->closeCursor();}
