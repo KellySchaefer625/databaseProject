@@ -6,17 +6,16 @@ if($_SESSION["validlogin"] !== true){
 }
  require('connect-db.php');
  require('database_functions.php');
- header('Content-type: application/csv');
-// Set the file name option to a filename of your choice.
-header('Content-Disposition: attachment; filename=myCSV.csv');
-// Set the encoding
-header("Content-Transfer-Encoding: UTF-8");
+ header('Content-Type: text/csv; charset=utf-8');
+ header('Content-Disposition: attachment; filename=eventDetails.csv');
+
+ $fields = array('ID','Name','start','end','building','room','date','cost','food','host'); 
 
  $event_details = getEventDetail($_POST['event_to_export']);
  $output = fopen('php://output','w');
- fputcsv($output, $event_details);
+ fputcsv($output,$fields);
+ fputcsv($output, $event_details[0]);
  fclose($output);
-
  
 
 
