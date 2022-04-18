@@ -12,52 +12,39 @@ if($_SESSION["validlogin"] !== true){
  $addInfo = false;
   $addType = '';
   $fieldName = '';
-  if(isset($_POST["import"])){
-    $fileName = $_FILES["file"]["tmp_name"];
-     if(($_FILES["file"]["size"] > 0)){
-      $file = fopen($fileName, "r");
-       while(($data = fgetcsv($file, 1000, ","))!==FALSE){
-         for($c=0;$c<12;$c++){
-          $arr[$c] = $data[$c];
-          //echo $arr[$c] . "<br />\n";
-         }
-       }
+  // if(isset($_POST["import"])){
+  //   $fileName = $_FILES["file"]["tmp_name"];
+  //    if(($_FILES["file"]["size"] > 0)){
+  //     $file = fopen($fileName, "r");
+  //      while(($data = fgetcsv($file, 1000, ","))!==FALSE){
+  //        for($c=0;$c<12;$c++){
+  //         $arr[$c] = $data[$c];
+  //         //echo $arr[$c] . "<br />\n";
+  //        }
+  //      }
        
        
+  //      addToEvent_By_ID($name, $time_start, $time_end, $building, $room, $date_of_event, $cost, $food);
+  //         addToHost($org_name, $latest_event_id);
+  //         addToEvent_audience($latest_event_id,$audience);
+  //         addToEvent_categories($latest_event_id,$categories);
+  //         addToEvent_restrictions($latest_event_id,$restrictions);
   
-      $name = $arr[0];
-      $time_start = $arr[1];
-      $time_end = $arr[2];
-      $building = $arr[3];
-      $room = $arr[4];
-      $date_of_event = $arr[5];
-      $cost = $arr[6];
-      $food = $arr[7];
-      $org_name = $arr[8];
-      $audience = $arr[9];
-      $categories = $arr[10];
-      $restrictions = $arr[11];
-      $latest_event_id = getLatestEventId();
-       addToEvent_By_ID($name, $time_start, $time_end, $building, $room, $date_of_event, $cost, $food);
-          addToHost($org_name, $latest_event_id);
-          addToEvent_audience($latest_event_id,$audience);
-          addToEvent_categories($latest_event_id,$categories);
-          addToEvent_restrictions($latest_event_id,$restrictions);
-  
-     }
-   }
+  //    }
+  //  }
  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
    try{
  
       if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "Add") {
         
-        echo $_POST['addForHost'];
-        echo $latest_event_id;
+        // echo $_POST['addForHost'];
+        // echo $latest_event_id;
         addToEvent_By_ID($_POST['name'], $_POST['time_start'], $_POST['time_end'], $_POST['building'], $_POST['room'], $_POST['date_of_event'], $_POST['cost'], $_POST['food']);
-        $temp_event_id = getLatestEventId();
-        foreach ($temp_event_id as $id_num) {
-         $latest_event_id = $id_num;      
-        }
+        // $temp_event_id = getLatestEventId();
+        // echo $temp_event_id;
+        // foreach ($temp_event_id as $id_num) {
+        $latest_event_id = getLatestEventId();;      
+        
         // echo $latest_event_id
         // $latest_event_id = $latest_event_id+1;
         addToHost($_POST['addForHost'], $latest_event_id);
@@ -100,9 +87,9 @@ if($_SESSION["validlogin"] !== true){
        if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "newAdd") {
         $addType = $_POST['addType'];
         $temp_event_id = getLatestEventId();
-        foreach ($temp_event_id as $id_num) {
-         $latest_event_id = $id_num;      
-         }
+        // foreach ($temp_event_id as $id_num) {
+        //  $latest_event_id = $id_num;      
+        //  }
         $addInfo = false;
         $submitted = true;
         if($addType == "Host") {
@@ -122,16 +109,95 @@ if($_SESSION["validlogin"] !== true){
           addToEvent_restrictions($latest_event_id,$_POST['additionalInput']);
           $addType= '';
         }
+      }
+
+    if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "Import") {
+      $fileName = $_FILES["file"]["tmp_name"];
+     if(($_FILES["file"]["size"] > 0)){
+      $file = fopen($fileName, "r");
+       while(($data = fgetcsv($file, 1000, ","))!==FALSE){
+         for($c=0;$c<12;$c++){
+          $arr[$c] = $data[$c];
+         }
+       }
+      $temp_event_id = getLatestEventId();
+      // foreach ($temp_event_id as $id_num) {
+      //  $latest_event_id = $id_num;      
+      // }
+      $latest_event_id = $latest_event_id+1;
+      print "<pre>";
+      print_r($arr);
+      print "</pre>";
+      addToEvent_By_ID($arr[0], $arr[1], $arr[2], $arr[3], $arr[4], $arr[5], $arr[6], $arr[7]);
+      addToHost($arr[8], temp_event_id);
+      addToEvent_audience($latest_event_id,$arr[9]);
+      addToEvent_categories($latest_event_id,$arr[10]);
+      addToEvent_restrictions($latest_event_id,$arr[11]);
+      $submitted = true;
   
-        }
+    }
+
+      if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "AddHost") {
+      $addInfo = true;
+      $addType = "Host";
+      $fieldName = "Additional Host: ";
+      $submitted = true;
+      }
+
+      if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "AddAudience") {
+      $addInfo = true;
+      $addType = "Audience";
+      $fieldName = "Additional Audience: ";
+      $submitted = true;
 
       }
-  
-      
 
-    catch(Exception $except){
-      throw new Exception("Error adding event page");
+       if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "AddCategory") {
+      $addInfo = true;
+      $addType = "Category";
+      $fieldName = "Additional Category: ";
+      $submitted = true;
+      }
+
+      if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "AddRestriction") {
+      $addInfo = true;
+      $addType = "Restriction";
+      $fieldName = "Additional Restriction: ";
+      $submitted = true;
+      }
+
+     if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "newAdd") {
+      $addType = $_POST['addType'];
+      $temp_event_id = getLatestEventId();
+      // foreach ($temp_event_id as $id_num) {
+      //  $latest_event_id = $id_num;      
+      //  }
+      $addInfo = false;
+      $submitted = true;
+      if($addType == "Host") {
+        addToHost($_POST['additionalInput'], $latest_event_id);
+        $addType = "";
+ 
+      }
+      if($addType == 'Audience') {
+        addToEvent_audience($latest_event_id,$_POST['additionalInput']);
+        $addType = '';
+      }
+      if($addType == 'Category') {
+        addToEvent_categories($latest_event_id,$_POST['additionalInput']);
+        $addType = '';
+     }
+     if($addType == 'Restriction') {
+        addToEvent_restrictions($latest_event_id,$_POST['additionalInput']);
+        $addType= '';
+      }
+
+      }
     }
+  }
+  catch(Exception $except){
+    throw new Exception("Error adding event page");
+  }
  }
  ?>
 <!DOCTYPE html>
@@ -203,20 +269,19 @@ if($_SESSION["validlogin"] !== true){
   </div>
     </div>
   </header>
-<form class="form-horizontal" action="" method="post"
-                name="frmCSVImport" id="frmCSVImport"
-                enctype="multipart/form-data">
-                <div class="input-row">
-                    <label class="col-md-4 control-label">Choose CSV
-                        File</label> <input type="file" name="file"
-                        id="file" accept=".csv">
-                    <button type="submit" id="submit" name="import"
-                        class="btn-submit">Import</button>
-                    <br />
+  <div class="input-row">
+      <div style="float:left">
+        <label class="col-md-4 control-label">Choose CSV File</label> 
+        <input type="file" name="file"  id="file" accept=".csv">
+      </div>
+      <div style="float:left">
+        <form action="addEventPage.php" method="post"> 
+          <input type="submit" value="Import" name="btnAction" class="btn btn-dark" title = "Import" />
+        </form>
+      </div>
+      <br />
+  </div>
 
-                </div>
-
-            </form>
 
 <div class="container">
 <h1>Add Event</h1>
