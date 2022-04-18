@@ -77,7 +77,7 @@ if($_SESSION["validlogin"] !== true){
     <!-- <link rel="stylesheet" href="custom.css" />  -->
 </head>
 <body>
-    <div class="container">
+ <div class="container">
         <h1>Register Organization</h1>
 <form name="mainForm" action="registerOrganization.php" method="post">
  <div visibility: <?php if ($submitted == true) echo 'hidden'; ?>>
@@ -99,18 +99,16 @@ if($_SESSION["validlogin"] !== true){
 <input type="submit" value="Register" name="btnAction" class="btn btn-dark"
         title = "Register Organization" />
    </div>
-  </form>
 </div>
-  
-  
-   <form name="subForm" action="registerOrganization.php" method="post">
-     
+ 
+    <div class="container">
      <div class="row mb-3 mx-3">
         <div visibility: <?php if ($addExec == false) echo 'hidden'; ?>>
             Executive Member Username:
           <input type="text" class="form-control" name="execName"  />
        </div>
      </div>
+   </div>
      
      
      <div class="row mb-3 mx-3">
